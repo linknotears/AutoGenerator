@@ -33,8 +33,11 @@ public class ${table.controllerName} extends BaseController{
 	@RequestMapping("/saveOrUpdate")//更新不置空
 	public @ResponseBody ResultData saveOrUpdate(@RequestParam(value="id",required=false) #touppercase(${columnType}) id,${entity} #tolowercase($entity)){
 		ResultData resultData = new ResultData();
-		int i = #tolowercase($entity)Service.saveOrUpdate(id, #tolowercase($entity));
-		if(i > 0){
+		int i = 0;
+		try {
+			i = #tolowercase($entity)Service.saveOrUpdate(id, #tolowercase($entity));
+		} catch (Exception e) {
+			e.printStackTrace();
 			resultData.setCode(-1);
 		}
 		resultData.setData("count", i);
@@ -44,8 +47,11 @@ public class ${table.controllerName} extends BaseController{
 	@RequestMapping("/update")//允许置空
 	public @ResponseBody ResultData update(${entity} #tolowercase($entity)){
 		ResultData resultData = new ResultData();
-		int i = #tolowercase($entity)Service.updateById(#tolowercase($entity));
-		if(i > 0){
+		int i = 0;
+		try {
+			i = #tolowercase($entity)Service.updateById(#tolowercase($entity));
+		} catch (Exception e) {
+			e.printStackTrace();
 			resultData.setCode(-1);
 		}
 		resultData.setData("count", i);
@@ -55,8 +61,11 @@ public class ${table.controllerName} extends BaseController{
 	@RequestMapping("/remove")
 	public @ResponseBody ResultData remove(#touppercase(${columnType}) id){
 		ResultData resultData = new ResultData();
-		int i = #tolowercase($entity)Service.removeById(id);
-		if(i > 0){
+		int i = 0;
+		try {
+			i = #tolowercase($entity)Service.removeById(id);
+		} catch (Exception e) {
+			e.printStackTrace();
 			resultData.setCode(-1);
 		}
 		resultData.setData("count", i);

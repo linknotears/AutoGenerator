@@ -15,18 +15,18 @@ public class ResultData {
 		return code;
 	}
 
-	public void setCode(int code) {
+	public ResultData setCode(int code) {
 		this.code = code;
+		return this;
 	}
 
 	public Map<String, Object> getData() {
 		return data;
 	}
 
-	public void setData(String key,Object value) {
+	public ResultData setData(String key,Object value) {
 		data.put(key, value);
+		return this;
 	}
-	
-	
 	
 }
