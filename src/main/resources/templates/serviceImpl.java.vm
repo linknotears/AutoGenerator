@@ -1,0 +1,24 @@
+package ${package.ServiceImpl};
+
+import org.springframework.beans.factory.annotation.Autowired;
+import ${package.Entity}.${entity};
+import ${package.Mapper}.${table.mapperName};
+import ${package.Service}.${table.serviceName};
+import org.springframework.stereotype.Service;
+#macro(tolowercase $str)$str.substring(0,1).toLowerCase()$str.substring(1)#end
+/**
+ * $!{table.comment} 服务实现类
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+@Service
+public class ${table.serviceImplName} extends BaseServiceImpl<${entity}> implements ${table.serviceName} {
+	private ${table.mapperName} #tolowercase(${entity})Mapper;
+	@Autowired
+	public ${table.serviceImplName}(${table.mapperName} #tolowercase(${entity})Mapper){
+		this.baseMapper = #tolowercase(${entity})Mapper;
+		this.#tolowercase(${entity})Mapper = #tolowercase(${entity})Mapper;
+	}
+	
+}
