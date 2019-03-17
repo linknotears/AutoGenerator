@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
-<display-name>HelloMybatisPlus</display-name>
+<display-name>wxmusic</display-name>
   
   <!-- 配置springmvc核心控制器 -->
   <servlet>
@@ -13,9 +13,8 @@
   </servlet>
   <servlet-mapping>
   	<servlet-name>springmvc</servlet-name>
-  	<url-pattern>/</url-pattern>
+  	<url-pattern>*.html</url-pattern>
   </servlet-mapping>
-  
   
   <!-- 配置springmvc的编码字符集 -->
   <filter>
@@ -47,6 +46,6 @@
   </context-param>
 
    <welcome-file-list>
-    <welcome-file>index</welcome-file>
+    <welcome-file>/user/index.html</welcome-file>
   </welcome-file-list>
 </web-app>
