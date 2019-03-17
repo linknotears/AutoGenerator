@@ -15,12 +15,13 @@ public class BaseController {
 	
 	@RequestMapping("/goto/{folder}/{file}")
 	public String goUrl(@PathVariable String folder,@PathVariable String file) throws Exception{
-		System.out.println("goUrl.folder|file= "+folder+"/"+file);
-		return "forward:"+folder+"/"+file;
+		System.out.println("goUrl.folder|file= /"+folder+"/"+file);
+		return folder+"/"+file;
 	}
 	@RequestMapping("/goto/{file}")
 	public String goUrl(@PathVariable String file) throws Exception{
 		System.out.println("goUrl.folder|file= /"+file);
-		return "forward:"+file;
+		//加上forward关键字不受mvc解析器解析
+		return file;
 	}
 }

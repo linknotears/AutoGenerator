@@ -47,6 +47,11 @@ public class GeneratorCode {
         gc.setServiceName("%sService");//本人不习惯加I
         gc.setServiceImplName("%sServiceImpl");
         gc.setControllerName("%sController");
+        //设置不覆盖文件
+        if(!"true".equals(rb.getString("isOverFile"))){        	
+        	gc.setFileOverride(false);
+        }
+        
         mpg.setGlobalConfig(gc);
 
         // 数据源配置
@@ -137,7 +142,7 @@ public class GeneratorCode {
 	        //复制不需要解析的文件
 	        //复制web文件
 	        {
-	        templatesToNotAnalyze("web",rb.getString("OutputDirWeb"));
+	        	templatesToNotAnalyze("web",rb.getString("OutputDirWeb"));
 	        }
         }
         //更改Service输出名
