@@ -148,8 +148,8 @@
     update ${table.name}
     <set >
 	#foreach($field in ${table.fields})#if($velocityCount==1)#continue#end
-      <if test="${field.propertyName} != null" >
-        ${field.name} = #{${field.propertyName},javaType=${field.columnType}},
+      <if test="entity.${field.propertyName} != null" >
+        ${field.name} = #{entity.${field.propertyName},javaType=${field.columnType}},
       </if>
 	#end  
     </set>

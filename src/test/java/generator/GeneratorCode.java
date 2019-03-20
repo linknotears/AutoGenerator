@@ -110,7 +110,16 @@ public class GeneratorCode {
                 Map<String, Object> map = new HashMap<String, Object>();
                 map.put("abc", this.getConfig().getGlobalConfig().getAuthor() + "-rb");
                 map.put("basePackage", rb.getString("basePackage"));
-                map.put("jdbcUrl", rb.getString("jdbc.url"));
+                //判断mysql版本
+                String url = rb.getString("jdbc.url");
+                String driver = rb.getString("jdbc.driver");
+                if("5.0".equals(rb.getString("mysql.version"))){
+                	String[] urltemp = url.split("?");
+                	url = urltemp[0] + "?useUnicode=true&allowMultiQueries=true&characterEncoding=UTF-8";
+                	driver = "com.mysql.jdbc.Driver";
+                }
+                map.put("jdbcUrl", url);
+                map.put("jdbcDriver", driver);
                 this.setMap(map);
             }
         };
@@ -184,11 +193,19 @@ public class GeneratorCode {
             String outPath = outDir+shortPath;
             InputStream in = GeneratorCode.class.getClass().getResourceAsStream(templatePath);
             OutputStream out = null;
+            
+            File outFile = new File(outPath);
+            //文件不存在就创建
+            File parentFile = outFile.getParentFile();
+            if(!parentFile.exists()){
+            	parentFile.mkdirs();
+            }
+            
             byte[] buffer = new byte[1024*1024];
             int len = 0;
             try {
             	//read()一次读一个字节
-            	out =new FileOutputStream(new File(outPath));
+            	out =new FileOutputStream(outFile);
             	while((len = in.read(buffer))!=-1){
             		out.write(buffer, 0, len);
             	}

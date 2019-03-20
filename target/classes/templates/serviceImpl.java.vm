@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ${table.serviceImplName} extends BaseServiceImpl<${entity}> implements ${table.serviceName} {
-	private ${table.mapperName} #tolowercase(${entity})Mapper;
+	protected ${table.mapperName} #tolowercase(${entity})Mapper;
 	@Autowired
 	public ${table.serviceImplName}(${table.mapperName} #tolowercase(${entity})Mapper){
 		this.baseMapper = #tolowercase(${entity})Mapper;

@@ -69,9 +69,9 @@
       </aop:config>
 	
 	<!-- 文件上传支持（上传文件时必须定义） -->
-	<!-- <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
      <property name="maxUploadSize" value="104857600" />
      <property name="maxInMemorySize" value="4096" />
      <property name="defaultEncoding" value="UTF-8"></property>
-	</bean> -->
+	</bean>
 </beans>

@@ -1,27 +1,79 @@
-	function checkform(url,form,successMethod) {
+	addScript("common/util/jquery-1.10.2.min.js");
+	addScript("common/util/vue.min.js");
+	function addScript(url){
+		document.write("<script language=javascript src="+url+"></script>");
+	}
+	function formSubmit(config) {
+		var url = config.url,
+		form = config.form,
+		successHandle = config.successHandle,
+		isMultipart = config.isMultipart,
+		checkHandle = config.checkHandle,
+		data = config.data;
+		//模板
+		/*
+		return formSubmit({
+			url: "user/login.do",
+			form: "loginForm",
+			successHandle:function(data){
+				window.location.href = "user/index.do";
+			},
+			isMultipart:false,
+			checkHandle:function(){return true;}
+		});
+		*/
+		//如果form为null这则不传参数
+		if(data == undefined){
+			data = {}
+		}
 		if(typeof(form)=="string"){
-			this.form = document.getElementById(form);
-		}else{
-			this.form = form
+			form = document.getElementById(form);
 		}
 		
-		//input非空校验
-		/* for (var index = 0; index < form.length; index++) {
-			if (form[index].value == "") {
-				alert("Empty input");
-				return false;
+		var processData = true;
+		var contentType = "application/x-www-form-urlencoded";
+		if(form != undefined){
+			//两种选择提交方式
+			data = $(form).serialize();
+			if(isMultipart != undefined && isMultipart == true){
+				data = new FormData(form);
+				processData = false;
+				contentType = false;
 			}
-		} */
-		var isSuccess = false;
+		}
+		
+		//校验表单
+		var checkFlag = true;
+		if(checkHandle != undefined){
+			checkFlag = checkHandle(form);
+		}
+		if(!checkFlag){
+			return false;
+		}
+		//模板
+		/* 
+		for (var index = 0; index < form.length; index++) {
+			if (form[index].value == "") {
+				if(form[index].tagName!="BUTTON"){
+					alert("有部分选项未填！");
+					return false;
+				}
+			}
+		}
+		*/
+		
 		$.ajax({
-			url:url,
-			data:$(this.form).serialize(),
+			url: url,
+			data: data,
 			type: 'post', 
-			sync:false,
+			async: false,
+			//FormData上传时要加这两个配置项，不然会报错
+	        processData: processData,
+	        contentType: contentType,
+	        dataType:'json',
 			success:function(result){
 				if(result.code==0){
-					successMethod(result.data)
-					isSuccess = true;
+					successHandle(result.data);
 				}else if(result.data.message != undefined){
 					alert(result.data.message);
 				}else{
@@ -32,5 +84,5 @@
 				alert("请求服务器失败!");
  			}
 		});
-		return isSuccess;
+		return false;
 	}
