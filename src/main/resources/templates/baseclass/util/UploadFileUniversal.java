@@ -1,4 +1,4 @@
-package com.restaurant.master.util;
+package ${cfg.basePackage}.util;
 
 import java.io.File;
 import java.lang.reflect.Method;
@@ -73,6 +73,9 @@ public class UploadFileUniversal {
 	                	}
 	                	// 处理不在表单中的字段
 	                    if (!item.isFormField()) {
+	                    	if(item.getSize() == 0){
+	                    		continue;
+	                    	} 
 	                    	String fieldName = item.getFieldName();
 	                    	String outDir = null;
 	                    	String prop = null;

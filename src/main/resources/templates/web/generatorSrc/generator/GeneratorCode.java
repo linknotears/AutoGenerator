@@ -26,14 +26,13 @@ import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.baomidou.mybatisplus.generator.config.rules.DbColumnType;
 import com.baomidou.mybatisplus.generator.config.rules.DbType;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
-
 public class GeneratorCode {
 	public static void main(String[] args) throws InterruptedException {
 		//AutoGenerator.analyzeData(ConfigBuilder config)中有模板可用的一些内置属性
 		//用来获取mybatis-plus.properties文件的配置信息
         final ResourceBundle rb = ResourceBundle.getBundle("mybatis/mybatis-plus");
         AutoGenerator mpg = new AutoGenerator();
-    	String basePath = "/"+rb.getString("basePackage").replace(".", "/");
+    	final String basePath = "/"+rb.getString("basePackage").replace(".", "/");
         // 全局配置
         GlobalConfig gc = new GlobalConfig();
         gc.setOutputDir(rb.getString("OutputDir"));
@@ -182,7 +181,6 @@ public class GeneratorCode {
 	        //复制web文件
 	        {
 	        	templatesToNotAnalyze("web",rb.getString("OutputDirWeb"));
-	        	
 	        }
         }
         //更改Service输出名
@@ -268,7 +266,7 @@ public class GeneratorCode {
         }
 	}
 	
-	private static void templatesTo(List<FileOutConfig> fileOutConfigList,String templateDir,String outDir){
+	private static void templatesTo(List<FileOutConfig> fileOutConfigList,String templateDir,final String outDir){
 		System.out.println("-----------------templateDir = " + templateDir + "-----------------");
 		//遍历配置模板
         URL url = GeneratorCode.class.getClass().getResource("/templates/"+templateDir);
@@ -276,7 +274,7 @@ public class GeneratorCode {
 		File file = new File(path);		//获取其file对象
 		List<String> shortPaths = getShortPath(file,new ArrayList<String>(),templateDir);
         //添加配置模板
-		for(String shortPath : shortPaths){
+		for(final String shortPath : shortPaths){
 			fileOutConfigList.add(new FileOutConfig("/templates/"+templateDir+shortPath) {
                 @Override
                 public String outputFile(TableInfo tableInfo) {
@@ -302,3 +300,4 @@ public class GeneratorCode {
 		return list;
 	}
 }
+

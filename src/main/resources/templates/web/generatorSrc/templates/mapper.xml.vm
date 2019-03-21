@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="${package.Mapper}.${table.mapperName}">
+
+#if(${enableCache})
+	<!-- 开启二级缓存 -->
+	<cache type="org.mybatis.caches.ehcache.LoggingEhcache"/>
+
+#end
+#if(${baseResultMap})
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="${package.Entity}.${entity}">
+#foreach($field in ${table.fields})
+#if(${field.keyFlag})##生成主键排在第一位
+		<id column="${field.propertyName}" property="${field.propertyName}" />
+#end
+#end
+#foreach($field in ${table.commonFields})##生成公共字段
+	<result column="${field.propertyName}" property="${field.propertyName}" />
+#end
+#foreach($field in ${table.fields})
+#if(!${field.keyFlag})##生成普通字段
+		<result column="${field.propertyName}" property="${field.propertyName}" />
+#end
+#end
+	</resultMap>
+
+#end
+#if(${baseColumnList})
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        ${table.fieldNames}
+    </sql>
+#end
+
+<select id="selectList" resultMap="BaseResultMap" parameterType="${package.Entity}.${entity}">
+  	select 
+   	<include refid="Base_Column_List" />
+   	from ${table.name}
+   	<where>
+   		<if test="condition!=null">
+			#foreach($field in ${table.fields})
+    		<if test="condition.${field.propertyName}!=null">
+    			and ${field.name} = #{condition.${field.propertyName},javaType=${field.columnType}}
+    		</if>
+			#end
+    	</if>
+   	</where>
+  </select>
+  
+  <select id="selectCount" parameterType="${package.Entity}.${entity}" resultType="java.lang.Integer">
+  	select 
+   	count(1)
+   	from ${table.name}
+   	<where>
+   		<if test="condition!=null">
+			#foreach($field in ${table.fields})
+    		<if test="condition.${field.propertyName}!=null">
+    			and ${field.name} = #{condition.${field.propertyName},javaType=${field.columnType}}
+    		</if>
+			#end
+    	</if>
+   	</where>
+  </select>
+  
+  <select id="selectPage" resultMap="BaseResultMap" parameterType="${package.Entity}.vo.PageData">
+  	select 
+   	<include refid="Base_Column_List" />
+   	from ${table.name}
+   	<where>
+   		<if test="condition!=null">
+			#foreach($field in ${table.fields})
+    		<if test="condition.${field.propertyName}!=null">
+    			and ${field.name} = #{condition.${field.propertyName},javaType=${field.columnType}}
+    		</if>
+			#end
+    	</if>
+   	</where>
+    ${orderby}
+    limit #{start },#{limit }
+  </select>
+  
+  <insert id="insertByList" parameterType="${package.Entity}.${entity}">
+  	insert into ${table.name} 
+    values 
+	<foreach collection="list" item="item" separator=",">
+		(#foreach($field in ${table.fields})#{item.${field.propertyName},javaType=${field.columnType}}#if(${foreach.hasNext}) , #end #end)
+    </foreach>
+  </insert>
+  
+  <select id="selectById" resultMap="BaseResultMap" parameterType="${package.Entity}.${entity}" >
+    select 
+    <include refid="Base_Column_List" />
+    from ${table.name}
+    where ${table.fields[0].name} = #{${table.fields[0].propertyName},javaType=${table.fields[0].columnType}}
+  </select>
+  
+  <delete id="deleteById" parameterType="${package.Entity}.${entity}" >
+    delete from ${table.name}
+    where ${table.fields[0].name} = #{${table.fields[0].propertyName},javaType=${table.fields[0].columnType}}
+  </delete>
+  
+  <delete id="deleteBatchIds" parameterType="${package.Entity}.${entity}" >
+    delete from ${table.name}
+    where ${table.fields[0].name} in 
+	<foreach collection="array" item="item" open="(" separator="," close=")">
+		#{item,javaType=${table.fields[0].columnType}}
+	</foreach>
+  </delete>
+  
+  <delete id="deleteByCondition" parameterType="${package.Entity}.${entity}" >
+    delete from ${table.name}
+	<where>
+		#foreach($field in ${table.fields})
+		<if test="${field.propertyName}!=null">
+			and ${field.name} = #{${field.propertyName},javaType=${field.columnType}}
+		</if>
+		#end
+   	</where>
+  </delete>
+  
+  <insert id="insert" parameterType="${package.Entity}.${entity}" >
+    insert into ${table.name} 
+    values 
+	(#foreach($field in ${table.fields})#{${field.propertyName},javaType=${field.columnType}}#if(${foreach.hasNext}),#end#end)
+  </insert>
+  
+  <update id="updateByIdIgnoreNull" parameterType="${package.Entity}.${entity}" >
+    update ${table.name}
+    <set >
+	#foreach($field in ${table.fields})#if($velocityCount==1)#continue#end
+      <if test="${field.propertyName} != null" >
+        ${field.name} = #{${field.propertyName},javaType=${field.columnType}},
+      </if>
+	#end  
+    </set>
+    where ${table.fields[0].name} = #{${table.fields[0].propertyName},javaType=${table.fields[0].columnType}}
+  </update>
+  
+  <update id="updateById" parameterType="${package.Entity}.${entity}" >
+    update ${table.name}
+    set 
+	#foreach($field in ${table.fields})#if($velocityCount==1)#continue#end${field.name} = #{${field.propertyName},javaType=${field.columnType}}#if(${foreach.hasNext}),#end#end  
+    where ${table.fields[0].name} = #{${table.fields[0].propertyName},javaType=${table.fields[0].columnType}}
+  </update>
+  
+  <update id="updateByPartIdIgnoreNull" parameterType="${package.Entity}.${entity}" >
+    update ${table.name}
+    <set >
+	#foreach($field in ${table.fields})#if($velocityCount==1)#continue#end
+      <if test="entity.${field.propertyName} != null" >
+        ${field.name} = #{entity.${field.propertyName},javaType=${field.columnType}},
+      </if>
+	#end  
+    </set>
+    where ${table.fields[0].name} = #{id,javaType=${table.fields[0].columnType}}
+  </update>
+  
+  <update id="updateByPartId" parameterType="${package.Entity}.${entity}" >
+    update ${table.name}
+    set 
+	#foreach($field in ${table.fields})#if($velocityCount==1)#continue#end${field.name} = #{entity.${field.propertyName},javaType=${field.columnType}}#if(${foreach.hasNext}),#end#end  
+    where ${table.fields[0].name} = #{id,javaType=${table.fields[0].columnType}}
+  </update>
+</mapper>

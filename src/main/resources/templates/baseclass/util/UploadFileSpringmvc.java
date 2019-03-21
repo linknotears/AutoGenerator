@@ -8,7 +8,7 @@ import javax.servlet.ServletContext;
 
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
-public class UploadFileUtil {
+public class UploadFileSpringmvc {
 	/**
 	 * 
 	 * @param imagefile

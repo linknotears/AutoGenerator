@@ -1,8 +1,18 @@
+	//模板：<script type="text/javascript" src="common/util/netutil.js"></script>
 	addScript("common/util/jquery-1.10.2.min.js");
 	addScript("common/util/vue.min.js");
 	function addScript(url){
 		document.write("<script language=javascript src="+url+"></script>");
 	}
+	//全局变量
+	globalData = {'items':[],'item':{},'page':{},'data':{}};
+	loadProps = [];
+	/*模板
+	loadProps =[{url:'',
+	parameterMap:{},
+	bindId:'#aa',
+	refName:'classifys'
+	}]*/
 	function formSubmit(config) {
 		var url = config.url,
 		form = config.form,
@@ -86,3 +96,52 @@
 		});
 		return false;
 	}
+	
+	//初始化数据
+	/*$(function(){
+		alert(1);
+		if(loadProps.length != 0){
+			//绑定vue
+			new Vue({
+				el: "#classSelect",
+				data: globalData
+			});
+			//更新数据
+			loadData();
+		}
+		alert(2);
+	});
+	模板
+	[{url:'',
+	parameterMap:{},
+	refName:'classifys'
+	}]
+	
+	//更新数据
+	function loadData(){
+		for(var i = 0; i < loadProps.length; i++){
+			formSubmit({
+				url: loadProps[i].url,
+				data: loadProps[i].parameterMap,
+				successHandle: function(data){
+					globalData.data[loadProps[i].refName] = data[loadProps[i].refName];
+				}
+			});
+		}
+	}*/
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	//获取url上的参数
+	function getQueryString(name) { 
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i"); 
+        var r = window.location.search.substr(1).match(reg); 
+        if (r != null) return unescape(r[2]); 
+        return null; 
+    } 

@@ -1,0 +1,120 @@
+package ${package.Controller};
+
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import ${package.Entity}.${entity};
+import ${package.Entity}.vo.PageData;
+import ${package.Entity}.vo.ResultData;
+import ${package.Service}.${table.serviceName};
+## 宏的第一个参数不能是#
+#macro(tolowercase $str)$str.substring(0,1).toLowerCase()$str.substring(1)#end
+#macro(touppercase $str)$str.substring(0,1)$str.substring(1).toLowerCase()#end
+## 宏的参数有数据类型区别
+#set( $columnType = ${table.fields[0].columnType.toString()})
+/**
+ * $!{table.comment} 前端控制器
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+@Controller
+@RequestMapping("/#tolowercase($entity)")
+public class ${table.controllerName} extends BaseController{
+	@Autowired
+	private ${table.serviceName} #tolowercase($entity)Service;
+
+	@RequestMapping("/saveOrUpdate")//更新不置空
+	public @ResponseBody ResultData saveOrUpdate(@RequestParam(value="id",required=false) #touppercase(${columnType}) id,${entity} #tolowercase($entity)){
+		ResultData resultData = new ResultData();
+		int i = 0;
+		try {
+			i = #tolowercase($entity)Service.saveOrUpdate(id, #tolowercase($entity));
+		} catch (Exception e) {
+			e.printStackTrace();
+			resultData.setCode(-1);
+		}
+		resultData.setData("count", i);
+		return resultData;
+	}
+	
+	@RequestMapping("/update")//允许置空
+	public @ResponseBody ResultData update(${entity} #tolowercase($entity)){
+		ResultData resultData = new ResultData();
+		int i = 0;
+		try {
+			i = #tolowercase($entity)Service.updateById(#tolowercase($entity));
+		} catch (Exception e) {
+			e.printStackTrace();
+			resultData.setCode(-1);
+		}
+		resultData.setData("count", i);
+		return resultData;
+	}
+	
+	@RequestMapping("/remove")
+	public @ResponseBody ResultData remove(#touppercase(${columnType}) id){
+		ResultData resultData = new ResultData();
+		int i = 0;
+		try {
+			i = #tolowercase($entity)Service.removeById(id);
+		} catch (Exception e) {
+			e.printStackTrace();
+			resultData.setCode(-1);
+		}
+		resultData.setData("count", i);
+		return resultData;
+	}
+	
+	@RequestMapping("/findAll")
+	public @ResponseBody ResultData findAll(){
+		ResultData resultData = new ResultData();
+		List<${entity}> #tolowercase($entity)s = null;
+		try {
+			#tolowercase($entity)s = #tolowercase($entity)Service.findList(null);
+		} catch (Exception e) {
+			e.printStackTrace();
+			resultData.setCode(-1);
+		}
+		resultData.setData("#tolowercase($entity)s", #tolowercase($entity)s);
+		return resultData;
+	}
+
+	@RequestMapping("/findById")
+	public @ResponseBody ResultData findById(#touppercase(${columnType}) id){
+		ResultData resultData = new ResultData();
+		${entity} #tolowercase($entity) = null;
+		try {
+			#tolowercase($entity) = #tolowercase($entity)Service.findById(id);
+		} catch (Exception e) {
+			e.printStackTrace();
+			resultData.setCode(-1);
+		}
+		resultData.setData("#tolowercase($entity)", #tolowercase($entity));
+		return resultData;
+	}
+	
+	@RequestMapping("/findPage")
+	public @ResponseBody ResultData findPage(PageData<${entity}> pageData,${entity} condition){
+		ResultData resultData = new ResultData();
+		
+		List<${entity}> #tolowercase($entity)s = null;
+		try {
+			pageData = #tolowercase($entity)Service.findPage(pageData, condition);
+			#tolowercase($entity)s = pageData.getList();
+		} catch (Exception e) {
+			e.printStackTrace();
+			resultData.setCode(-1);
+		}
+		
+		resultData.setData("#tolowercase($entity)s", #tolowercase($entity)s);
+		resultData.setData("pageData", pageData);
+		return resultData;
+	}
+}
