@@ -1,7 +1,11 @@
 package ${package.Entity};
 
 import java.io.Serializable;
-
+#foreach($pkg in ${table.importPackages})
+#if($pkg.contains('Date') || $pkg.contains('Decimal'))
+import ${pkg};
+#end
+#end
 /**
  * $!{table.comment}
  *

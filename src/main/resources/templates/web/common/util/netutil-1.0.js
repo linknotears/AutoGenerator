@@ -4,19 +4,36 @@
 	function addScript(url){
 		document.write("<script language=javascript src="+url+"></script>");
 	}
+	//通过索引复制的时候需用用Vue.set(target,i,target[i])通知vue
 	//全局变量
 	globalData = {'items':[],'item':{},'page':{},'data':{},params:{}};
 	loadUrls = [];
 	loadEls = [];
 	loadParameters = [];
-	
+	//params.idcard.isDefault
 	/*模板
-	loadUrls =[{url:'',
-	data:{},
-	refName:'classifys'
-	}];
-	loadEls = ['#element1','#element2'];
-	loadParameters = ["key",['key','default']]
+	//加载参数
+	loadParameters = [['idcard','${sessionScope.existUser.idcard}']];
+	//加载data
+	loadUrls =[
+	{
+		url:"userAnswer/findList.html",
+		data: {
+			'userno': globalData.params.idcard,
+			'typeno': 1
+		},
+		refNames:['userAnswers']
+	},
+	{
+		url:"question/findList.html",
+		data: {'typeno': 1},
+		refNames:['questions']
+	}
+	];
+	//加载标签
+	loadEls = ['#mainData'];
+	//初始化数据
+	init();
 	*/
 	function request(config) {
 		//模板
@@ -102,14 +119,7 @@
 		return false;
 	}
 
-	/*模板
-	loadUrls =[{url:'',
-	data:{},
-	refNames:['classifys','pageData']
-	}];
-	loadEls = ['#element1','#element2'];
-	loadParameters = ["key",['key','default']]
-	*/
+	
 	//渲染数据
 	function applyEls(){
 		if(loadEls.length != 0){

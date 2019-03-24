@@ -66,7 +66,7 @@ public class GeneratorCode {
             @Override
             public DbColumnType processTypeConvert(String fieldType) {
             	System.out.println("转换前类型：" + fieldType);
-                if("decimal".equals(fieldType)){
+                if(fieldType.contains("decimal")){
                 	fieldType = "double";
                 }
                 System.out.println("转换后类型：" + fieldType);
