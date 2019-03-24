@@ -72,12 +72,12 @@ public class ${table.controllerName} extends BaseController{
 		return resultData;
 	}
 	
-	@RequestMapping("/findAll")
-	public @ResponseBody ResultData findAll(){
+	@RequestMapping("/findList")
+	public @ResponseBody ResultData findList($entity entity){
 		ResultData resultData = new ResultData();
 		List<${entity}> #tolowercase($entity)s = null;
 		try {
-			#tolowercase($entity)s = #tolowercase($entity)Service.findList(null);
+			#tolowercase($entity)s = #tolowercase($entity)Service.findList(entity);
 		} catch (Exception e) {
 			e.printStackTrace();
 			resultData.setCode(-1);
