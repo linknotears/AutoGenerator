@@ -75,7 +75,8 @@
 		}
 		
 		var processData = true;
-		var contentType = "application/x-www-form-urlencoded";
+		//解决乱码问题
+		var contentType = "application/x-www-form-urlencoded; charset=utf-8";
 		if(form != undefined){
 			//两种选择提交方式
 			data = $(form).serialize();

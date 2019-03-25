@@ -21,7 +21,9 @@ import com.baomidou.mybatisplus.generator.config.GlobalConfig;
 import com.baomidou.mybatisplus.generator.config.PackageConfig;
 import com.baomidou.mybatisplus.generator.config.StrategyConfig;
 import com.baomidou.mybatisplus.generator.config.TemplateConfig;
+import com.baomidou.mybatisplus.generator.config.builder.ConfigBuilder;
 import com.baomidou.mybatisplus.generator.config.converts.MySqlTypeConvert;
+import com.baomidou.mybatisplus.generator.config.po.TableField;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.baomidou.mybatisplus.generator.config.rules.DbColumnType;
 import com.baomidou.mybatisplus.generator.config.rules.DbType;
@@ -112,11 +114,16 @@ public class GeneratorCode {
         
         //属性注入用于传入模板
         // 注入自定义配置，可以在 VM 中使用 cfg.abc 【可无】
+        // 注入自定义配置，可以在 VM 中使用 cfg.abc 【可无】
         InjectionConfig cfg = new InjectionConfig() {
-            @Override
+			@Override
             public void initMap() {
+				//获取备注组建者
+				ConfigBuilder config = this.getConfig();
+            	//获取全局配置
+            	GlobalConfig globalConfig = config.getGlobalConfig();
                 Map<String, Object> map = new HashMap<String, Object>();
-                map.put("abc", this.getConfig().getGlobalConfig().getAuthor() + "-rb");
+                map.put("abc", globalConfig.getAuthor() + "-rb");
                 
                 //循环读取配置信息
                 Enumeration<String> keys = rb.getKeys();
@@ -148,7 +155,45 @@ public class GeneratorCode {
                 map.put("jdbcUrl", url);
                 map.put("jdbcDriver", driver);
                 
+                List<TableInfo> tableInfoList = config.getTableInfoList();
+                HashMap<String,String> absoluteNameStrMap = new HashMap<String,String>();
+                //使结果集的column变得绝对不一样
+                for(TableInfo tableInfo : tableInfoList){
+                	//用来存放绝对字段名
+                	String tableName = tableInfo.getName();
+                	StringBuffer fieldNamesBuf = new StringBuffer(); 
+                	for(TableField field  : tableInfo.getFields()){
+                		String fieldName = field.getName();
+                		String absoluteName = tableName + "_" + fieldName;
+                		//传入模板
+                		fieldNamesBuf.append(tableName);
+                		fieldNamesBuf.append(".");
+                		fieldNamesBuf.append(fieldName);
+                		fieldNamesBuf.append(" AS ");
+                		fieldNamesBuf.append(absoluteName);
+                		fieldNamesBuf.append(",");
+                	}
+                	String fieldNamesStr = fieldNamesBuf.toString();
+                	fieldNamesStr = fieldNamesStr.substring(0,fieldNamesStr.length()-1);
+                	
+                	//替换字段绝对别名字符串
+                	absoluteNameStrMap.put(tableName, fieldNamesStr);
+                }
+                map.put("absoluteNameStrMap", absoluteNameStrMap);
                 
+                
+                //设置联合表数据
+                /*ObjectMapper mapper = new ObjectMapper();
+                try {
+                	ArrayList<Map<String,String>> conjTables = new ArrayList<Map<String,String>>();
+                	String conjTableStr = rb.getString("conj.tables");
+                	JavaType jvt = mapper.getTypeFactory().constructParametricType(ArrayList.class,LinkedHashMap.class);
+                	conjTables = mapper.readValue(conjTableStr,jvt);
+                	
+                	map.put("conjTables", conjTables);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}*/
                 this.setMap(map);
             }
         };
