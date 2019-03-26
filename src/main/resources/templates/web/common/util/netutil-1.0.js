@@ -13,27 +13,32 @@
 	//params.idcard.isDefault
 	/*模板
 	//加载参数
-	loadParameters = [['idcard','${sessionScope.existUser.idcard}']];
-	//加载data
-	loadUrls =[
-	{
-		url:"userAnswer/findList.html",
-		data: {
-			'userno': globalData.params.idcard,
-			'typeno': 1
-		},
-		refNames:['userAnswers']
-	},
-	{
-		url:"question/findList.html",
-		data: {'typeno': 1},
-		refNames:['questions']
-	}
-	];
-	//加载标签
-	loadEls = ['#mainData'];
-	//初始化数据
-	init();
+	//ready函数没写的时候vue找不到id但，也不会报错
+	//凡是用到id时都用id作为传参名
+	$(function(){
+		loadParameters = [['idcard','${sessionScope.existUser.idcard}']];
+		loadParameter();
+		//加载data
+		loadUrls =[
+			{
+				url:"userAnswer/findList.html",
+				data: {
+					'userno': globalData.params.idcard.value,
+					'typeno': 1
+				},
+				refNames:['userAnswers']
+			},
+			{
+				url:"question/findList.html",
+				data: {'typeno': 1},
+				refNames:['questions']
+			}
+		];
+		//加载标签
+		loadEls = ['#mainData'];
+		//初始化数据
+		init();
+	});
 	*/
 	function request(config) {
 		//模板
@@ -78,6 +83,12 @@
 		//解决乱码问题
 		var contentType = "application/x-www-form-urlencoded; charset=utf-8";
 		if(form != undefined){
+			//如果form和data同时存在则合并参数
+			if(config.data != undefined){
+				for(var x in config.data){
+					$(form).append("<input type='hidden' name='"+x+"' value='"+config.data[x]+"'/>");
+				}
+			}
 			//两种选择提交方式
 			data = $(form).serialize();
 			if(isMultipart != undefined && isMultipart == true){
@@ -107,7 +118,7 @@
 			success:function(result){
 				if(result.code==0){
 					successHandle(result.data);
-				}else if(result.data.message != undefined){
+				}else if(result.message != null && result.message != undefined){
 					alert(result.data.message);
 				}else{
 					alert("访问服务器时出现异常！");
@@ -177,7 +188,7 @@
 		//加载页功能数据，如果存在的话
 		
 		//加载参数
-		loadParameter();
+		//loadParameter();
 		//加载数据
 		loadData();
 		//渲染标签

@@ -35,13 +35,6 @@
 #end
 #end
 
-#if(${baseColumnList})
-    <!-- 通用查询结果列 -->
-    <sql id="Base_Column_List">
-        ${table.fieldNames}
-    </sql>
-#end
-
 <select id="selectList" resultMap="BaseResultMap" parameterType="${package.Entity}.${entity}">
   	select 
    	<include refid="Base_Column_List" />

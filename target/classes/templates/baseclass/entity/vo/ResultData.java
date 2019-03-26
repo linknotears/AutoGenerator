@@ -10,7 +10,18 @@ public class ResultData {
 	private int code = 0;
 	
 	private Map<String,Object> data = new HashMap<String, Object>();
+	//提示消息
+	private String message = null;
+	
+	
+	public String getMessage() {
+		return message;
+	}
 
+	public void setMessage(String message) {
+		this.message = message;
+	}
+	
 	public int getCode() {
 		return code;
 	}
