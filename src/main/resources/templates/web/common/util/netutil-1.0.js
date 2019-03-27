@@ -82,11 +82,15 @@
 		var processData = true;
 		//解决乱码问题
 		var contentType = "application/x-www-form-urlencoded; charset=utf-8";
+		//标签数组
+		var els = [];
 		if(form != undefined){
 			//如果form和data同时存在则合并参数
 			if(config.data != undefined){
 				for(var x in config.data){
-					$(form).append("<input type='hidden' name='"+x+"' value='"+config.data[x]+"'/>");
+					var el = "<input type='hidden' name='"+x+"' value='"+config.data[x]+"'/>";
+					els.push(el);
+					$(form).append(el);
 				}
 			}
 			//两种选择提交方式
@@ -119,7 +123,7 @@
 				if(result.code==0){
 					successHandle(result.data);
 				}else if(result.message != null && result.message != undefined){
-					alert(result.data.message);
+					alert(result.message);
 				}else{
 					alert("访问服务器时出现异常！");
 				}
@@ -128,6 +132,11 @@
 				alert("请求服务器失败!");
  			}
 		});
+		//删除刚提交使用的临时input标签
+		for(var x in els){
+			els[x].remove();
+		}
+		
 		return false;
 	}
 
@@ -157,6 +166,8 @@
 							globalData.data[loadUrls[i].refNames[j]] = data[loadUrls[i].refNames[j]];
 						}else{
 							globalData.page = data[loadUrls[i].refNames[j]];
+							var url = window.location.href.split("?")[0];
+							globalData.page["pageUri"] = url;
 						}
 					}
 					if(loadUrls[i].successHandle != undefined){
@@ -216,3 +227,17 @@
         }
         return defaultParam;
     } 
+	
+	
+	//把json数组中的json的key和value，转换成对应的映射
+	//模板
+	
+	function arrJsonToMapping(array,refKey,refValue){
+		var mapping = {};
+		for(var x in array){
+			var key = array[x][refKey];
+			var value = array[x][refValue];
+			mapping[key] = value;
+		}
+		return mapping;
+	}
