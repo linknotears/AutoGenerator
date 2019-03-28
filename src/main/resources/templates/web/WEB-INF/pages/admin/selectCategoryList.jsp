@@ -31,20 +31,20 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 function add(form){
 	return request({
-		url: "pettype/saveOrUpdate.html",
+		url: "songtype/saveOrUpdate.html",
 		form: form,
 		successHandle:function(data){
 			loadData();
 			form.reset();
 		},
-		isMultipart:false,
+		isMultipart:true,
 		checkHandle:function(){return true;}
 	});
 }
 
 function deleteThis(id){
 	request({
-		url: "pettype/remove.html",
+		url: "songtype/remove.html",
 		data: {id: id},
 		successHandle:function(data){
 			loadData();
@@ -56,31 +56,31 @@ function deleteThis(id){
 
 function viewOrUpdateThis(id){
 	var inputEls = $("#tr"+id).find("input");
-	alert("inputEls="+inputEls);
-	var inputTextEl = $("#tr"+id).find(":text")[0];
-	alert("inputTextEl="+inputTextEl);
+	var inputTextEl = $("#tr"+id).find("input")[0];
 	var spanEl = $("#tr"+id).find("span")[0];
-	alert("spanEl="+spanEl);
 	if(inputTextEl.style.display == 'block'){
 		//隐藏
-		$("#tr"+id).find(":text").css("display","none");
+		$("#tr"+id).find("input").css("display","none");
 		$("#tr"+id).find("span").css("display","block");
 	}else{
 		//显示
-		$("#tr"+id).find(":text").css("display","block");
+		$("#tr"+id).find("input").css("display","block");
 		$("#tr"+id).find("span").css("display","none");
 		return false;
 	}
 	var form = $("<form/>");
 	//克隆对象
 	form.append(inputEls.clone());
+	//改为dom对象
+	form = form[0];
 	
 	request({
-		url: "pettype/saveOrUpdate.html",
+		url: "songtype/saveOrUpdate.html",
 		form: form,
 		successHandle:function(data){
 			loadData();
-		}
+		},
+		isMultipart:true
 	});
 }
 
@@ -90,8 +90,8 @@ $(function(){
 	//加载data
 	loadUrls =[
 		{
-			url:"pettype/findList.html",
-			refNames:['pettypes']
+			url:"songtype/findList.html",
+			refNames:['songtypes']
 		}
 	];
 	//加载标签
@@ -122,17 +122,27 @@ $(function(){
 						class="table table-striped table-bordered table-hover">
 						<thead>
 							<tr>
-								<th width="40%;">宠物类型名</th>
-								<th width="60%;">操作</th>
+								<th width="20%;">图片</th>
+								<th width="20%;">作者</th>
+								<th width="20%;">描述</th>
+								<th width="40%;">操作</th>
 							</tr>
 						</thead>
 							<!-- vue要在父标签中使用 -->
 							<tbody  id="categoryTableTr">
-								<tr v-for="classify in data.pettypes" :id="'tr'+classify.id">
+								<tr v-for="classify in data.songtypes" :id="'tr'+classify.id">
 								<th>
-									<input type='hidden' name='id' v-model="classify.id" />
-									<input type='text' name='name' style="display: none;"  v-model="classify.name" />
-									<span>{{classify.name}}</span>
+									<input type='hidden' name='id' style="display: none;" :value="classify.id" />
+									<input type="file" style="display: none;" name="picUrlimage">
+									<span><img width="80" height="80" :src="classify.picUrl"/></sapn>
+								</th>
+								<th>
+									<input type="text" name="songListAuthor" style="display: none;" :value="classify.songListAuthor">
+									<span>{{classify.songListAuthor}}</span>
+								</th>
+								<th>
+									<input type="text" name="songListDesc" style="display: none;" :value="classify.songListDesc">
+									<span>{{classify.songListDesc}}</span>
 								</th>
 								<th style="text-align: center;">
 									<button class="btn btn-app btn-grey btn-xs radius-4" @click="viewOrUpdateThis(classify.id)">			
@@ -146,7 +156,15 @@ $(function(){
 							</tbody>
                 	<form onsubmit="return add(this)" method="post">
 							<tr>
-								<td><input type="text" name="name"/></td>
+								<th>
+									<input type="file" name="picUrlimage">
+								</th>
+								<th>
+									<input type="text" name="songListAuthor" :value="classify.songListAuthor">
+								</th>
+								<th>
+									<input type="text" name="songListDesc" :value="classify.songListDesc">
+								</th>
 								<td style="text-align: center;">
 									<div
 										class="visible-md visible-lg hidden-sm hidden-xs action-buttons">
