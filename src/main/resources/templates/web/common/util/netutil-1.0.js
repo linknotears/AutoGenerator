@@ -88,7 +88,7 @@
 			//如果form和data同时存在则合并参数
 			if(config.data != undefined){
 				for(var x in config.data){
-					var el = "<input type='hidden' name='"+x+"' value='"+config.data[x]+"'/>";
+					var el = $("<input type='hidden' name='"+x+"' value='"+config.data[x]+"'/>");
 					els.push(el);
 					$(form).append(el);
 				}
@@ -216,7 +216,8 @@
         var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i"); 
         var r = window.location.search.substr(1).match(reg); 
         if (r != null){
-        	var param = unescape(r[2]); 
+        	//var param = unescape(r[2]); 
+        	var param = decodeURI(r[2]); 
         	if(param != ''){
         		return param
         	}

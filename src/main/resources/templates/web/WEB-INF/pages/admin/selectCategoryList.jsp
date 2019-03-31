@@ -56,26 +56,36 @@ function deleteThis(id){
 
 function viewOrUpdateThis(id){
 	var inputEls = $("#tr"+id).find("input");
-	var inputTextEl = $("#tr"+id).find("input")[0];
+	var inputTextEl = $("#tr"+id).find("input,select")[0];
 	var spanEl = $("#tr"+id).find("span")[0];
 	if(inputTextEl.style.display == 'block'){
 		//隐藏
-		$("#tr"+id).find("input").css("display","none");
+		$("#tr"+id).find("input,select").css("display","none");
 		$("#tr"+id).find("span").css("display","block");
 	}else{
 		//显示
-		$("#tr"+id).find("input").css("display","block");
+		$("#tr"+id).find("input,select").css("display","block");
 		$("#tr"+id).find("span").css("display","none");
 		return false;
 	}
+	//form和data一起提交
+	//处理select
+	//克隆对象(克隆的副作用，克隆后select选中的值永远是第一个)
+	//解决方法，遍历所用的select获取它们的value和name放入data中
+	var data = {};
+	$("#tr"+id).find("select").each(function(){
+		data[this.name] = this.value;
+	});
+	
+	//处理表单
 	var form = $("<form/>");
-	//克隆对象
 	form.append(inputEls.clone());
 	//改为dom对象
 	form = form[0];
 	
 	request({
-		url: "songtype/saveOrUpdate.html",
+		url: "slider/saveOrUpdate.html",
+		data: data,
 		form: form,
 		successHandle:function(data){
 			loadData();
