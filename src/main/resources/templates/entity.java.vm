@@ -2,7 +2,7 @@ package ${package.Entity};
 
 import java.io.Serializable;
 #foreach($pkg in ${table.importPackages})
-#if($pkg.contains('Date') || $pkg.contains('Decimal'))
+#if($pkg.contains('java.util') || $pkg.contains('java.math') || $pkg.contains('java.time'))
 import ${pkg};
 #end
 #end
@@ -23,10 +23,10 @@ public class ${entity} implements Serializable {
 ## ----------  END 字段循环遍历  ----------
 
 ## ---------- BEGIN  遍历联合信息  ----------
-#foreach($conjTableMap in $cfg.conjTables)
-#set($it = $conjTableMap.entrySet().iterator())
-#if($it.next() == $table.name)
-
+#if($cfg.conjInfoMap.get($table.name))
+	//联合所需数据
+#foreach($conjEntityProp in $cfg.conjInfoMap.get($table.name).get('conjEntityProp'))
+$conjEntityProp
 #end
 #end
 ## ----------  END  遍历联合信息  ----------

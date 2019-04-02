@@ -35,7 +35,16 @@
 #end
 #end
 
-<select id="selectList" resultMap="BaseResultMap" parameterType="${package.Entity}.${entity}">
+#if($cfg.conjInfoMap.get($table.name))
+	<!-- 联合查询结果集 -->
+$cfg.conjInfoMap.get($table.name).get('resultStr')
+	<!-- 联合查询 -->
+$cfg.conjInfoMap.get($table.name).get('conjQueryStr')
+#end
+
+
+
+  <select id="selectList" resultMap="BaseResultMap" parameterType="${package.Entity}.${entity}">
   	select 
    	<include refid="Base_Column_List" />
    	from ${table.name}

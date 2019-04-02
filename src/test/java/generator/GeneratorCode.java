@@ -7,17 +7,22 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.Set;
 
+import org.springframework.beans.factory.config.YamlMapFactoryBean;
+import org.springframework.core.io.ClassPathResource;
+
+import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.generator.AutoGenerator;
 import com.baomidou.mybatisplus.generator.InjectionConfig;
 import com.baomidou.mybatisplus.generator.config.DataSourceConfig;
 import com.baomidou.mybatisplus.generator.config.FileOutConfig;
 import com.baomidou.mybatisplus.generator.config.GlobalConfig;
+import com.baomidou.mybatisplus.generator.config.IFileCreate;
 import com.baomidou.mybatisplus.generator.config.PackageConfig;
 import com.baomidou.mybatisplus.generator.config.StrategyConfig;
 import com.baomidou.mybatisplus.generator.config.TemplateConfig;
@@ -25,27 +30,33 @@ import com.baomidou.mybatisplus.generator.config.builder.ConfigBuilder;
 import com.baomidou.mybatisplus.generator.config.converts.MySqlTypeConvert;
 import com.baomidou.mybatisplus.generator.config.po.TableField;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
-import com.baomidou.mybatisplus.generator.config.rules.DbColumnType;
-import com.baomidou.mybatisplus.generator.config.rules.DbType;
+import com.baomidou.mybatisplus.generator.config.rules.FileType;
+import com.baomidou.mybatisplus.generator.config.rules.IColumnType;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 
 public class GeneratorCode {
 	public static void main(String[] args) throws InterruptedException {
 		//AutoGenerator.analyzeData(ConfigBuilder config)中有模板可用的一些内置属性
 		//用来获取mybatis-plus.properties文件的配置信息
-        final ResourceBundle rb = ResourceBundle.getBundle("mybatis/mybatis-plus");
+        //配置文件改为yaml
+        YamlMapFactoryBean yaml = new YamlMapFactoryBean();
+        yaml.setResources(new ClassPathResource("mybatis/mybatis-plus.yml"));
+        Map<String,Object> yamlMap = yaml.getObject();
+        
+        
+        
         AutoGenerator mpg = new AutoGenerator();
-    	String basePath = "/"+rb.getString("basePackage").replace(".", "/");
+    	String basePath = "/"+((String)yamlMap.get("basePackage")).replace(".", "/");
         // 全局配置
         GlobalConfig gc = new GlobalConfig();
-        gc.setOutputDir(rb.getString("OutputDir"));
+        gc.setOutputDir((String)yamlMap.get("OutputDir"));
         gc.setFileOverride(true);
         gc.setOpen(false);//不打开目录
         gc.setActiveRecord(true);
         gc.setEnableCache(false);// XML 二级缓存
         gc.setBaseResultMap(true);// XML ResultMap
         gc.setBaseColumnList(true);// XML columList
-        gc.setAuthor(rb.getString("author"));
+        gc.setAuthor((String)yamlMap.get("author"));
         // 自定义文件命名，注意 %s 会自动填充表实体属性！
         gc.setMapperName("%sMapper");
         gc.setXmlName("%sMapper");
@@ -53,10 +64,10 @@ public class GeneratorCode {
         gc.setServiceImplName("%sServiceImpl");
         gc.setControllerName("%sController");
         //设置不覆盖文件
-        if(!"true".equals(rb.getString("isOverFile"))){        	
+        if(!"true".equals((String)yamlMap.get("isOverFile"))){        	
         	gc.setFileOverride(false);
         }
-        
+         
         mpg.setGlobalConfig(gc);
 
         // 数据源配置
@@ -65,21 +76,31 @@ public class GeneratorCode {
         
         dsc.setTypeConvert(new MySqlTypeConvert(){
             // 自定义数据库表字段类型转换【可选】
-            @Override
-            public DbColumnType processTypeConvert(String fieldType) {
+        	/*@Override
+        	public DbColumnType processTypeConvert(String fieldType) {
+        		System.out.println("转换前类型：" + fieldType);
+                if(fieldType.contains("decimal")){
+                	fieldType = "double";
+                }
+                System.out.println("转换后类型：" + fieldType);
+        		return super.processTypeConvert(fieldType);
+        	}*/
+            //3.1版本用
+        	@Override
+            public IColumnType processTypeConvert(GlobalConfig globalConfig, String fieldType) {
             	System.out.println("转换前类型：" + fieldType);
                 if(fieldType.contains("decimal")){
                 	fieldType = "double";
                 }
                 System.out.println("转换后类型：" + fieldType);
-                return super.processTypeConvert(fieldType);
+            	return super.processTypeConvert(globalConfig, fieldType);
             }
         });
         
-        dsc.setDriverName(rb.getString("jdbc.driver"));
-        dsc.setUrl(rb.getString("jdbc.url"));
-        dsc.setUsername(rb.getString("jdbc.user"));
-        dsc.setPassword(rb.getString("jdbc.pwd"));
+        dsc.setDriverName((String)yamlMap.get("jdbc.driver"));
+        dsc.setUrl((String)yamlMap.get("jdbc.url"));
+        dsc.setUsername((String)yamlMap.get("jdbc.user"));
+        dsc.setPassword((String)yamlMap.get("jdbc.pwd"));
         mpg.setDataSource(dsc);
 
         // 策略配置
@@ -88,7 +109,7 @@ public class GeneratorCode {
         //strategy.setTablePrefix(new String[] { "SYS_" });// 此处可以修改为您的表前缀
         strategy.setNaming(NamingStrategy.underline_to_camel);// 表名生成策略
         //自己加的，获取需要逆向的所有表
-        String tablesStr = rb.getString("tables");
+        String tablesStr = (String)yamlMap.get("tables");
         String[] tables = null;
         if(tablesStr!=null){
         	tables = tablesStr.split(",");
@@ -104,7 +125,7 @@ public class GeneratorCode {
 
         // 包配置(java文件)
         PackageConfig pc = new PackageConfig();
-        pc.setParent(rb.getString("basePackage"));//设置父包名
+        pc.setParent((String)yamlMap.get("basePackage"));//设置父包名
         // pc.setModuleName("tbldept");//模块名称，单独生成模块时使用！！！！！！！！！！！
         pc.setController("controller");//这里是父包名+controller
         pc.setService("service");
@@ -125,29 +146,41 @@ public class GeneratorCode {
                 Map<String, Object> map = new HashMap<String, Object>();
                 map.put("abc", globalConfig.getAuthor() + "-rb");
                 
+                //判断是否覆盖文件
+                this.setFileCreate(new IFileCreate() {
+					@Override
+					public boolean isCreate(ConfigBuilder configBuilder, FileType fileType, String filePath) {
+						//mapper.java、entity.java、xxxMapper.xml覆盖，其他不覆盖
+						if(fileType==FileType.MAPPER||fileType==FileType.ENTITY||fileType==FileType.XML){
+							return true;
+						}
+						return false;
+					}
+				});
+                
                 //循环读取配置信息
-                Enumeration<String> keys = rb.getKeys();
                 System.out.println("===========configParameters=========");
-                while(keys.hasMoreElements()){
-                	String key = keys.nextElement();
+                for(String key : yamlMap.keySet()){
                 	//循环替换.有的字母转换成大写
-                	String newkey = key;
-                	int index = 0;
-                	while((index = newkey.indexOf(".") )!= -1){
-                		String head = newkey.substring(0,index);
-                		String center = newkey.substring(index+1,index+2).toUpperCase();
-                		String end = newkey.substring(index+2);
-                		newkey = head + center + end;
+                	if(yamlMap.get(key) instanceof String){
+                		String newkey = key;
+                    	int index = 0;
+                    	while((index = newkey.indexOf(".") )!= -1){
+                    		String head = newkey.substring(0,index);
+                    		String center = newkey.substring(index+1,index+2).toUpperCase();
+                    		String end = newkey.substring(index+2);
+                    		newkey = head + center + end;
+                    	}
+                    	System.out.println("newkey="+newkey);
+                    	
+                    	map.put(newkey, (String)yamlMap.get(key));
                 	}
-                	System.out.println("newkey="+newkey);
-                	
-                	map.put(newkey, rb.getString(key));
                 }
                 
                 //判断mysql版本
-                String url = rb.getString("jdbc.url");
-                String driver = rb.getString("jdbc.driver");
-                if("5.0".equals(rb.getString("mysql.version"))){
+                String url = (String)yamlMap.get("jdbc.url");
+                String driver = (String)yamlMap.get("jdbc.driver");
+                if("5.0".equals((String)yamlMap.get("mysql.version"))){
                 	String[] urltemp = url.split("\\?");
                 	url = urltemp[0] + "?useUnicode=true&allowMultiQueries=true&characterEncoding=UTF-8";
                 	driver = "com.mysql.jdbc.Driver";
@@ -186,7 +219,7 @@ public class GeneratorCode {
                 /*ObjectMapper mapper = new ObjectMapper();
                 try {
                 	ArrayList<Map<String,String>> conjTables = new ArrayList<Map<String,String>>();
-                	String conjTableStr = rb.getString("conj.tables");
+                	String conjTableStr = (String)yamlMap.get("conj.tables");
                 	JavaType jvt = mapper.getTypeFactory().constructParametricType(ArrayList.class,LinkedHashMap.class);
                 	conjTables = mapper.readValue(conjTableStr,jvt);
                 	
@@ -194,6 +227,15 @@ public class GeneratorCode {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}*/
+                
+                Map<String, Object> conjInfoMap = getConjunctiveInfo(
+                		(String)yamlMap.get("basePackage"),
+            			tableInfoList,
+            			(List<Map<String,Object>>)yamlMap.get("conj.infor"),
+            			absoluteNameStrMap,
+            			null,null,null,null,null,null,
+            			0);
+                map.put("conjInfoMap", conjInfoMap);
                 this.setMap(map);
             }
         };
@@ -203,29 +245,29 @@ public class GeneratorCode {
         focList.add(new FileOutConfig("/templates/mapper.xml.vm") {
             @Override
             public String outputFile(TableInfo tableInfo) {
-                return rb.getString("OutputDirConfig")+ "/mybatis/mappers/" + tableInfo.getEntityName() + "Mapper.xml";
+                return (String)yamlMap.get("OutputDirConfig")+ "/mybatis/mappers/" + tableInfo.getEntityName() + "Mapper.xml";
             }
         });
         
-        if(!"false".equals(rb.getString("isInit"))){
+        if(!"false".equals((String)yamlMap.get("isInit"))){
         	//生成基础类
 	        {
 	        	String templateDir = "baseclass";
-	        	String outPath = rb.getString("OutputDir")+ basePath;
+	        	String outPath = (String)yamlMap.get("OutputDir")+ basePath;
 	        	templatesTo(focList,templateDir,outPath);
 	        }
 	        
 	        //拷贝配置
 	        {
 	        	String templateDir = "config";
-	        	String outPath = rb.getString("OutputDirConfig");
+	        	String outPath = (String)yamlMap.get("OutputDirConfig");
 	        	templatesTo(focList,templateDir,outPath);
 	        }
 	        
 	        //复制不需要解析的文件
 	        //复制web文件
 	        {
-	        	templatesToNotAnalyze("web",rb.getString("OutputDirWeb"));
+	        	templatesToNotAnalyze("web",(String)yamlMap.get("OutputDirWeb"));
 	        	
 	        }
         }
@@ -233,14 +275,14 @@ public class GeneratorCode {
         /*focList.add(new FileOutConfig("/templates/service.java.vm") {
             @Override
             public String outputFile(TableInfo tableInfo) {
-                return rb.getString("OutputDir")+ basePath+"/service/" + tableInfo.getEntityName() + "Service.java";
+                return (String)yamlMap.get("OutputDir")+ basePath+"/service/" + tableInfo.getEntityName() + "Service.java";
             }
         });*/
         //设置覆盖entity
         focList.add(new FileOutConfig("/templates/entity.java.vm") {
             @Override
             public String outputFile(TableInfo tableInfo) {
-                return rb.getString("OutputDir")+ basePath+"/entity/" + tableInfo.getEntityName() + ".java";
+                return (String)yamlMap.get("OutputDir")+ basePath+"/entity/" + tableInfo.getEntityName() + ".java";
             }
         });
         cfg.setFileOutConfigList(focList);
@@ -344,5 +386,509 @@ public class GeneratorCode {
 			}
 		}
 		return list;
+	}
+	/**
+	 * <resultMap id="BaseResultMap" type="${package.Entity}.${entity}">
+	#foreach($field in ${table.fields})
+	#if(${field.keyFlag})##生成主键排在第一位
+			<id column="${table.name}_${field.name}" property="${field.propertyName}" />
+	#end
+	#end
+	#foreach($field in ${table.commonFields})##生成公共字段
+		<result column="${field.propertyName}" property="${field.name}" />
+	#end
+	#foreach($field in ${table.fields})
+	#if(!${field.keyFlag})##生成普通字段
+			<result column="${table.name}_${field.name}" property="${field.propertyName}" />
+	#end
+	#end
+		</resultMap>
+	 * @param tableInfoList
+	 * @param conjInfoList
+	 * @return
+	 */
+	//解析联合信息
+	private static Map<String,Object> getConjunctiveInfo(
+			String basePackage,
+			List<TableInfo> tableInfoList,
+			List<Map<String,Object>> conjInfoList,
+			Map<String,String> absoluteNameStrMap,
+			StringBuilder resultBuilder,
+			StringBuilder conjTablesBuilder,
+			StringBuilder resultColumnBuilder,
+			StringBuilder whereBuilder,
+			Map<String,Object> conjInfoMap,
+			String conjtype,
+			int count){
+		if(conjInfoMap==null){
+			conjInfoMap = new HashMap<String,Object>();
+			count = 0;
+			conjtype = (String) conjInfoList.get(0).get("conjtype");
+		}
+
+		for(Map<String,Object> ymlMap : conjInfoList){
+			for(TableInfo tableInfo : tableInfoList){
+				String ymltable = (String) ymlMap.get("table");
+				if(ymltable.equals(tableInfo.getName())){
+					//记录每一层的表名
+					conjInfoMap.put("layer"+count, tableInfo);
+					//每进入一层根据表名，新建一个映射
+					if(conjInfoMap.get(tableInfo.getName()) == null){
+						Map<String,Object> tableMap = new HashMap<String,Object>();
+						conjInfoMap.put(tableInfo.getName(),tableMap);
+						tableMap.put("conjEntityProp", new HashSet<String>());
+					}else{
+						Map<String,Object> tableMap = (Map<String, Object>) conjInfoMap.get(tableInfo.getName());
+						HashSet<String> conjEntityProp = (HashSet<String>) tableMap.get("conjEntityProp");
+						if(conjEntityProp==null){
+							tableMap.put("conjEntityProp", new HashSet<String>());
+						}
+					}
+					//ConjResultMap
+					//开始
+					if(count == 0){
+						//重新建立一个StringBuilder
+						resultBuilder = new StringBuilder();
+						resultBuilder
+						.append("\t<resultMap id=\"ConjResultMap\" type=\"")
+						.append(basePackage)
+						.append(".")
+						.append(tableInfo.getEntityName())
+						.append("\" >\n");
+						
+						//储存结果列
+						resultColumnBuilder = new StringBuilder();
+						resultColumnBuilder
+						.append("\n\n\t<sql id=\"Conj_Column_List\">\n")
+						.append("\t\t")
+						.append(absoluteNameStrMap.get(tableInfo.getName()));
+						
+						//默认条件
+						whereBuilder = new StringBuilder();
+						
+						//连接查询集合
+						conjTablesBuilder = new StringBuilder();
+						conjTablesBuilder
+						.append(tableInfo.getName());
+						
+					}else{
+						//添加结果列
+						resultColumnBuilder
+						.append(",")
+						.append(absoluteNameStrMap.get(tableInfo.getName()));
+						
+						//之前的表
+						TableInfo beforeTable = (TableInfo) conjInfoMap.get("layer"+(count-1));
+						Set<String> set = (Set<String>) ((Map<String,Object>)conjInfoMap.get(beforeTable.getName())).get("conjEntityProp");
+						String lowEntityname = tableInfo.getEntityName().substring(0,1).toLowerCase() + tableInfo.getEntityName().substring(1);
+						if("many".equals(ymlMap.get("relation"))) {
+							StringBuilder sb = new StringBuilder();
+							sb
+							.append("\tprivate List<")
+							.append(tableInfo.getEntityName())
+							.append("> ")
+							.append(lowEntityname)
+							.append("List;\n\n");
+							//设置List包
+							if(!beforeTable.getImportPackages().contains("java.util.List")){
+								beforeTable.getImportPackages().add("java.util.List");
+							}
+							//get
+							sb
+							.append("\tpublic ")
+							.append("List")
+							.append("<")
+							.append(tableInfo.getEntityName())
+							.append(">")
+							.append(" get")
+							.append(tableInfo.getEntityName())
+							.append("List() {\n")
+							.append("\t\t")
+							.append("return ")
+							.append(lowEntityname)
+							.append("List;\n")
+							.append("\t}\n\n");
+							//set
+							sb
+							.append("\tpublic ")
+							.append("void ")
+							.append("set")
+							.append(tableInfo.getEntityName())
+							.append("List(")
+							.append("List<")
+							.append(tableInfo.getEntityName())
+							.append("> ")
+							.append(lowEntityname)
+							.append("List")
+							.append(") {\n")
+							.append("\t\t")
+							.append("this.")
+							.append(lowEntityname)
+							.append("List = ")
+							.append(lowEntityname)
+							.append("List;\n")
+							.append("\t}\n");
+							
+							set.add(sb.toString());
+						}else{
+							StringBuilder sb = new StringBuilder();
+							sb
+							.append("\tprivate ")
+							.append(tableInfo.getEntityName())
+							.append(" ")
+							.append(lowEntityname)
+							.append(";\n\n");
+							
+							//get
+							sb
+							.append("\tpublic ")
+							.append(tableInfo.getEntityName())
+							.append(" get")
+							.append(tableInfo.getEntityName())
+							.append("() {\n")
+							.append("\t\t")
+							.append("return ")
+							.append(lowEntityname)
+							.append(";\n")
+							.append("\t}\n\n");
+							//set
+							sb
+							.append("\tpublic ")
+							.append("void ")
+							.append("set")
+							.append(tableInfo.getEntityName())
+							.append("(")
+							.append(tableInfo.getEntityName())
+							.append(" ")
+							.append(lowEntityname)
+							.append("")
+							.append(") {\n")
+							.append("\t\t")
+							.append("this.")
+							.append(lowEntityname)
+							.append(" = ")
+							.append(lowEntityname)
+							.append(";\n")
+							.append("\t}\n");
+							
+							set.add(sb.toString());
+						}
+						
+						//搜集联合表
+						if(!"left".equals(conjtype)){
+							conjTablesBuilder
+							.append(",")
+							.append(tableInfo.getName());
+						}else{
+							conjTablesBuilder
+							.append(" LEFT JOIN ")
+							.append(tableInfo.getName());
+						}
+						
+						//打印层级
+						for(int i = 0; i < count + 1; i++){							
+							resultBuilder.append("\t");
+						}
+						/**
+						 * <collection property="optionsList" ofType="com.query.question.entity.Options">
+						 * <association property="options" javaType="com.query.question.entity.Options">
+						 */
+						if("many".equals(ymlMap.get("relation"))){
+							resultBuilder
+							.append("<collection property=\"")
+							.append(tableInfo.getEntityName().substring(0,1).toLowerCase())
+							.append(tableInfo.getEntityName().substring(1))
+							.append("List")
+							.append("\" ofType=\"")
+							.append(basePackage)
+							.append(".")
+							.append(tableInfo.getEntityName())
+							.append("\">\n");
+						}else{
+							resultBuilder
+							.append("<association property=\"")
+							.append(tableInfo.getEntityName().substring(0,1).toLowerCase())
+							.append(tableInfo.getEntityName().substring(1))
+							.append("\" javaType=\"")
+							.append(basePackage)
+							.append(".")
+							.append(tableInfo.getEntityName())
+							.append("\">\n");
+						}
+					}
+					//插入
+					//生成结果集
+					//id
+					for(TableField field : tableInfo.getFields()){
+						if(field.isKeyFlag()){
+							//打印层级
+							for(int i = 0; i < count + 1; i++){							
+								resultBuilder.append("\t");
+							}
+							resultBuilder
+							.append("\t<id column=\"")
+							.append(tableInfo.getName())
+							.append("_")
+							.append(field.getName())
+							.append("\" property=\"")
+							.append(field.getPropertyName())
+							.append("\" />\n");
+						}
+					}
+					//普通字段
+					for(TableField field : tableInfo.getFields()){
+						if(!field.isKeyFlag()){
+							//打印层级
+							for(int i = 0; i < count + 1; i++){							
+								resultBuilder.append("\t");
+							}
+							resultBuilder
+							.append("\t<result column=\"")
+							.append(tableInfo.getName())
+							.append("_")
+							.append(field.getName())
+							.append("\" property=\"")
+							.append(field.getPropertyName())
+							.append("\" />\n");
+						}
+					}
+					
+					if(ymlMap.get("innertables")!=null){
+						getConjunctiveInfo(
+								basePackage,
+								tableInfoList,
+								(List<Map<String,Object>>)ymlMap.get("innertables"),
+								absoluteNameStrMap,
+								resultBuilder,
+								conjTablesBuilder,
+								resultColumnBuilder,
+								whereBuilder,
+								conjInfoMap,
+								conjtype,
+								count + 1);
+					}
+					
+					//结束
+					if(count == 0){
+						//结束结果列
+						resultColumnBuilder.append("\n\t</sql>\n");
+						//结束结果集
+						resultBuilder.append("\n\t</resultMap>\n");
+						//合并结果集，结果列
+						resultBuilder.append(resultColumnBuilder.toString());
+						List<TableField> fields = tableInfo.getFields();
+						//条件conjQueryList
+						/**
+						 * <if test="condition!=null">
+					    		<if test="condition.id!=null">
+					    			and id = #{condition.id,javaType=INTEGER}
+					    		</if>
+					    		<if test="condition.name!=null">
+					    			and name = #{condition.name,javaType=STRING}
+					    		</if>
+					    		<if test="condition.age!=null">
+					    			and age = #{condition.age,javaType=INTEGER}
+					    		</if>
+					    		<if test="condition.email!=null">
+					    			and email = #{condition.email,javaType=STRING}
+					    		</if>
+					    	</if>
+						 */
+						whereBuilder.append("\t\t\t<if test=\"condition!=null\">");
+						String idFieldName = "";
+						String idPropertyName = "";
+						String idType = "";
+						for(int i = 0; i < fields.size(); i++){
+							TableField f = fields.get(i);
+							if(f.isKeyFlag()){
+								idFieldName = tableInfo.getName() +"."+ f.getName();
+								idPropertyName = f.getPropertyName();
+								idType = f.getPropertyType();
+							}
+							whereBuilder
+							.append("\n\t\t\t\t<if test=\"condition.")
+							.append(f.getPropertyName())
+							.append("!=null\">\n")
+							.append("\t\t\t\t\t and ")
+							.append(tableInfo.getName())
+							.append(".")
+							.append(f.getName())
+							.append(" = #{condition.")
+							.append(f.getPropertyName())
+							.append(",")
+							.append("javaType=")
+							.append(f.getPropertyType())
+							.append("}\n")
+							.append("\t\t\t\t</if>");
+						}
+						whereBuilder.append("\t\t\t</if>");
+						
+						//用来连接四个查询的字符串（conjQueryList）
+						StringBuilder conjBuilder = new StringBuilder();
+						conjBuilder
+						.append("\n\t<select id=\"conjQueryList\" resultMap=\"ConjResultMap\" parameterType=\"")
+						.append(basePackage)
+						.append(".")
+						.append(tableInfo.getEntityName())
+						.append("\">\n")
+						.append("\t\tselect \n\t\t<include refid=\"Conj_Column_List\" />\n\t\tfrom ")
+						.append(conjTablesBuilder.toString())
+						.append("\n");
+						//添加连接条件
+						if("left".equals(ymlMap.get("conjtype"))){
+							conjBuilder
+							.append("\t\t\tON ")
+							.append(ymlMap.get("condition"))
+							.append("\n\t\t<where>\n");
+						}else{
+							conjBuilder
+							.append("\t\t<where>\n\t\t\t")
+							.append("and ")
+							.append(ymlMap.get("condition"))
+							.append("\n");
+						}
+						//实体条件
+						conjBuilder
+						.append(whereBuilder.toString());
+						//条件
+						conjBuilder
+						.append("\n\t\t\t${condition.customCondition}\n")
+						.append("\t\t</where>\n")
+						.append("\t\t${condition.orderby}")
+						.append("\n\t</select>");
+						
+						//conjQueryCount
+						conjBuilder
+						.append("\n\n\t<select id=\"conjQueryCount\" parameterType=\"")
+						.append(basePackage)
+						.append(".")
+						.append(tableInfo.getEntityName())
+						.append("\" resultType=\"java.lang.Integer\">\n")
+						.append("\t\tselect \n\t\tcount(1)\n\t\tfrom ")
+						.append(conjTablesBuilder.toString())
+						.append("\n");
+						//添加连接条件
+						if("left".equals(ymlMap.get("conjtype"))){
+							conjBuilder
+							.append("\t\t\tON ")
+							.append(ymlMap.get("condition"))
+							.append("\n\t\t<where>\n");
+						}else{
+							conjBuilder
+							.append("\t\t<where>\n\t\t\t")
+							.append("and ")
+							.append(ymlMap.get("condition"))
+							.append("\n");
+						}
+						//实体条件
+						conjBuilder
+						.append(whereBuilder.toString());
+						//条件
+						conjBuilder
+						.append("\n\t\t\t${condition.customCondition}\n")
+						.append("\t\t</where>\n")
+						.append("\t\t${condition.orderby}")
+						.append("\n\t</select>");
+						
+						//conjQueryPage
+						conjBuilder
+						.append("\n\n\t<select id=\"conjQueryPage\" resultMap=\"ConjResultMap\" parameterType=\"")
+						.append(basePackage)
+						.append(".")
+						.append("entity.vo.PageData")
+						.append("\">\n")
+						.append("\t\tselect \n\t\t<include refid=\"Conj_Column_List\" />\n\t\tfrom ")
+						.append(conjTablesBuilder.toString())
+						.append("\n");
+						//添加连接条件
+						if("left".equals(ymlMap.get("conjtype"))){
+							conjBuilder
+							.append("\t\t\tON ")
+							.append(ymlMap.get("condition"))
+							.append("\n\t\t<where>\n");
+						}else{
+							conjBuilder
+							.append("\t\t<where>\n\t\t\t")
+							.append("and ")
+							.append(ymlMap.get("condition"))
+							.append("\n");
+						}
+						//实体条件
+						conjBuilder
+						.append(whereBuilder.toString());
+						//条件
+						conjBuilder
+						.append("\n\t\t\t${condition.customCondition}\n")
+						.append("\t\t</where>\n")
+						.append("\t\t${orderby}")
+						.append("\n\t</select>");
+						
+						//conjQueryById
+						conjBuilder
+						.append("\n\n\t<select id=\"conjQueryById\" resultMap=\"ConjResultMap\" parameterType=\"")
+						.append(basePackage)
+						.append(".")
+						.append(tableInfo.getEntityName())
+						.append("\">\n")
+						.append("\t\tselect \n\t\t<include refid=\"Conj_Column_List\" />\n\t\tfrom ")
+						.append(conjTablesBuilder.toString())
+						.append("\n");
+						//添加连接条件
+						if("left".equals(ymlMap.get("conjtype"))){
+							conjBuilder
+							.append("\t\t\tON ")
+							.append(ymlMap.get("condition"))
+							.append("\n\t\t<where>\n");
+						}else{
+							conjBuilder
+							.append("\t\t<where>\n\t\t\t")
+							.append("and ")
+							.append(ymlMap.get("condition"))
+							.append("\n");
+						}
+						//条件
+						conjBuilder
+						.append("\t\t\tand ")
+						.append(idFieldName)
+						.append(" = ")
+						.append("#{")
+						.append(idPropertyName)
+						.append(",javaType=")
+						.append(idType)
+						.append("}\n")
+						.append("\t\t</where>\n")
+						.append("\n\t</select>");
+						
+						
+						
+						
+						Map<String, Object> tableMap = (Map<String, Object>) conjInfoMap.get(tableInfo.getName());
+						tableMap.put("resultStr", resultBuilder.toString());
+						tableMap.put("conjQueryStr", conjBuilder.toString());
+					}else{
+						//打印层级缩进
+						for(int i = 0; i < count + 1; i++){							
+							resultBuilder.append("\t");
+						}
+						//打印结束标识
+						if("many".equals(ymlMap.get("relation"))){
+							resultBuilder.append("</collection>\n");
+						}else{
+							resultBuilder.append("</association>\n");
+						}
+					}
+				}
+			}
+			
+		}
+		
+		return conjInfoMap;
+	}
+	//ConjResultMap、Conj_Column_List  => resultBuilder
+	//conjEntities => entitiesBuilder
+	//ConjQueryList、ConjQueryPage、ConjQueryById、ConjQueryCount => conjBuilder
+	//LeftQueryList、LeftQueryPage、LeftQueryById、LeftQueryCount
+	public static void getConjunctiveInfo(StringBuilder resultBuilder,TableInfo tableInfo,Map<String,Object> ymlMap){
+		
 	}
 }

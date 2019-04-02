@@ -1,7 +1,11 @@
 package ${package.Mapper};
 
 import ${package.Entity}.${entity};
-
+#if($cfg.conjInfoMap.get($table.name))
+import java.util.List;
+import org.apache.ibatis.annotations.Param;
+import ${package.Entity}.vo.PageData;
+#end
 /**
  * <p>
   * $!{table.comment} Mapper 接口
@@ -11,5 +15,14 @@ import ${package.Entity}.${entity};
  * @since ${date}
  */
 public interface ${table.mapperName} extends ${superMapperClass}<${entity}> {
-
+	#if($cfg.conjInfoMap.get($table.name))
+	//联合查询接口
+	List<${entity}> conjQueryList(@Param("condition") ${entity} condition);
+	
+	List<${entity}> conjQueryPage(PageData<${entity}> pageData);
+	
+	int conjQueryCount(@Param("condition") ${entity} condition);
+	
+	${entity} conjQueryById(Object id);
+	#end
 }

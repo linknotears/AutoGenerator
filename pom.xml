@@ -11,20 +11,40 @@
   <properties>
     <spring.version>4.1.1.RELEASE</spring.version>
     <aspectJ.version>1.8.13</aspectJ.version>
-    <mybatisplus.version>2.1.0</mybatisplus.version>
+    <mybatisplus.version>3.1.0</mybatisplus.version>
     <mysql.version>8.0.15</mysql.version>
     <log4j.version>1.2.17</log4j.version>
     <slf4j.version>1.7.25</slf4j.version>
-    <c3p0.version>0.9.5.2</c3p0.version>
+    <c3p0.version>0.9.5.2</c3p0.version> 
     <servlet.version>3.1.0</servlet.version>
     <jstl.version>1.2.5</jstl.version>
     <taglibs.version>1.2.5</taglibs.version>
     <jackson.version>2.9.4</jackson.version>
     <commons.lang3.version>3.7</commons.lang3.version>
-    <velocity.version>2.0</velocity.version>
+    <generator.version>3.1.0</generator.version>
+    <velocity.version>2.1</velocity.version>
+    <yaml.version>1.19</yaml.version>
   </properties>
 
   <dependencies>
+  	<dependency>
+	    <groupId>org.mybatis</groupId>
+	    <artifactId>mybatis-typehandlers-jsr310</artifactId>
+	    <version>1.0.1</version>
+    </dependency>
+    
+  	<dependency>
+	  	<groupId>org.yaml</groupId>
+	    <artifactId>snakeyaml</artifactId>
+	    <version>${yaml.version}</version>
+    </dependency>
+  
+  	<dependency>
+    	<groupId>com.baomidou</groupId>
+    	<artifactId>mybatis-plus-generator</artifactId>
+    	<version>${generator.version}</version>
+	</dependency>
+
     <!--spring 基础包-->
     <dependency>
       <groupId>org.springframework</groupId>

@@ -35,6 +35,11 @@ public class BaseServiceImpl<T> implements BaseService<T> {
 	public int findCount(T condition) {
 		return baseMapper.selectCount(condition);
 	}
+	
+	@Override
+	public T findById(Object id) {
+		return baseMapper.selectById(id);
+	}
 
 	@Override
 	public int removeBatchIds(Object... ids) {
@@ -69,11 +74,6 @@ public class BaseServiceImpl<T> implements BaseService<T> {
 	@Override
 	public int updateById(T entity) {
 		return baseMapper.updateById(entity);
-	}
-
-	@Override
-	public T findById(Object id) {
-		return baseMapper.selectById(id);
 	}
 	
 	@Override

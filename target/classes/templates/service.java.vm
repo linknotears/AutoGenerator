@@ -1,6 +1,9 @@
 package ${package.Service};
 
 import ${package.Entity}.${entity};
+#if($cfg.conjInfoMap.get($table.name))
+import ${package.Entity}.vo.PageData;
+#end
 
 /**
  * $!{table.comment} 服务类
@@ -9,5 +12,14 @@ import ${package.Entity}.${entity};
  * @since ${date}
  */
 public interface ${table.serviceName} extends BaseService<${entity}> {
+	#if($cfg.conjInfoMap.get($table.name))
+	//联合查询接口
+	List<${entity}> conjQueryList(@Param("condition") ${entity} condition);
 	
+	List<${entity}> conjQueryPage(PageData<${entity}> pageData);
+	
+	int conjQueryCount(@Param("condition") ${entity} condition);
+	
+	${entity} conjQueryById(Object id);
+	#end
 }

@@ -13,6 +13,8 @@ public interface BaseMapper<T> {
 	
 	int selectCount(@Param("condition") T condition);
 	
+	T selectById(Object id);
+	
 	int deleteBatchIds(Object... ids);
 	//条件删除，条件不允许为空
 	int deleteByCondition(T condition);
@@ -26,8 +28,6 @@ public interface BaseMapper<T> {
 	int deleteById(Object id);
 	
 	int updateById(T entity);
-	
-	T selectById(Object id);
 	
 	int updateByPartIdIgnoreNull(@Param("id") Object id,@Param("entity") T entity);
 	

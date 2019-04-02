@@ -1,0 +1,50 @@
+#AutoGenerator
+#普通配置
+OutputDir: D:/Project/RestaurantMaster/src
+#配置文件路径
+OutputDirConfig: D:/Project/RestaurantMaster/config
+#webroot路径
+OutputDirWeb: D:/Project/RestaurantMaster/WebRoot
+#作者名
+author: restaurant
+#基础包名
+basePackage: com.restaurant.master
+#登录表名
+login.table: user
+login.usercolumn: username
+login.pwdcolumn: password
+#conjunctive
+#conj.infor: [{"tables":  "order_form,orderitem,room", "condition": "and "}]
+#需要逆向的表(不写默认是全部表)
+tables: 
+#是否初始化（生成拷贝文件）
+isInit: !!str false
+#是否覆盖文件（xml和entity或其他拷贝文件除外）
+isOverFile: !!str false
+
+#jdbc配置
+jdbc.driver: com.mysql.cj.jdbc.Driver
+jdbc.url: jdbc:mysql://localhost:3306/restaurant_master?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=CONVERT_TO_NULL
+jdbc.user: root
+jdbc.pwd: root
+
+mysql.version: !!str 5.0
+
+#数组默认生成的是ArrayList
+conj.infor: 
+  - 
+    table: orders
+    relation: one
+    innertables: 
+      - 
+        table: orderitem
+        relation: many
+        innertables: 
+          - 
+            table: goods
+            relation: one
+    #不写默认是null
+    condition: orders.id = orderitem.order_id and orderitem.goods_id = goods.id
+    #内连接 inner、左连接 left ，不写默认inner
+    conjtype: inner
+  
