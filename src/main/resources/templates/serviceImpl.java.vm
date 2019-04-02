@@ -5,7 +5,7 @@ import ${package.Entity}.${entity};
 import ${package.Mapper}.${table.mapperName};
 import ${package.Service}.${table.serviceName};
 import org.springframework.stereotype.Service;
-#if($cfg.conjInfoMap.get($table.name))
+#if($cfg.conjInfoMap.get($table.name).get('resultStr'))
 import ${package.Entity}.vo.PageData;
 #end
 #macro(tolowercase $str)$str.substring(0,1).toLowerCase()$str.substring(1)#end
@@ -24,7 +24,7 @@ public class ${table.serviceImplName} extends BaseServiceImpl<${entity}> impleme
 		this.#tolowercase(${entity})Mapper = #tolowercase(${entity})Mapper;
 	}
 	
-	#if($cfg.conjInfoMap.get($table.name))
+	#if($cfg.conjInfoMap.get($table.name).get('resultStr'))
 	@Override
 	public List<T> conjQueryList(T condition) {
 		return #tolowercase(${entity})Mapper.conjQueryList(condition);

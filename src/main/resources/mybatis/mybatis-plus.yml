@@ -18,7 +18,7 @@ login.pwdcolumn: password
 #需要逆向的表(不写默认是全部表)
 tables: 
 #是否初始化（生成拷贝文件）
-isInit: !!str false
+isInit: !!str true
 #是否覆盖文件（xml和entity或其他拷贝文件除外）
 isOverFile: !!str false
 
@@ -31,20 +31,32 @@ jdbc.pwd: root
 mysql.version: !!str 5.0
 
 #数组默认生成的是ArrayList
-conj.infor: 
+#模板
+#conj.infor: 
+#  - 
+#    table: orders
+#    relation: one
+#    innertables: 
+#      - 
+#        table: orderitem
+#        relation: many
+#        innertables: 
+#          - 
+#            table: goods
+#            relation: one
+#    #不写默认是null
+#    condition: orders.id = orderitem.order_id and orderitem.goods_id = goods.id
+#    #内连接 inner、左连接 left ，不写默认inner
+#    conjtype: inner
+ 
+ #一个表可能有多个模板，所以这里面有多少个就要建多少个FileOutput
+webtemplates: 
   - 
-    table: orders
-    relation: one
-    innertables: 
-      - 
-        table: orderitem
-        relation: many
-        innertables: 
-          - 
-            table: goods
-            relation: one
-    #不写默认是null
-    condition: orders.id = orderitem.order_id and orderitem.goods_id = goods.id
-    #内连接 inner、左连接 left ，不写默认inner
-    conjtype: inner
-  
+    tables: [orders,goods]
+    template: selectPetList.jsp
+    outpath: admin/select${entity}List.jsp
+  - 
+    tables: [user]
+    template: login.jsp
+    outpath: login.jsp
+    

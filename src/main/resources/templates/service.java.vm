@@ -1,8 +1,9 @@
 package ${package.Service};
 
 import ${package.Entity}.${entity};
-#if($cfg.conjInfoMap.get($table.name))
+#if($cfg.conjInfoMap.get($table.name).get('resultStr'))
 import ${package.Entity}.vo.PageData;
+import java.util.List;
 #end
 
 /**
@@ -12,14 +13,15 @@ import ${package.Entity}.vo.PageData;
  * @since ${date}
  */
 public interface ${table.serviceName} extends BaseService<${entity}> {
-	#if($cfg.conjInfoMap.get($table.name))
+	#if($cfg.conjInfoMap.get($table.name).get('resultStr'))
 	//联合查询接口
-	List<${entity}> conjQueryList(@Param("condition") ${entity} condition);
+	List<${entity}> conjQueryList(${entity} condition);
 	
 	List<${entity}> conjQueryPage(PageData<${entity}> pageData);
 	
-	int conjQueryCount(@Param("condition") ${entity} condition);
+	int conjQueryCount(${entity} condition);
 	
 	${entity} conjQueryById(Object id);
 	#end
+	
 }

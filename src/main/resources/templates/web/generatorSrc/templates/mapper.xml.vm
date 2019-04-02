@@ -35,7 +35,16 @@
 #end
 #end
 
-<select id="selectList" resultMap="BaseResultMap" parameterType="${package.Entity}.${entity}">
+#if($cfg.conjInfoMap.get($table.name))
+	<!-- 联合查询结果集 -->
+$cfg.conjInfoMap.get($table.name).get('resultStr')
+	<!-- 联合查询 -->
+$cfg.conjInfoMap.get($table.name).get('conjQueryStr')
+#end
+
+
+
+  <select id="selectList" resultMap="BaseResultMap" parameterType="${package.Entity}.${entity}">
   	select 
    	<include refid="Base_Column_List" />
    	from ${table.name}
@@ -122,9 +131,21 @@
   </delete>
   
   <insert id="insert" parameterType="${package.Entity}.${entity}" >
-    insert into ${table.name} 
-    values 
-	(#foreach($field in ${table.fields})#{${field.propertyName},javaType=${field.columnType}}#if(${foreach.hasNext}),#end#end)
+    insert into ${table.name}
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+	#foreach($field in ${table.fields})
+	  <if test="${field.propertyName} != null" >
+        ${field.name},
+	  </if>
+    #end
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+    #foreach($field in ${table.fields})
+      <if test="${field.propertyName} != null" >
+        #{${field.propertyName},javaType=${field.columnType}},
+      </if>
+    #end
+    </trim>
   </insert>
   
   <update id="updateByIdIgnoreNull" parameterType="${package.Entity}.${entity}" >

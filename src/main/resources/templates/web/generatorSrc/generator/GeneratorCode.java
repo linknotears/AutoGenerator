@@ -154,6 +154,11 @@ public class GeneratorCode {
 						if(fileType==FileType.MAPPER||fileType==FileType.ENTITY||fileType==FileType.XML){
 							return true;
 						}
+						File file = new File(filePath);
+						//不存在才创建
+						if(!file.exists()){
+							return true;
+						}
 						return false;
 					}
 				});

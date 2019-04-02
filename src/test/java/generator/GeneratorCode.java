@@ -63,10 +63,8 @@ public class GeneratorCode {
         gc.setServiceName("%sService");//本人不习惯加I
         gc.setServiceImplName("%sServiceImpl");
         gc.setControllerName("%sController");
-        //设置不覆盖文件
-        if(!"true".equals((String)yamlMap.get("isOverFile"))){        	
-        	gc.setFileOverride(false);
-        }
+        //在注入时做处理
+        gc.setFileOverride(true);
          
         mpg.setGlobalConfig(gc);
 
@@ -154,6 +152,17 @@ public class GeneratorCode {
 						if(fileType==FileType.MAPPER||fileType==FileType.ENTITY||fileType==FileType.XML){
 							return true;
 						}
+						//判断文件路径是否为空
+						if(filePath==null || "".equals(filePath)){
+							return false;
+						}
+						//不存在才创建
+						File file = new File(filePath);
+						if(!file.exists()){
+							//创建父文件夹
+							this.checkDir(filePath);
+							return true;
+						}
 						return false;
 					}
 				});
@@ -227,15 +236,17 @@ public class GeneratorCode {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}*/
-                
-                Map<String, Object> conjInfoMap = getConjunctiveInfo(
-                		(String)yamlMap.get("basePackage"),
-            			tableInfoList,
-            			(List<Map<String,Object>>)yamlMap.get("conj.infor"),
-            			absoluteNameStrMap,
-            			null,null,null,null,null,null,
-            			0);
-                map.put("conjInfoMap", conjInfoMap);
+                List<Map<String,Object>> yamlConjInforMap = (List<Map<String,Object>>)yamlMap.get("conj.infor");
+                if(yamlConjInforMap != null){
+	                Map<String, Object> conjInfoMap = getConjunctiveInfo(
+	                		(String)yamlMap.get("basePackage"),
+	            			tableInfoList,
+	            			yamlConjInforMap,
+	            			absoluteNameStrMap,
+	            			null,null,null,null,null,null,
+	            			0);
+	                map.put("conjInfoMap", conjInfoMap);
+                }
                 this.setMap(map);
             }
         };
@@ -245,11 +256,37 @@ public class GeneratorCode {
         focList.add(new FileOutConfig("/templates/mapper.xml.vm") {
             @Override
             public String outputFile(TableInfo tableInfo) {
-                return (String)yamlMap.get("OutputDirConfig")+ "/mybatis/mappers/" + tableInfo.getEntityName() + "Mapper.xml";
+            	return (String)yamlMap.get("OutputDirConfig")+ "/mybatis/mappers/" + tableInfo.getEntityName() + "Mapper.xml";
             }
         });
         
         if(!"false".equals((String)yamlMap.get("isInit"))){
+        	List<Map<String,Object>> webtemplates = (List<Map<String, Object>>) yamlMap.get("webtemplates");
+        	//自定义web模板
+        	if(webtemplates!=null){
+	        	for(Map<String,Object> tempInfo : webtemplates){
+		        	focList.add(new FileOutConfig() {
+		                @Override
+		                public String outputFile(TableInfo tableInfo) {
+		                	List<String> outTableList = (List<String>) tempInfo.get("tables");
+		                	for (int i = 0; i < outTableList.size(); i++) {
+		                		String yamlTableName = outTableList.get(i);
+		                		String sqlTableName = tableInfo.getName();
+		                		if(sqlTableName.equals(yamlTableName)){
+		                			this.setTemplatePath("/templates/WebTemplates/" + tempInfo.get("template"));
+		                			String filePath = ((String) tempInfo.get("template")).replace("${entity}", tableInfo.getEntityName());
+		                			return (String)yamlMap.get("OutputDirWeb") + "/WEB-INF/pages/" + filePath;
+		                		}
+							}
+		                	//置空
+		                	//避免因之前数据引起空指针
+		                	this.setTemplatePath(null);
+		                	return null;
+		                }
+		            });
+	        	}
+        	}
+        	//拿共有参数时适用，非共用不适用
         	//生成基础类
 	        {
 	        	String templateDir = "baseclass";
@@ -368,6 +405,7 @@ public class GeneratorCode {
                 public String outputFile(TableInfo tableInfo) {
                     return outDir+shortPath;
                 }
+                
             });
         }
 	}
@@ -388,21 +426,6 @@ public class GeneratorCode {
 		return list;
 	}
 	/**
-	 * <resultMap id="BaseResultMap" type="${package.Entity}.${entity}">
-	#foreach($field in ${table.fields})
-	#if(${field.keyFlag})##生成主键排在第一位
-			<id column="${table.name}_${field.name}" property="${field.propertyName}" />
-	#end
-	#end
-	#foreach($field in ${table.commonFields})##生成公共字段
-		<result column="${field.propertyName}" property="${field.name}" />
-	#end
-	#foreach($field in ${table.fields})
-	#if(!${field.keyFlag})##生成普通字段
-			<result column="${table.name}_${field.name}" property="${field.propertyName}" />
-	#end
-	#end
-		</resultMap>
 	 * @param tableInfoList
 	 * @param conjInfoList
 	 * @return
@@ -884,11 +907,5 @@ public class GeneratorCode {
 		
 		return conjInfoMap;
 	}
-	//ConjResultMap、Conj_Column_List  => resultBuilder
-	//conjEntities => entitiesBuilder
-	//ConjQueryList、ConjQueryPage、ConjQueryById、ConjQueryCount => conjBuilder
-	//LeftQueryList、LeftQueryPage、LeftQueryById、LeftQueryCount
-	public static void getConjunctiveInfo(StringBuilder resultBuilder,TableInfo tableInfo,Map<String,Object> ymlMap){
-		
-	}
+
 }

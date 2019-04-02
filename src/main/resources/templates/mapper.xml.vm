@@ -35,7 +35,7 @@
 #end
 #end
 
-#if($cfg.conjInfoMap.get($table.name))
+#if($cfg.conjInfoMap.get($table.name).get('resultStr'))
 	<!-- 联合查询结果集 -->
 $cfg.conjInfoMap.get($table.name).get('resultStr')
 	<!-- 联合查询 -->

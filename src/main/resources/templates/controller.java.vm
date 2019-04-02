@@ -20,7 +20,7 @@ import ${package.Service}.${table.serviceName};
 #macro(tolowercase $str)$str.substring(0,1).toLowerCase()$str.substring(1)#end
 #macro(touppercase $str)$str.substring(0,1)$str.substring(1).toLowerCase()#end
 #macro(toheaduppercase $str)$str.substring(0,1).toUpperCase()$str.substring(1)#end
-#macro(query)#if($cfg.conjInfoMap.get($table.name))conjQuery#else find#end#end
+#macro(query)#if($cfg.conjInfoMap.get($table.name).get('resultStr'))conjQuery#else find#end#end
 ## 宏的参数有数据类型区别
 #set( $columnType = ${table.fields[0].columnType.toString()})
 /**
