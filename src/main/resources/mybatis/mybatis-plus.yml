@@ -1,20 +1,18 @@
 #AutoGenerator
 #普通配置
-OutputDir: D:/Project/RestaurantMaster/src
+OutputDir: D:/Project/MoveLearnSys/src
 #配置文件路径
-OutputDirConfig: D:/Project/RestaurantMaster/config
+OutputDirConfig: D:/Project/MoveLearnSys/config
 #webroot路径
-OutputDirWeb: D:/Project/RestaurantMaster/WebRoot
+OutputDirWeb: D:/Project/MoveLearnSys/WebRoot
 #作者名
-author: restaurant
+author: learn
 #基础包名
-basePackage: com.restaurant.master
+basePackage: com.move.learnsys
 #登录表名
 login.table: user
 login.usercolumn: username
 login.pwdcolumn: password
-#conjunctive
-#conj.infor: [{"tables":  "order_form,orderitem,room", "condition": "and "}]
 #需要逆向的表(不写默认是全部表)
 tables: 
 #是否初始化（生成拷贝文件）
@@ -24,11 +22,11 @@ isOverFile: !!str false
 
 #jdbc配置
 jdbc.driver: com.mysql.cj.jdbc.Driver
-jdbc.url: jdbc:mysql://localhost:3306/restaurant_master?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=CONVERT_TO_NULL
+jdbc.url: jdbc:mysql://localhost:3306/move_learn_sys?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=CONVERT_TO_NULL
 jdbc.user: root
 jdbc.pwd: root
 
-mysql.version: !!str 5.0
+mysql.version: !!str 8.0
 
 #数组默认生成的是ArrayList
 #模板
@@ -48,15 +46,52 @@ mysql.version: !!str 5.0
 #    condition: orders.id = orderitem.order_id and orderitem.goods_id = goods.id
 #    #内连接 inner、左连接 left ，不写默认inner
 #    conjtype: inner
- 
- #一个表可能有多个模板，所以这里面有多少个就要建多少个FileOutput
+conj.infor: 
+  - 
+    table: category
+    relation: one
+    condition: category.id = category_id and categorysend.id = categorysend_id
+    conjtype: left
+    innertables: 
+      - 
+        table: categorysecond
+        relation: many
+        innertables: 
+          - 
+            table: video
+            relation: many
+#一个表可能有多个模板，所以这里面有多少个就要建多少个FileOutput
 webtemplates: 
   - 
-    tables: [orders,goods]
-    template: selectPetList.jsp
+    tables: [video]
+    template: select${entity}List.jsp
     outpath: admin/select${entity}List.jsp
+    exclude: video.play_num,video.comment_num
+  - 
+    tables: [video]
+    template: viewAdd${entity}.jsp
+    outpath: admin/viewAdd${entity}.jsp
+    exclude: video.play_num,video.comment_num
+  - 
+    tables: [video]
+    template: viewUpdate${entity}.jsp
+    outpath: admin/viewUpdate${entity}.jsp
+    exclude: video.play_num,video.comment_num
   - 
     tables: [user]
     template: login.jsp
     outpath: login.jsp
-    
+  - 
+    tables: [category,categorysecond,img_url]
+    template: select${entity}CategoryList.jsp
+    outpath: admin/select${entity}CategoryList.jsp
+    exclude: img_url.link
+#指定文件类型
+propertyType: 
+  img_url: 
+    url: image
+  video: 
+    cover_img: image
+  user:
+    avatar: image
+  

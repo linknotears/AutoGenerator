@@ -7,11 +7,13 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.BiConsumer;
 
 import org.springframework.beans.factory.config.YamlMapFactoryBean;
 import org.springframework.core.io.ClassPathResource;
@@ -131,7 +133,94 @@ public class GeneratorCode {
         pc.setEntity("entity");
         pc.setMapper("mapper");
         mpg.setPackageInfo(pc);
+
+        // 调整 xml 生成目录演示（这里既可以设置模板路径，也可以设置输出路径）
+        List<FileOutConfig> focList = new ArrayList<FileOutConfig>();
+        focList.add(new FileOutConfig("/templates/mapper.xml.vm") {
+            @Override
+            public String outputFile(TableInfo tableInfo) {
+            	return (String)yamlMap.get("OutputDirConfig")+ "/mybatis/mappers/" + tableInfo.getEntityName() + "Mapper.xml";
+            }
+        });
+        //设置覆盖entity
+        focList.add(new FileOutConfig("/templates/entity.java.vm") {
+            @Override
+            public String outputFile(TableInfo tableInfo) {
+                return (String)yamlMap.get("OutputDir")+ basePath+"/entity/" + tableInfo.getEntityName() + ".java";
+            }
+        });
         
+        //初始化
+        Map<String,List<String>> colExcludeMap = new HashMap<String,List<String>>();
+        if(!"false".equals((String)yamlMap.get("isInit"))){
+        	//模板排除字段map
+        	//模板配置
+        	List<Map<String,Object>> webtemplates = (List<Map<String, Object>>) yamlMap.get("webtemplates");
+        	//自定义web模板
+        	if(webtemplates!=null){
+	        	for(Map<String,Object> tempInfo : webtemplates){
+	        		//记录排除输出字段
+	        		String excludeStr = (String) tempInfo.get("exclude");
+	        		if(excludeStr != null) { 
+	        			List<String> excludes = Arrays.asList(excludeStr.split(","));
+	        			String templateStr = (String) tempInfo.get("template");
+	        			//截掉后缀
+	        			int index = templateStr.lastIndexOf(".");
+	        			if(index != -1){
+	        				templateStr = templateStr.substring(0, index);
+	        			}
+	        			//文件名换成正则
+	        			templateStr = templateStr.replace("${entity}", "[a-zA-Z]+") + "\\.[a-zA-Z]+";
+	        			colExcludeMap.put(templateStr, excludes);
+	        		}
+	        		//判断输出模板
+		        	focList.add(new FileOutConfig() {
+		                @Override
+		                public String outputFile(TableInfo tableInfo) {
+		                	List<String> outTableList = (List<String>) tempInfo.get("tables");
+		                	for (int i = 0; i < outTableList.size(); i++) {
+		                		String yamlTableName = outTableList.get(i);
+		                		String sqlTableName = tableInfo.getName();
+		                		if(sqlTableName.equals(yamlTableName)){
+		                			this.setTemplatePath("/templates/WebTemplates/" + tempInfo.get("template"));
+		                			String filePath = ((String) tempInfo.get("outpath")).replace("${entity}", tableInfo.getEntityName());
+		                			return (String)yamlMap.get("OutputDirWeb") + "/WEB-INF/views/" + filePath;
+		                		}
+							}
+		                	//置空
+		                	//避免因之前数据引起空指针
+		                	this.setTemplatePath(null);
+		                	return null;
+		                }
+		            });
+	        	}
+        	}
+        	//拿共有参数时适用，非共用不适用
+        	//生成基础类
+	        {
+	        	String templateDir = "baseclass";
+	        	String outPath = (String)yamlMap.get("OutputDir")+ basePath;
+	        	templatesTo(focList,templateDir,outPath);
+	        }
+	        
+	        //拷贝配置
+	        {
+	        	String templateDir = "config";
+	        	String outPath = (String)yamlMap.get("OutputDirConfig");
+	        	templatesTo(focList,templateDir,outPath);
+	        }
+	        
+	        //复制不需要解析的文件
+	        //复制web文件
+	        {
+	        	templatesToNotAnalyze("web",(String)yamlMap.get("OutputDirWeb"));
+	        	
+	        }
+	        //拷贝一份配置到generatorSrc
+	        {
+	        	
+	        }
+        }
         //属性注入用于传入模板
         // 注入自定义配置，可以在 VM 中使用 cfg.abc 【可无】
         InjectionConfig cfg = new InjectionConfig() {
@@ -143,6 +232,11 @@ public class GeneratorCode {
             	GlobalConfig globalConfig = config.getGlobalConfig();
                 Map<String, Object> map = new HashMap<String, Object>();
                 map.put("abc", globalConfig.getAuthor() + "-rb");
+                
+                
+
+				//指定view显示类型
+				map.put("propertyType", (Map<String,Object>) yamlMap.get("propertyType"));
                 
                 //判断是否覆盖文件
                 this.setFileCreate(new IFileCreate() {
@@ -161,6 +255,33 @@ public class GeneratorCode {
 						if(!file.exists()){
 							//创建父文件夹
 							this.checkDir(filePath);
+							//模板排除字段
+							//截取文件名
+							int index = filePath.lastIndexOf("/");
+							String fileName = filePath.substring(index + 1);
+							//重置排除信息
+							configBuilder.getInjectionConfig().getMap().put("colExclude", null);
+							colExcludeMap.forEach(new BiConsumer<String,List<String>>(){
+								@Override
+								public void accept(String key, List<String> value) {
+									if(fileName.matches(key)){
+										Map<String,Map<String,Boolean>> colExcludeMap = new HashMap<String,Map<String,Boolean>>();
+										value.forEach(colStr ->{
+											String[] tableAndCol = colStr.split("\\.");
+											Map<String,Boolean> colMap = null;
+											if(colExcludeMap.get(tableAndCol[0]) != null){
+												colMap = colExcludeMap.get(tableAndCol[0]);
+											}else{
+												colMap = new HashMap<String,Boolean>();
+												colExcludeMap.put(tableAndCol[0], colMap);
+											}
+
+											colMap.put(tableAndCol[1], true);
+										});
+										//注入排除信息
+										configBuilder.getInjectionConfig().getMap().put("colExclude", colExcludeMap);
+									}
+								}});
 							return true;
 						}
 						return false;
@@ -223,19 +344,7 @@ public class GeneratorCode {
                 }
                 map.put("absoluteNameStrMap", absoluteNameStrMap);
                 
-                
                 //设置联合表数据
-                /*ObjectMapper mapper = new ObjectMapper();
-                try {
-                	ArrayList<Map<String,String>> conjTables = new ArrayList<Map<String,String>>();
-                	String conjTableStr = (String)yamlMap.get("conj.tables");
-                	JavaType jvt = mapper.getTypeFactory().constructParametricType(ArrayList.class,LinkedHashMap.class);
-                	conjTables = mapper.readValue(conjTableStr,jvt);
-                	
-                	map.put("conjTables", conjTables);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}*/
                 List<Map<String,Object>> yamlConjInforMap = (List<Map<String,Object>>)yamlMap.get("conj.infor");
                 if(yamlConjInforMap != null){
 	                Map<String, Object> conjInfoMap = getConjunctiveInfo(
@@ -250,81 +359,11 @@ public class GeneratorCode {
                 this.setMap(map);
             }
         };
-
-        // 调整 xml 生成目录演示（这里既可以设置模板路径，也可以设置输出路径）
-        List<FileOutConfig> focList = new ArrayList<FileOutConfig>();
-        focList.add(new FileOutConfig("/templates/mapper.xml.vm") {
-            @Override
-            public String outputFile(TableInfo tableInfo) {
-            	return (String)yamlMap.get("OutputDirConfig")+ "/mybatis/mappers/" + tableInfo.getEntityName() + "Mapper.xml";
-            }
-        });
         
-        if(!"false".equals((String)yamlMap.get("isInit"))){
-        	List<Map<String,Object>> webtemplates = (List<Map<String, Object>>) yamlMap.get("webtemplates");
-        	//自定义web模板
-        	if(webtemplates!=null){
-	        	for(Map<String,Object> tempInfo : webtemplates){
-		        	focList.add(new FileOutConfig() {
-		                @Override
-		                public String outputFile(TableInfo tableInfo) {
-		                	List<String> outTableList = (List<String>) tempInfo.get("tables");
-		                	for (int i = 0; i < outTableList.size(); i++) {
-		                		String yamlTableName = outTableList.get(i);
-		                		String sqlTableName = tableInfo.getName();
-		                		if(sqlTableName.equals(yamlTableName)){
-		                			this.setTemplatePath("/templates/WebTemplates/" + tempInfo.get("template"));
-		                			String filePath = ((String) tempInfo.get("template")).replace("${entity}", tableInfo.getEntityName());
-		                			return (String)yamlMap.get("OutputDirWeb") + "/WEB-INF/pages/" + filePath;
-		                		}
-							}
-		                	//置空
-		                	//避免因之前数据引起空指针
-		                	this.setTemplatePath(null);
-		                	return null;
-		                }
-		            });
-	        	}
-        	}
-        	//拿共有参数时适用，非共用不适用
-        	//生成基础类
-	        {
-	        	String templateDir = "baseclass";
-	        	String outPath = (String)yamlMap.get("OutputDir")+ basePath;
-	        	templatesTo(focList,templateDir,outPath);
-	        }
-	        
-	        //拷贝配置
-	        {
-	        	String templateDir = "config";
-	        	String outPath = (String)yamlMap.get("OutputDirConfig");
-	        	templatesTo(focList,templateDir,outPath);
-	        }
-	        
-	        //复制不需要解析的文件
-	        //复制web文件
-	        {
-	        	templatesToNotAnalyze("web",(String)yamlMap.get("OutputDirWeb"));
-	        	
-	        }
-        }
-        //更改Service输出名
-        /*focList.add(new FileOutConfig("/templates/service.java.vm") {
-            @Override
-            public String outputFile(TableInfo tableInfo) {
-                return (String)yamlMap.get("OutputDir")+ basePath+"/service/" + tableInfo.getEntityName() + "Service.java";
-            }
-        });*/
-        //设置覆盖entity
-        focList.add(new FileOutConfig("/templates/entity.java.vm") {
-            @Override
-            public String outputFile(TableInfo tableInfo) {
-                return (String)yamlMap.get("OutputDir")+ basePath+"/entity/" + tableInfo.getEntityName() + ".java";
-            }
-        });
+        
+        
         cfg.setFileOutConfigList(focList);
         mpg.setCfg(cfg);
-
         
         /**
          * 1.测试结果：首先查找本项目类路径有没有templates模板文件，再查找jar包类路径下的templates
@@ -701,22 +740,6 @@ public class GeneratorCode {
 						resultBuilder.append(resultColumnBuilder.toString());
 						List<TableField> fields = tableInfo.getFields();
 						//条件conjQueryList
-						/**
-						 * <if test="condition!=null">
-					    		<if test="condition.id!=null">
-					    			and id = #{condition.id,javaType=INTEGER}
-					    		</if>
-					    		<if test="condition.name!=null">
-					    			and name = #{condition.name,javaType=STRING}
-					    		</if>
-					    		<if test="condition.age!=null">
-					    			and age = #{condition.age,javaType=INTEGER}
-					    		</if>
-					    		<if test="condition.email!=null">
-					    			and email = #{condition.email,javaType=STRING}
-					    		</if>
-					    	</if>
-						 */
 						whereBuilder.append("\t\t\t<if test=\"condition!=null\">");
 						String idFieldName = "";
 						String idPropertyName = "";

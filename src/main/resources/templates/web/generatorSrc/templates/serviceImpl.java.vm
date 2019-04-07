@@ -7,6 +7,7 @@ import ${package.Service}.${table.serviceName};
 import org.springframework.stereotype.Service;
 #if($cfg.conjInfoMap.get($table.name).get('resultStr'))
 import ${package.Entity}.vo.PageData;
+import java.util.List;
 #end
 #macro(tolowercase $str)$str.substring(0,1).toLowerCase()$str.substring(1)#end
 /**
@@ -26,19 +27,19 @@ public class ${table.serviceImplName} extends BaseServiceImpl<${entity}> impleme
 	
 	#if($cfg.conjInfoMap.get($table.name).get('resultStr'))
 	@Override
-	public List<T> conjQueryList(T condition) {
+	public List<${entity}> conjQueryList(${entity} condition) {
 		return #tolowercase(${entity})Mapper.conjQueryList(condition);
 	}
 
 	@Override
-	public PageData<T> conjQueryPage(PageData<T> pageData,T condition) {
+	public PageData<${entity}> conjQueryPage(PageData<${entity}> pageData,${entity} condition) {
 		if(pageData==null){
-			pageData = new PageData<T>();
+			pageData = new PageData<${entity}>();
 		}
 		//设置条件
 		pageData.setCondition(condition);
 		//设置数据
-		List<T> list = #tolowercase(${entity})Mapper.conjQueryPage(pageData);
+		List<${entity}> list = #tolowercase(${entity})Mapper.conjQueryPage(pageData);
 		pageData.setList(list);
 		//设置记录
 		int totalCount = #tolowercase(${entity})Mapper.conjQueryCount(pageData.getCondition());
@@ -47,12 +48,12 @@ public class ${table.serviceImplName} extends BaseServiceImpl<${entity}> impleme
 	}
 
 	@Override
-	public int conjQueryCount(T condition) {
+	public int conjQueryCount(${entity} condition) {
 		return #tolowercase(${entity})Mapper.conjQueryCount(condition);
 	}
 	
 	@Override
-	public T conjQueryById(Object id) {
+	public ${entity} conjQueryById(Object id) {
 		return #tolowercase(${entity})Mapper.conjQueryById(id);
 	}
 	#end

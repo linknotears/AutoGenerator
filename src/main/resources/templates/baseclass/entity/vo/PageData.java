@@ -8,7 +8,7 @@ public class PageData<T> {
 	private int totalCount;//总记录数
 	private int totalPage;//总页数
 	private int start = 0;//页开始
-	private int limit = 10;//每页最大记录数
+	private int limit = 5;//每页最大记录数
 	private List<T> list;
 	private T condition;
 	private String orderby = "";//排序

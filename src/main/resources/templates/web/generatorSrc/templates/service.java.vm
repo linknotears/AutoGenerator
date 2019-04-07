@@ -17,7 +17,7 @@ public interface ${table.serviceName} extends BaseService<${entity}> {
 	//联合查询接口
 	List<${entity}> conjQueryList(${entity} condition);
 	
-	List<${entity}> conjQueryPage(PageData<${entity}> pageData);
+	PageData<${entity}> conjQueryPage(PageData<${entity}> pageData,${entity} condition);
 	
 	int conjQueryCount(${entity} condition);
 	
