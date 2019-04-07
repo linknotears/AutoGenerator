@@ -34,13 +34,27 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 <script type="text/javascript">
 //添加方法
-function add(form){
+function add(){
+	var inputEls = $("#addBlock").find("input");
+	
+	var data = {};
+	$("#addBlock").find("select").each(function(){
+		data[this.name] = this.value;
+	});
+	
+	//处理表单
+	var form = $("<form/>");
+	form.append(inputEls.clone());
+	//改为dom对象
+	form = form[0];
+	
 	return request({
 		url: "#tolowercase($entity)/saveOrUpdate.html",
+		data: data,
 		form: form,
 		successHandle:function(data){
 			loadData();
-			form.reset();
+			inputEls.val("");//有效
 		},
 		isMultipart:true,
 		checkHandle:function(){return true;}
@@ -125,7 +139,7 @@ $(function(){
 #end
 	];
 	//加载标签
-	loadEls = ['#categoryTableTr'];
+	loadEls = ['#categoryTableTr',"#addBlock"];
 	//初始化数据
 	init();
 });
@@ -156,10 +170,11 @@ $(function(){
 ##判断排除字段
 #if(!$cfg.colExclude.get($table.name).get($field.name))
 #if(!${field.keyFlag})
-								<th width="20%;">${field.comment}</th>
+								<th>${field.comment}</th>
 #end
 #end
 #end
+								<th width="50%;">操作</th>
 							</tr>
 						</thead>
 							<!-- vue要在父标签中使用 -->
@@ -182,9 +197,9 @@ $(function(){
 								<th>
 									<select name="${field.propertyName}" style="display: none;" :value="data.#tolowercase($entity).${field.propertyName}">
 #set($propertyName = $field.propertyName.replace('Id',''))
-										<option v-for="${propertyName} in ${propertyName}s" :value="data.${propertyName}.id">{{ data.${propertyName}.name }}</option>
+										<option v-for="${propertyName}temp in data.${propertyName}s" :value="${propertyName}temp.id">{{ ${propertyName}temp.name }}</option>
 									</select>
-									<span>{{$data.${propertyName}obj[classify.${field.propertyName}]}}</span>
+									<span>{{data.${propertyName}obj[classify.${field.propertyName}]}}</span>
 								</th>
 #else
 								<th>
@@ -205,8 +220,7 @@ $(function(){
 									</th>
 								</tr>
 							</tbody>
-                	<form onsubmit="return add(this)" method="post">
-							<tr>
+							<tr id="addBlock">
 #foreach($field in ${table.fields})
 ##判断排除字段
 #if(!$cfg.colExclude.get($table.name).get($field.name))
@@ -221,12 +235,12 @@ $(function(){
 								<th>
 									<select name="${field.propertyName}">
 #set($propertyName = $field.propertyName.replace('Id',''))
-										<option v-for="${propertyName} in ${propertyName}s" :value="data.${propertyName}.id">{{ data.${propertyName}.name }}</option>
+										<option v-for="${propertyName}temp in data.${propertyName}s" :value="${propertyName}temp.id">{{ ${propertyName}temp.name }}</option>
 									</select>
 								</th>
 #else
 								<th>
-									<input type="text" name="${field.propertyName}" :value="classify.${field.propertyName}">
+									<input type="text" name="${field.propertyName}">
 								</th>
 #end
 #end
@@ -236,12 +250,12 @@ $(function(){
 									<div
 										class="visible-md visible-lg hidden-sm hidden-xs action-buttons">
 										
-									<button class="btn btn-app btn-grey btn-xs radius-4" type="submit">		
+									<button class="btn btn-app btn-grey btn-xs radius-4" type="submit" onclick="add()">		
 												添加	
 											</button>
 									</div>
-								</td> </tr>
-						</form>
+								</td> 
+							</tr>
 					</table>
 				</div>
 			</div>

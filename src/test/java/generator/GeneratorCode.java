@@ -348,12 +348,12 @@ public class GeneratorCode {
                 List<Map<String,Object>> yamlConjInforMap = (List<Map<String,Object>>)yamlMap.get("conj.infor");
                 if(yamlConjInforMap != null){
 	                Map<String, Object> conjInfoMap = getConjunctiveInfo(
-	                		(String)yamlMap.get("basePackage"),
+	                		(String)yamlMap.get("basePackage")+".entity",
 	            			tableInfoList,
 	            			yamlConjInforMap,
 	            			absoluteNameStrMap,
-	            			null,null,null,null,null,null,
-	            			0);
+	            			null,null,null,null,null,null,null,
+	            			0,0);
 	                map.put("conjInfoMap", conjInfoMap);
                 }
                 this.setMap(map);
@@ -481,11 +481,14 @@ public class GeneratorCode {
 			StringBuilder whereBuilder,
 			Map<String,Object> conjInfoMap,
 			String conjtype,
-			int count){
+			String condition,
+			int count,
+			int leftCount){
 		if(conjInfoMap==null){
 			conjInfoMap = new HashMap<String,Object>();
 			count = 0;
 			conjtype = (String) conjInfoList.get(0).get("conjtype");
+			leftCount = 0;
 		}
 
 		for(Map<String,Object> ymlMap : conjInfoList){
@@ -509,6 +512,9 @@ public class GeneratorCode {
 					//ConjResultMap
 					//开始
 					if(count == 0){
+						condition = (String)ymlMap.get("condition");
+						//置零
+						leftCount = 0;
 						//重新建立一个StringBuilder
 						resultBuilder = new StringBuilder();
 						resultBuilder
@@ -642,9 +648,19 @@ public class GeneratorCode {
 							.append(",")
 							.append(tableInfo.getName());
 						}else{
+							//对齐
+							if(leftCount != 0){
+								conjTablesBuilder.append("\t\t\t");
+							}else{
+								conjTablesBuilder.append(" ");
+							}
 							conjTablesBuilder
-							.append(" LEFT JOIN ")
-							.append(tableInfo.getName());
+							.append("LEFT JOIN ")
+							.append(tableInfo.getName())
+							.append("\n\t\t\tON ")
+							.append(condition.split(" and ")[leftCount])
+							.append("\n");
+							leftCount++;
 						}
 						
 						//打印层级
@@ -727,7 +743,9 @@ public class GeneratorCode {
 								whereBuilder,
 								conjInfoMap,
 								conjtype,
-								count + 1);
+								condition,
+								count + 1,
+								leftCount);
 					}
 					
 					//结束
@@ -783,14 +801,12 @@ public class GeneratorCode {
 						//添加连接条件
 						if("left".equals(ymlMap.get("conjtype"))){
 							conjBuilder
-							.append("\t\t\tON ")
-							.append(ymlMap.get("condition"))
 							.append("\n\t\t<where>\n");
 						}else{
 							conjBuilder
 							.append("\t\t<where>\n\t\t\t")
 							.append("and ")
-							.append(ymlMap.get("condition"))
+							.append(condition)
 							.append("\n");
 						}
 						//实体条件
@@ -816,14 +832,12 @@ public class GeneratorCode {
 						//添加连接条件
 						if("left".equals(ymlMap.get("conjtype"))){
 							conjBuilder
-							.append("\t\t\tON ")
-							.append(ymlMap.get("condition"))
 							.append("\n\t\t<where>\n");
 						}else{
 							conjBuilder
 							.append("\t\t<where>\n\t\t\t")
 							.append("and ")
-							.append(ymlMap.get("condition"))
+							.append(condition)
 							.append("\n");
 						}
 						//实体条件
@@ -841,7 +855,7 @@ public class GeneratorCode {
 						.append("\n\n\t<select id=\"conjQueryPage\" resultMap=\"ConjResultMap\" parameterType=\"")
 						.append(basePackage)
 						.append(".")
-						.append("entity.vo.PageData")
+						.append("vo.PageData")
 						.append("\">\n")
 						.append("\t\tselect \n\t\t<include refid=\"Conj_Column_List\" />\n\t\tfrom ")
 						.append(conjTablesBuilder.toString())
@@ -849,14 +863,12 @@ public class GeneratorCode {
 						//添加连接条件
 						if("left".equals(ymlMap.get("conjtype"))){
 							conjBuilder
-							.append("\t\t\tON ")
-							.append(ymlMap.get("condition"))
 							.append("\n\t\t<where>\n");
 						}else{
 							conjBuilder
 							.append("\t\t<where>\n\t\t\t")
 							.append("and ")
-							.append(ymlMap.get("condition"))
+							.append(condition)
 							.append("\n");
 						}
 						//实体条件
@@ -882,14 +894,12 @@ public class GeneratorCode {
 						//添加连接条件
 						if("left".equals(ymlMap.get("conjtype"))){
 							conjBuilder
-							.append("\t\t\tON ")
-							.append(ymlMap.get("condition"))
 							.append("\n\t\t<where>\n");
 						}else{
 							conjBuilder
 							.append("\t\t<where>\n\t\t\t")
 							.append("and ")
-							.append(ymlMap.get("condition"))
+							.append(condition)
 							.append("\n");
 						}
 						//条件

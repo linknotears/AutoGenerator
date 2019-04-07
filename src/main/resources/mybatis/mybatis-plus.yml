@@ -50,7 +50,7 @@ conj.infor:
   - 
     table: category
     relation: one
-    condition: category.id = category_id and categorysend.id = categorysend_id
+    condition: category.id = category_id and categorysecond.id = categorysecond_id
     conjtype: left
     innertables: 
       - 
@@ -66,7 +66,7 @@ webtemplates:
     tables: [video]
     template: select${entity}List.jsp
     outpath: admin/select${entity}List.jsp
-    exclude: video.play_num,video.comment_num
+    exclude: video.play_num,video.comment_num,video.void_url
   - 
     tables: [video]
     template: viewAdd${entity}.jsp
@@ -86,12 +86,12 @@ webtemplates:
     template: select${entity}CategoryList.jsp
     outpath: admin/select${entity}CategoryList.jsp
     exclude: img_url.link
-#指定文件类型
+#指定文件类型（表名重复时不识别）
 propertyType: 
   img_url: 
     url: image
   video: 
     cover_img: image
+    void_url: image
   user:
     avatar: image
-  

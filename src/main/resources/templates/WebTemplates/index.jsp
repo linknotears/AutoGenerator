@@ -12,9 +12,6 @@
 <head>
 <base href="<%=basePath%>">
 <script type="text/javascript">
-	if('${sessionScope.existUser.root}'==0){
-		window.location.href = "base/goto/user/index.html";
-	}
 </script>
 <title>管理员</title>
 

@@ -21,7 +21,7 @@ public class ${table.serviceImplName} extends BaseServiceImpl<${entity}> impleme
 	protected ${table.mapperName} #tolowercase(${entity})Mapper;
 	@Autowired
 	public ${table.serviceImplName}(${table.mapperName} #tolowercase(${entity})Mapper){
-		this.#tolowercase(${entity})Mapper = #tolowercase(${entity})Mapper;
+		this.baseMapper = #tolowercase(${entity})Mapper;
 		this.#tolowercase(${entity})Mapper = #tolowercase(${entity})Mapper;
 	}
 	

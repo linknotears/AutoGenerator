@@ -121,9 +121,9 @@ function saveOrUpdate(form){
 #elseif($cfg.propertyType.get($table.name).get($field.name) == 'select' || ${field.propertyName.contains('Id')})
 						<th style="text-align: center;">${field.comment}</th>
 						<th>
-							<select name="${field.propertyName}" :value="#tolowercase($entity).${field.propertyName}">
+							<select name="${field.propertyName}" :value="data.#tolowercase($entity).${field.propertyName}">
 #set($propertyName = $field.propertyName.replace('Id',''))
-								<option v-for="${propertyName} in ${propertyName}s" :value="${propertyName}.id">{{ ${propertyName}.name }}</option>
+								<option v-for="${propertyName} in data.${propertyName}s" :value="${propertyName}.id">{{ ${propertyName}.name }}</option>
 							</select>
 						</th>
 #else

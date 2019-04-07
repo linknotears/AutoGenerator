@@ -15,13 +15,16 @@ import ${pkg};
 public class ${entity} implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
+	
 ## ----------  BEGIN 字段循环遍历  ----------
 #foreach($field in ${table.fields})
 	private ${field.propertyType} ${field.propertyName};
 #end
 ## ----------  END 字段循环遍历  ----------
 
+	private String customCondition = "";
+	
+	private String orderby = "";
 ## ---------- BEGIN  遍历联合信息  ----------
 #if($cfg.conjInfoMap.get($table.name))
 	//联合所需数据
@@ -77,4 +80,20 @@ $conjEntityProp
 			"}";
 	}
 #end
+	
+	public String getCustomCondition() {
+		return customCondition;
+	}
+
+	public void setCustomCondition(String customCondition) {
+		this.customCondition = customCondition;
+	}
+	
+	public String getOrderby() {
+		return orderby;
+	}
+
+	public void setOrderby(String orderby) {
+		this.orderby = orderby;
+	}
 }

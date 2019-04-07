@@ -120,7 +120,7 @@ function saveOrUpdate(form){
 						<th>
 							<select name="${field.propertyName}">
 #set($propertyName = $field.propertyName.replace('Id',''))
-								<option v-for="${propertyName} in ${propertyName}s" :value="${propertyName}.id">{{ ${propertyName}.name }}</option>
+								<option v-for="${propertyName} in data.${propertyName}s" :value="${propertyName}.id">{{ ${propertyName}.name }}</option>
 							</select>
 						</th>
 #else

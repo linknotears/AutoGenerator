@@ -109,6 +109,7 @@ function remove(id){
 #end
 #end
 #end
+					<th>操作</th>
 				</tr>
 				<tr>
 				<tr v-for="#tolowercase($entity) in data.#tolowercase($entity)s">
@@ -118,11 +119,11 @@ function remove(id){
 #if(!${field.keyFlag})
 ##判断文件类型
 #if($cfg.propertyType.get($table.name).get($field.name) == 'image' || ${field.propertyName.contains('image')})
-					<th style="text-align: center;"><img width="80" height="80" alt="" :src="data.#tolowercase($entity).${field.propertyName}"></th>
+					<th style="text-align: center;"><img width="80" height="80" alt="" :src="#tolowercase($entity).${field.propertyName}"></th>
 #elseif($cfg.propertyType.get($table.name).get($field.name) == 'select' || ${field.propertyName.contains('Id')})
 					<th>
 #set($propertyName = $field.propertyName.replace('Id',''))
-						{{$data.${propertyName}obj[#tolowercase($entity).${field.propertyName}]}}
+						{{data.${propertyName}obj[#tolowercase($entity).${field.propertyName}]}}
 					</th>
 #else
 					<th style="text-align: center;">{{ #tolowercase($entity).${field.propertyName} }}</th>
