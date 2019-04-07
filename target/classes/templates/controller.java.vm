@@ -62,13 +62,13 @@ public class ${table.controllerName} extends BaseController{
 		try {
 			#foreach($field in ${table.fields})
 			#if($cfg.propertyType.get($table.name).get($field.name) == 'image')			
-				if(${field.propertyName}file != null){
-					if(!${field.propertyName}file.isEmpty()){
-						#tolowercase($entity).set#toheaduppercase(${field.propertyName})(
-							UploadFileSpringmvc.getUploadPath(${field.propertyName}file,"image",#tolowercase($entity).get#toheaduppercase(${field.propertyName})(),servletContext)
-						);
-					}
+			if(${field.propertyName}file != null){
+				if(!${field.propertyName}file.isEmpty()){
+					#tolowercase($entity).set#toheaduppercase(${field.propertyName})(
+						UploadFileSpringmvc.getUploadPath(${field.propertyName}file,"image",#tolowercase($entity).get#toheaduppercase(${field.propertyName})(),servletContext)
+					);
 				}
+			}
 			#end
 			#end
 			i = #tolowercase($entity)Service.saveOrUpdate(id, #tolowercase($entity));

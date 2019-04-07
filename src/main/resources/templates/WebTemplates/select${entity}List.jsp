@@ -38,6 +38,9 @@ $(function(){
 	loadUrls =[
 		{
 			url:"#tolowercase($entity)/findPage.html",
+			data:{
+				page:getParameter("page",1)
+			},
 			refNames:['#tolowercase($entity)s','pageData']
 		}
 ##判断select
