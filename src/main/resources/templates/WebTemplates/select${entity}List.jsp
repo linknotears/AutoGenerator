@@ -39,7 +39,7 @@ $(function(){
 		{
 			url:"#tolowercase($entity)/findPage.html",
 			data:{
-				page:getParameter("page",1)
+				page:getParameter("page",1)##第几页是服务器返回的
 			},
 			refNames:['#tolowercase($entity)s','pageData']
 		}

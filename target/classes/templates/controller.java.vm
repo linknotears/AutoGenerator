@@ -35,6 +35,8 @@ import ${package.Service}.${table.serviceName};
 #macro(toheaduppercase $str)$str.substring(0,1).toUpperCase()$str.substring(1)#end
 ## 判断查询方法
 #macro(query)#if($cfg.conjInfoMap.get($table.name).get('resultStr'))conjQuery#else find#end#end
+## 生成指定数目的制表符
+#macro(tab $count)			#end
 ## 宏的参数有数据类型区别
 #set( $columnType = ${table.fields[0].columnType.toString()})
 /**
@@ -64,7 +66,7 @@ public class ${table.controllerName} extends BaseController{
 			#if($cfg.propertyType.get($table.name).get($field.name) == 'image')			
 			if(${field.propertyName}file != null){
 				if(!${field.propertyName}file.isEmpty()){
-					#tolowercase($entity).set#toheaduppercase(${field.propertyName})(
+					#tab(5)#tolowercase($entity).set#toheaduppercase(${field.propertyName})(
 						UploadFileSpringmvc.getUploadPath(${field.propertyName}file,"image",#tolowercase($entity).get#toheaduppercase(${field.propertyName})(),servletContext)
 					);
 				}
@@ -124,9 +126,7 @@ public class ${table.controllerName} extends BaseController{
 		ResultData resultData = new ResultData();
 		List<${entity}> #tolowercase($entity)s = null;
 		try {
-		
-			#tolowercase($entity)s = #tolowercase($entity)Service.#query()List(entity);
-		
+			#tab(5)#tolowercase($entity)s = #tolowercase($entity)Service.#query()List(entity);
 		} catch (Exception e) {
 			e.printStackTrace();
 			resultData.setCode(-1);
@@ -140,7 +140,7 @@ public class ${table.controllerName} extends BaseController{
 		ResultData resultData = new ResultData();
 		${entity} #tolowercase($entity) = null;
 		try {
-			#tolowercase($entity) = #tolowercase($entity)Service.#query()ById(id);
+			#tab(5)#tolowercase($entity) = #tolowercase($entity)Service.#query()ById(id);
 		} catch (Exception e) {
 			e.printStackTrace();
 			resultData.setCode(-1);
@@ -156,7 +156,7 @@ public class ${table.controllerName} extends BaseController{
 		List<${entity}> #tolowercase($entity)s = null;
 		try {
 			pageData = #tolowercase($entity)Service.#query()Page(pageData, condition);
-			#tolowercase($entity)s = pageData.getList();
+			#tab(5)#tolowercase($entity)s = pageData.getList();
 		} catch (Exception e) {
 			e.printStackTrace();
 			resultData.setCode(-1);

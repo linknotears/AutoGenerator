@@ -15,7 +15,6 @@
   	<servlet-name>springmvc</servlet-name>
   	<url-pattern>*.html</url-pattern>
   </servlet-mapping>
-  
   <!-- 配置springmvc的编码字符集 -->
   <filter>
   	<filter-name>encodFilter</filter-name>

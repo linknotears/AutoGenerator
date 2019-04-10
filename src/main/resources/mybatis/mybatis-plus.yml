@@ -1,20 +1,20 @@
 #AutoGenerator
 #普通配置
-OutputDir: D:/Project/MoveLearnSys/src
+OutputDir: D:/Project/QuestionSurvey/src
 #配置文件路径
-OutputDirConfig: D:/Project/MoveLearnSys/config
+OutputDirConfig: D:/Project/QuestionSurvey/config
 #webroot路径
-OutputDirWeb: D:/Project/MoveLearnSys/WebRoot
+OutputDirWeb: D:/Project/QuestionSurvey/WebRoot
 #作者名
-author: learn
+author: survey
 #基础包名
-basePackage: com.move.learnsys
+basePackage: com.question.survey
 #登录表名
 login.table: user
 login.usercolumn: username
 login.pwdcolumn: password
 #需要逆向的表(不写默认是全部表)
-tables: 
+tables: question,answer
 #是否初始化（生成拷贝文件）
 isInit: !!str true
 #是否覆盖文件（xml和entity或其他拷贝文件除外）
@@ -22,7 +22,7 @@ isOverFile: !!str false
 
 #jdbc配置
 jdbc.driver: com.mysql.cj.jdbc.Driver
-jdbc.url: jdbc:mysql://localhost:3306/move_learn_sys?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=CONVERT_TO_NULL
+jdbc.url: jdbc:mysql://localhost:3306/question_survey?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=CONVERT_TO_NULL
 jdbc.user: root
 jdbc.pwd: root
 
@@ -48,50 +48,63 @@ mysql.version: !!str 8.0
 #    conjtype: inner
 conj.infor: 
   - 
-    table: category
+    table: paper
     relation: one
-    condition: category.id = category_id and categorysecond.id = categorysecond_id
+    condition: paper.id = paper_id and question.id = question_id
     conjtype: left
     innertables: 
       - 
-        table: categorysecond
+        table: question
         relation: many
         innertables: 
           - 
-            table: video
+            table: answer
             relation: many
+  - 
+    table: question
+    relation: many
+    condition: question.id = question_id
+    conjtype: left
+    innertables: 
+      - 
+        table: answer
+        relation: many
 #一个表可能有多个模板，所以这里面有多少个就要建多少个FileOutput
 webtemplates: 
-  - 
-    tables: [video]
-    template: select${entity}List.jsp
-    outpath: admin/select${entity}List.jsp
-    exclude: video.play_num,video.comment_num,video.void_url
-  - 
-    tables: [video]
-    template: viewAdd${entity}.jsp
-    outpath: admin/viewAdd${entity}.jsp
-    exclude: video.play_num,video.comment_num
-  - 
-    tables: [video]
-    template: viewUpdate${entity}.jsp
-    outpath: admin/viewUpdate${entity}.jsp
-    exclude: video.play_num,video.comment_num
-  - 
-    tables: [user]
-    template: login.jsp
-    outpath: login.jsp
-  - 
-    tables: [category,categorysecond,img_url]
-    template: select${entity}CategoryList.jsp
-    outpath: admin/select${entity}CategoryList.jsp
-    exclude: img_url.link
+#  - 
+#    tables: [video]
+#    template: select${entity}List.jsp
+#    outpath: admin/select${entity}List.jsp
+#    exclude: video.play_num,video.comment_num,video.void_url
+#  - 
+#    tables: [video]
+#    template: viewAdd${entity}.jsp
+#    outpath: admin/viewAdd${entity}.jsp
+#    exclude: video.play_num,video.comment_num
+#  - 
+#    tables: [video]
+#    template: viewUpdate${entity}.jsp
+#    outpath: admin/viewUpdate${entity}.jsp
+#    exclude: video.play_num,video.comment_num
+#  - 
+#    tables: [user]
+#    template: login.jsp
+#    outpath: login.jsp
+#  - 
+#    tables: [category,categorysecond,img_url]
+#    template: select${entity}CategoryList.jsp
+#    outpath: admin/select${entity}CategoryList.jsp
+#    exclude: img_url.link
+
 #指定文件类型（表名重复时不识别）
 propertyType: 
-  img_url: 
-    url: image
-  video: 
-    cover_img: image
-    void_url: image
-  user:
+#  img_url: 
+#    url: image
+#  video: 
+#    cover_img: image
+#    void_url: image
+#  user:
+#    avatar: image
+  admin:
     avatar: image
+    sex: select

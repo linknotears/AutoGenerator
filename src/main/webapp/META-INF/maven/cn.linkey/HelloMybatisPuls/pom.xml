@@ -19,14 +19,27 @@
     <servlet.version>3.1.0</servlet.version>
     <jstl.version>1.2.5</jstl.version>
     <taglibs.version>1.2.5</taglibs.version>
-    <jackson.version>2.9.4</jackson.version>
+    <jackson.version>2.4.4</jackson.version>
     <commons.lang3.version>3.7</commons.lang3.version>
     <generator.version>3.1.0</generator.version>
     <velocity.version>2.1</velocity.version>
     <yaml.version>1.19</yaml.version>
+    <fileupload.version>1.2.2</fileupload.version>
+    <io.version>2.0.1</io.version>
   </properties>
 
   <dependencies>
+  	<!-- File Upload -->
+  	<dependency>
+	  	<groupId>commons-fileupload</groupId>
+	  	<artifactId>commons-fileupload</artifactId>
+	  	<version>${fileupload.version}</version></dependency>
+  	<dependency>
+		<groupId>commons-io</groupId>
+		<artifactId>commons-io</artifactId>
+		<version>${io.version}</version>
+	</dependency>
+	<!-- mybatis类型解析 -->
   	<dependency>
 	    <groupId>org.mybatis</groupId>
 	    <artifactId>mybatis-typehandlers-jsr310</artifactId>
@@ -157,7 +170,19 @@
       <artifactId>jackson-databind</artifactId>
       <version>${jackson.version}</version>
     </dependency>
-
+	
+	<dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-core</artifactId>
+      <version>${jackson.version}</version>
+    </dependency>
+	
+	<dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-annotations</artifactId>
+      <version>${jackson.version}</version>
+    </dependency>
+    
     <!--cocommons-lang3-->
     <dependency>
       <groupId>org.apache.commons</groupId>
@@ -167,7 +192,7 @@
 
   </dependencies>
   <build>
-    <finalName>mybatisplus-springmvc</finalName>
+    <finalName>AutoGenerator</finalName>
     <plugins>
     <!--配置maven的编译环境，不然mavn模版默认会使用jdk1.5版本-->
       <plugin>
