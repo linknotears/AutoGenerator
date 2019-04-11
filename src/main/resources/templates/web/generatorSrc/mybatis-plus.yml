@@ -1,20 +1,20 @@
 #AutoGenerator
 #普通配置
-OutputDir: D:/Project/QuestionSurvey/src
+OutputDir: D:/Project/VegetablesManagement/src
 #配置文件路径
-OutputDirConfig: D:/Project/QuestionSurvey/config
+OutputDirConfig: D:/Project/VegetablesManagement/config
 #webroot路径
-OutputDirWeb: D:/Project/QuestionSurvey/WebRoot
+OutputDirWeb: D:/Project/VegetablesManagement/WebRoot
 #作者名
-author: survey
+author: vegetables
 #基础包名
-basePackage: com.question.survey
+basePackage: com.vegetables.management
 #登录表名
 login.table: user
 login.usercolumn: username
 login.pwdcolumn: password
 #需要逆向的表(不写默认是全部表)
-tables: question,answer
+tables: 
 #是否初始化（生成拷贝文件）
 isInit: !!str true
 #是否覆盖文件（xml和entity或其他拷贝文件除外）
@@ -22,7 +22,7 @@ isOverFile: !!str false
 
 #jdbc配置
 jdbc.driver: com.mysql.cj.jdbc.Driver
-jdbc.url: jdbc:mysql://localhost:3306/question_survey?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=CONVERT_TO_NULL
+jdbc.url: jdbc:mysql://localhost:3306/vegetables_management?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=CONVERT_TO_NULL
 jdbc.user: root
 jdbc.pwd: root
 
@@ -48,27 +48,18 @@ mysql.version: !!str 8.0
 #    conjtype: inner
 conj.infor: 
   - 
-    table: paper
+    table: orders
     relation: one
-    condition: paper.id = paper_id and question.id = question_id
-    conjtype: left
+    condition: orders.id = order_id and goods.id = goods_id
+    conjtype: inner
     innertables: 
       - 
-        table: question
+        table: orderitem
         relation: many
         innertables: 
           - 
-            table: answer
-            relation: many
-  - 
-    table: question
-    relation: many
-    condition: question.id = question_id
-    conjtype: left
-    innertables: 
-      - 
-        table: answer
-        relation: many
+            table: goods
+            relation: one
 #一个表可能有多个模板，所以这里面有多少个就要建多少个FileOutput
 webtemplates: 
 #  - 
@@ -96,15 +87,52 @@ webtemplates:
 #    outpath: admin/select${entity}CategoryList.jsp
 #    exclude: img_url.link
 
-#指定文件类型（表名重复时不识别）
+  - 
+    tables: [goods]
+    template: select${entity}List.jsp
+    outpath: admin/select${entity}List.jsp
+    exclude: video.play_num,video.comment_num,video.void_url
+  - 
+    tables: [goods]
+    template: viewAdd${entity}.jsp
+    outpath: admin/viewAdd${entity}.jsp
+  - 
+    tables: [goods]
+    template: viewUpdate${entity}.jsp
+    outpath: admin/viewUpdate${entity}.jsp
+    exclude: user.password
+  - 
+    tables: [goods]
+    template: login.jsp
+    outpath: login.jsp
+  - 
+    tables: [classify]
+    template: select${entity}CategoryList.jsp
+    outpath: admin/select${entity}CategoryList.jsp
+  -  
+    tables: [user]
+    template: login.jsp
+    outpath: login.jsp
+  - 
+    tables: [user]
+    template: viewOrUpdate${entity}.jsp
+    outpath: admin/viewOrUpdate${entity}.jsp
+    exclude: user.password
+
+#指定文件类型（表名重复时不识别）:select、sex、file
 propertyType: 
 #  img_url: 
-#    url: image
+#    url: file
 #  video: 
-#    cover_img: image
-#    void_url: image
+#    cover_img: file
+#    void_url: file
 #  user:
-#    avatar: image
-  admin:
-    avatar: image
-    sex: select
+#    avatar: file
+  user:
+    avatar: file
+    sex: sex
+  orderitem: 
+    goods_id: select
+  goods: 
+    pic: file
+    

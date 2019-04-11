@@ -89,9 +89,9 @@ webtemplates:
 #指定文件类型（表名重复时不识别）
 propertyType: 
   img_url: 
-    url: image
+    url: file
   video: 
-    cover_img: image
-    void_url: image
+    cover_img: file
+    void_url: file
   user:
-    avatar: image
+    avatar: file

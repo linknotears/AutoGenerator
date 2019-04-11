@@ -188,7 +188,7 @@ $(function(){
 ##判断主键
 #if(!${field.keyFlag})
 ##判断文件类型
-#if($cfg.propertyType.get($table.name).get($field.name) == 'image' || ${field.propertyName.contains('image')})
+#if($cfg.propertyType.get($table.name).get($field.name) == 'file' || ${field.propertyName.contains('file')})
 								<th>
 									<input type="file" style="display: none;" name="${field.propertyName}file">
 									<span><img width="80" height="80" :src="classify.${field.propertyName}"/></sapn>
@@ -200,6 +200,14 @@ $(function(){
 										<option v-for="${propertyName}temp in data.${propertyName}s" :value="${propertyName}temp.id">{{ ${propertyName}temp.name }}</option>
 									</select>
 									<span>{{data.${propertyName}obj[classify.${field.propertyName}]}}</span>
+								</th>
+#elseif($cfg.propertyType.get($table.name).get($field.name) == 'sex' || ${field.propertyName == 'sex'})
+								<th>
+									<select name="${field.propertyName}" style="display: none;" :value="classify.${field.propertyName}">
+										<option value="true">男</option>
+										<option value="false">女</option>
+									</select>
+									<span>{{classify.${field.propertyName} == true? '男' : '女'}}</span>
 								</th>
 #else
 								<th>
@@ -227,7 +235,7 @@ $(function(){
 ##判断主键
 #if(!${field.keyFlag})
 ##判断文件类型
-#if($cfg.propertyType.get($table.name).get($field.name) == 'image' || ${field.propertyName.contains('image')})
+#if($cfg.propertyType.get($table.name).get($field.name) == 'file' || ${field.propertyName.contains('file')})
 								<th>
 									<input type="file" name="${field.propertyName}file">
 								</th>

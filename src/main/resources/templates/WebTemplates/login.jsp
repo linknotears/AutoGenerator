@@ -161,7 +161,6 @@
 														<select name="root">
 															<option value="0">普通用户</option>
 															<option value="1">管理员</option>
-															<option value="2">饲养员</option>
 														</select>
 														<i class="icon-envelope"></i>
 												</span>

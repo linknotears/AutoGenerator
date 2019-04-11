@@ -18,7 +18,7 @@
 
 <base href="<%=basePath%>">
 
-<title>添加</title>
+<title>更新</title>
 
 <meta http-equiv="pragma" content="no-cache">
 <meta http-equiv="cache-control" content="no-cache">
@@ -47,8 +47,11 @@ $(function(){
 	//加载data
 	loadUrls =[
 		{
-			url:"#tolowercase($entity)/findList.html",
-			refNames:['#tolowercase($entity)s']
+			url:"#tolowercase($entity)/findById.html",
+			data:{
+				'id':getParameter("id","${existUser.id}")
+			},
+			refNames:['#tolowercase($entity)']
 		}
 ##判断select
 #foreach($field in ${table.fields})
@@ -57,7 +60,11 @@ $(function(){
 		,
 		{
 			url:"${propertyName}/findList.html",
-			refNames:['${propertyName}s']
+			refNames:['${propertyName}s'],
+			successHandle: data => { 				
+				//改造pettypes
+				globalData.data.${propertyName}obj = arrJsonToMapping(globalData.data.${propertyName}s,"id","name");
+			}
 		}
 #end
 #end
@@ -69,16 +76,43 @@ $(function(){
 
 });
 
-function saveOrUpdate(form){
-	return request({
+function viewOrUpdateThis(){
+	var inputEls = $("#mainData").find("input");
+	var inputTextEl = $("#mainData").find("input,select")[0];
+	var spanEl = $("#mainData").find("span")[0];
+	if(inputTextEl.style.display == 'block'){
+		//隐藏
+		$("#mainData").find("input,select").css("display","none");
+		$("#mainData").find("span").css("display","block");
+	}else{
+		//显示
+		$("#mainData").find("input,select").css("display","block");
+		$("#mainData").find("span").css("display","none");
+		return false;
+	}
+	//form和data一起提交
+	//处理select
+	//克隆对象(克隆的副作用，克隆后select选中的值永远是第一个)
+	//解决方法，遍历所用的select获取它们的value和name放入data中
+	var data = {};
+	$("#mainData").find("select").each(function(){
+		data[this.name] = this.value;
+	});
+	
+	//处理表单
+	var form = $("<form/>");
+	form.append(inputEls.clone());
+	//改为dom对象
+	form = form[0];
+	
+	request({
 		url: "#tolowercase($entity)/saveOrUpdate.html",
+		data: data,
 		form: form,
 		successHandle:function(data){
-			alert("添加成功！");
-			this.form.reset();
+			loadData();
 		},
-		isMultipart:true,
-		checkHandle:function(){return true;}
+		isMultipart:true
 	});
 }
 </script>
@@ -102,11 +136,11 @@ function saveOrUpdate(form){
 	<div class="row">
 		<center>
 #set($temp = 1)
-		<form onsubmit="return saveOrUpdate(this);" method="post" enctype="multipart/form-data">
 			<table id="mainData"
 					class="table table-striped table-bordered table-hover"
 					style="width:70%">
 					<tr>
+					<input type="hidden" name="id" style="display: none;" :value="data.#tolowercase($entity).${table.fields[0].propertyName}">
 #foreach($field in ${table.fields})
 ##尽量不要在这里排除字段，显示会乱
 #if(!$cfg.colExclude.get($table.name).get($field.name))
@@ -114,25 +148,33 @@ function saveOrUpdate(form){
 ##判断文件类型
 #if($cfg.propertyType.get($table.name).get($field.name) == 'file' || ${field.propertyName.contains('file')})
 						<th style="text-align: center;">${field.comment}</th>
-						<th><input type="file" name="${field.propertyName}file"></th>
+						<th>
+							<input type="file" style="display: none;" name="${field.propertyName}file">
+							<span><img width="80" height="80" :src="data.#tolowercase($entity).${field.propertyName}"/></sapn>
+						</th>
 #elseif($cfg.propertyType.get($table.name).get($field.name) == 'select' || ${field.propertyName.contains('Id')})
 						<th style="text-align: center;">${field.comment}</th>
 						<th>
-							<select name="${field.propertyName}">
+							<select name="${field.propertyName}" style="display: none;" :value="data.#tolowercase($entity).${field.propertyName}">
 #set($propertyName = $field.propertyName.replace('Id',''))
-								<option v-for="${propertyName} in data.${propertyName}s" :value="${propertyName}.id">{{ ${propertyName}.name }}</option>
+								<option v-for="${propertyName}temp in data.${propertyName}s" :value="${propertyName}temp.id">{{ ${propertyName}temp.name }}</option>
 							</select>
+							<span>{{data.${propertyName}obj[data.#tolowercase($entity).${field.propertyName}]}}</span>
 						</th>
 #elseif($cfg.propertyType.get($table.name).get($field.name) == 'sex' || ${field.propertyName == 'sex'})
 						<th>
-							<select name="${field.propertyName}">
+							<select name="${field.propertyName}" style="display: none;" :value="data.#tolowercase($entity).${field.propertyName}">
 								<option value="true">男</option>
 								<option value="false">女</option>
 							</select>
+							<span>{{data.#tolowercase($entity).${field.propertyName} == true? '男' : '女'}}</span>
 						</th>
 #else
 						<th style="text-align: center;">${field.comment}</th>
-						<th><input type="text" name="${field.propertyName}"></th>
+						<th>
+							<input type="text" name="${field.propertyName}" style="display: none;" :value="data.#tolowercase($entity).${field.propertyName}">
+							<span>{{data.#tolowercase($entity).${field.propertyName} }}</span>
+						</th>
 #end
 #if(($temp % 2) == 0)
 					</tr>
@@ -145,9 +187,7 @@ function saveOrUpdate(form){
 #end
 					</tr>
 				</table>
-			<input class="btn btn-primary" type="submit" value="提交" />
-			<input class="btn" type="reset" value="重置" />
-			</form>
+			<input class="btn btn-primary" type="submit" value="修改" onclick="viewOrUpdateThis()" />
 		</center>
 
 	</div>

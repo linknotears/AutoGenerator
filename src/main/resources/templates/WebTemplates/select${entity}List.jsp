@@ -121,12 +121,16 @@ function remove(id){
 #if(!$cfg.colExclude.get($table.name).get($field.name))
 #if(!${field.keyFlag})
 ##判断文件类型
-#if($cfg.propertyType.get($table.name).get($field.name) == 'image' || ${field.propertyName.contains('image')})
+#if($cfg.propertyType.get($table.name).get($field.name) == 'file' || ${field.propertyName.contains('file')})
 					<th style="text-align: center;"><img width="80" height="80" alt="" :src="#tolowercase($entity).${field.propertyName}"></th>
 #elseif($cfg.propertyType.get($table.name).get($field.name) == 'select' || ${field.propertyName.contains('Id')})
 					<th>
 #set($propertyName = $field.propertyName.replace('Id',''))
 						{{data.${propertyName}obj[#tolowercase($entity).${field.propertyName}]}}
+					</th>
+#elseif($cfg.propertyType.get($table.name).get($field.name) == 'sex' || ${field.propertyName == 'sex'})
+					<th>
+						{{#tolowercase($entity).${field.propertyName} == true? '男' : '女'}}
 					</th>
 #else
 					<th style="text-align: center;">{{ #tolowercase($entity).${field.propertyName} }}</th>

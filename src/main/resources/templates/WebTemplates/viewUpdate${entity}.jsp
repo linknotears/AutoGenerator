@@ -115,7 +115,7 @@ function saveOrUpdate(form){
 #if(!$cfg.colExclude.get($table.name).get($field.name))
 #if(!${field.keyFlag})
 ##判断文件类型
-#if($cfg.propertyType.get($table.name).get($field.name) == 'image' || ${field.propertyName.contains('image')})
+#if($cfg.propertyType.get($table.name).get($field.name) == 'file' || ${field.propertyName.contains('file')})
 						<th style="text-align: center;">${field.comment}</th>
 						<th><input type="file" name="${field.propertyName}file"></th>
 #elseif($cfg.propertyType.get($table.name).get($field.name) == 'select' || ${field.propertyName.contains('Id')})
@@ -124,6 +124,13 @@ function saveOrUpdate(form){
 							<select name="${field.propertyName}" :value="data.#tolowercase($entity).${field.propertyName}">
 #set($propertyName = $field.propertyName.replace('Id',''))
 								<option v-for="${propertyName} in data.${propertyName}s" :value="${propertyName}.id">{{ ${propertyName}.name }}</option>
+							</select>
+						</th>
+#elseif($cfg.propertyType.get($table.name).get($field.name) == 'sex' || ${field.propertyName == 'sex'})
+						<th>
+							<select name="${field.propertyName}" :value="data.#tolowercase($entity).${field.propertyName}">
+								<option value="true">男</option>
+								<option value="false">女</option>
 							</select>
 						</th>
 #else

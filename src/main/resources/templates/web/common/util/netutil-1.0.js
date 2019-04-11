@@ -10,6 +10,10 @@
 	loadUrls = [];
 	loadEls = [];
 	loadParameters = [];
+	//定义全局变量
+	function define(defineData){
+		Object.assign(globalData, globalData,defineData);
+	}
 	//params.idcard.isDefault
 	/*模板
 	//加载参数

@@ -37,8 +37,8 @@ $(function(){
 	//加载data
 	loadUrls =[
 		{
-			url:"orderForm/findPage.html",
-			refNames:['orderForms','pageData']
+			url:"order/findPage.html",
+			refNames:['orders','pageData']
 		}
 	];
 	//加载标签
@@ -50,7 +50,7 @@ $(function(){
 
 function handleOrder(id){
 	request({
-		url: "orderForm/saveOrUpdate.html",
+		url: "order/saveOrUpdate.html",
 		data: {'state': 1, 'id': id},
 		successHandle: function(data){
 			loadData();
@@ -97,7 +97,7 @@ function handleOrder(id){
 				<div class="span24">
 					<table width="100%" id="mainData"
 					class="table table-striped table-bordered table-hover" >
-				<tbody v-for="order in data.orderForms">
+				<tbody v-for="order in data.orders">
 						<tr>
 							<th>
 							订单编号:{{order.id}}
