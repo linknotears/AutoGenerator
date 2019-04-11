@@ -120,18 +120,19 @@ function handleOrder(id){
 							<td></td>
 						</tr>
 						<tr  style="background: gray;">
-							<td width="30%">房间内的宠物</td>
-							<td width="20%">房间编号</td>
+							<td width="30%">商品图片</td>
+							<td width="20%">商品名</td>
+							<td width="20%">数量/kg</td>
 							<td width="50%">价格</td>
 						</tr>
-						<!-- 总是吧in写成: -->
-						<tr v-for="orderitem in order.orderitems" style="background: white;">
-							<td><a :href="'base/goto/user/selectPetList.html?roomId='+orderitem.roomId" target="_blank">{{orderitem.roomId.name }}</a></td>
-							<td>{{orderitem.room.name }}</td>
-							<td class="quantity">{{orderitem.room.rent }}
-								<div>
-									<span class="increase">&nbsp;</span> <span class="decrease">&nbsp;</span>
-								</div>
+
+						<tr v-for="orderitem in order.orderitemList" style="background: white;">
+							<td>
+								<img width="80" height="80" alt="" :src="orderitem.goods.pic">
+							</td>
+							<td>{{orderitem.goods.name }}</td>
+							<td class="quantity">{{orderitem.count }}</td>
+							<td>{{orderitem.subtotalPrice}}
 								</td>
 						</tr>
 				</tbody>
