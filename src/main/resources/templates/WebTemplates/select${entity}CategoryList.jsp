@@ -201,7 +201,7 @@ $(function(){
 									</select>
 									<span>{{data.${propertyName}obj[classify.${field.propertyName}]}}</span>
 								</th>
-#elseif($cfg.propertyType.get($table.name).get($field.name) == 'sex' || ${field.propertyName == 'sex'})
+#elseif($cfg.propertyType.get($table.name).get($field.name) == 'sex' || $field.propertyName == 'sex')
 								<th>
 									<select name="${field.propertyName}" style="display: none;" :value="classify.${field.propertyName}">
 										<option value="true">男</option>

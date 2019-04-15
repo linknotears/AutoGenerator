@@ -38,6 +38,9 @@ $(function(){
 	loadUrls =[
 		{
 			url:"order/findPage.html",
+			data:{
+				page: getParameter('page',1)
+			},
 			refNames:['orders','pageData']
 		}
 	];

@@ -126,7 +126,7 @@ function saveOrUpdate(form){
 								<option v-for="${propertyName} in data.${propertyName}s" :value="${propertyName}.id">{{ ${propertyName}.name }}</option>
 							</select>
 						</th>
-#elseif($cfg.propertyType.get($table.name).get($field.name) == 'sex' || ${field.propertyName == 'sex'})
+#elseif($cfg.propertyType.get($table.name).get($field.name) == 'sex' || $field.propertyName == 'sex')
 						<th>
 							<select name="${field.propertyName}" :value="data.#tolowercase($entity).${field.propertyName}">
 								<option value="true">男</option>

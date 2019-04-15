@@ -128,7 +128,7 @@ function remove(id){
 #set($propertyName = $field.propertyName.replace('Id',''))
 						{{data.${propertyName}obj[#tolowercase($entity).${field.propertyName}]}}
 					</th>
-#elseif($cfg.propertyType.get($table.name).get($field.name) == 'sex' || ${field.propertyName == 'sex'})
+#elseif($cfg.propertyType.get($table.name).get($field.name) == 'sex' || $field.propertyName == 'sex')
 					<th>
 						{{#tolowercase($entity).${field.propertyName} == true? '男' : '女'}}
 					</th>

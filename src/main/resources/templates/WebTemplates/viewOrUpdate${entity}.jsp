@@ -161,7 +161,7 @@ function viewOrUpdateThis(){
 							</select>
 							<span>{{data.${propertyName}obj[data.#tolowercase($entity).${field.propertyName}]}}</span>
 						</th>
-#elseif($cfg.propertyType.get($table.name).get($field.name) == 'sex' || ${field.propertyName == 'sex'})
+#elseif($cfg.propertyType.get($table.name).get($field.name) == 'sex' || $field.propertyName == 'sex')
 						<th>
 							<select name="${field.propertyName}" style="display: none;" :value="data.#tolowercase($entity).${field.propertyName}">
 								<option value="true">男</option>

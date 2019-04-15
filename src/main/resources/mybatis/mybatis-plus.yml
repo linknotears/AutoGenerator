@@ -1,14 +1,14 @@
 #AutoGenerator
 #普通配置
-OutputDir: D:/Project/VegetablesManagement/src
+OutputDir: D:/Project/SecondhandBooks/src
 #配置文件路径
-OutputDirConfig: D:/Project/VegetablesManagement/config
+OutputDirConfig: D:/Project/SecondhandBooks/config
 #webroot路径
-OutputDirWeb: D:/Project/VegetablesManagement/WebRoot
+OutputDirWeb: D:/Project/SecondhandBooks/WebRoot
 #作者名
-author: vegetables
+author: secondhand
 #基础包名
-basePackage: com.vegetables.management
+basePackage: com.secondhand.books
 #登录表名
 login.table: user
 login.usercolumn: username
@@ -22,7 +22,7 @@ isOverFile: !!str false
 
 #jdbc配置
 jdbc.driver: com.mysql.cj.jdbc.Driver
-jdbc.url: jdbc:mysql://localhost:3306/vegetables_management?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=CONVERT_TO_NULL
+jdbc.url: jdbc:mysql://localhost:3306/secondhand_books?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=CONVERT_TO_NULL
 jdbc.user: root
 jdbc.pwd: root
 
@@ -91,7 +91,6 @@ webtemplates:
     tables: [goods]
     template: select${entity}List.jsp
     outpath: admin/select${entity}List.jsp
-    exclude: video.play_num,video.comment_num,video.void_url
   - 
     tables: [goods]
     template: viewAdd${entity}.jsp
@@ -131,6 +130,7 @@ propertyType:
   user:
     avatar: file
     sex: sex
+    root: sex
   orderitem: 
     goods_id: select
   goods: 
