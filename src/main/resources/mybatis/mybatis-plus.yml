@@ -1,16 +1,16 @@
 #AutoGenerator
 #普通配置
-OutputDir: D:/Project/SecondhandBooks/src
+OutputDir: D:/Project/TeachingAidSys/src
 #配置文件路径
-OutputDirConfig: D:/Project/SecondhandBooks/config
+OutputDirConfig: D:/Project/TeachingAidSys/config
 #webroot路径
-OutputDirWeb: D:/Project/SecondhandBooks/WebRoot
+OutputDirWeb: D:/Project/TeachingAidSys/WebRoot
 #作者名
-author: secondhand
+author: aidsys
 #基础包名
-basePackage: com.secondhand.books
+basePackage: com.teaching.aid.sys
 #登录表名
-login.table: user
+login.table: admin
 login.usercolumn: username
 login.pwdcolumn: password
 #需要逆向的表(不写默认是全部表)
@@ -22,7 +22,7 @@ isOverFile: !!str false
 
 #jdbc配置
 jdbc.driver: com.mysql.cj.jdbc.Driver
-jdbc.url: jdbc:mysql://localhost:3306/secondhand_books?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=CONVERT_TO_NULL
+jdbc.url: jdbc:mysql://localhost:3306/teaching_aid_sys?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=CONVERT_TO_NULL
 jdbc.user: root
 jdbc.pwd: root
 
@@ -48,18 +48,23 @@ mysql.version: !!str 8.0
 #    conjtype: inner
 conj.infor: 
   - 
-    table: orders
+    table: course_table
     relation: one
-    condition: orders.id = order_id and goods.id = goods_id
+    condition: course.id = course_id
     conjtype: inner
     innertables: 
       - 
-        table: orderitem
-        relation: many
-        innertables: 
-          - 
-            table: goods
-            relation: one
+        table: course
+        relation: one
+  - 
+    table: grade
+    relation: one
+    conjtype: inner
+    condition: course.id = course_id
+    innertables: 
+      - 
+        table: course
+        relation: one
 #一个表可能有多个模板，所以这里面有多少个就要建多少个FileOutput
 webtemplates: 
 #  - 
@@ -86,37 +91,41 @@ webtemplates:
 #    template: select${entity}CategoryList.jsp
 #    outpath: admin/select${entity}CategoryList.jsp
 #    exclude: img_url.link
+#  - 
+#    tables: [user]
+#    template: viewOrUpdate${entity}.jsp
+#    outpath: common/viewOrUpdate${entity}.jsp
+#    exclude: user.password
 
   - 
-    tables: [goods]
+    tables: [student,application,course_table,grade]
     template: select${entity}List.jsp
     outpath: admin/select${entity}List.jsp
+    exclude: video.play_num,video.comment_num,video.void_url
   - 
-    tables: [goods]
+    tables: [student,course_table,grade]
     template: viewAdd${entity}.jsp
     outpath: admin/viewAdd${entity}.jsp
+    exclude: video.play_num,video.comment_num
   - 
-    tables: [goods]
+    tables: [student,course_table,grade]
     template: viewUpdate${entity}.jsp
     outpath: admin/viewUpdate${entity}.jsp
-    exclude: user.password
+    exclude: video.play_num,video.comment_num
   - 
-    tables: [goods]
+    tables: [admin]
     template: login.jsp
     outpath: login.jsp
   - 
-    tables: [classify]
+    tables: [course,chat,exam_arrange,class]
     template: select${entity}CategoryList.jsp
     outpath: admin/select${entity}CategoryList.jsp
-  -  
-    tables: [user]
-    template: login.jsp
-    outpath: login.jsp
+    exclude: img_url.link
   - 
-    tables: [user]
+    tables: [admin]
     template: viewOrUpdate${entity}.jsp
-    outpath: admin/viewOrUpdate${entity}.jsp
-    exclude: user.password
+    outpath: common/viewOrUpdate${entity}.jsp
+    exclude: admin.password
 
 #指定文件类型（表名重复时不识别）:select、sex、file
 propertyType: 
@@ -127,12 +136,10 @@ propertyType:
 #    void_url: file
 #  user:
 #    avatar: file
-  user:
-    avatar: file
-    sex: sex
-    root: sex
-  orderitem: 
-    goods_id: select
-  goods: 
-    pic: file
+  student: 
+    id: number
+  course_table: 
+    course_length: sex
+    course_start: sex
+    course_time: sex
     

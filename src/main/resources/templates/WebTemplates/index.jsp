@@ -63,7 +63,7 @@
 			style="height: 50px;">
 			<div class="navbar-header pull-left">
 				<a href="#" class="navbar-brand"> <small> <i
-						class="icon-leaf"></i> 宠物旅店管理系统
+						class="icon-leaf"></i> 后台管理系统
 				</small>
 				</a>
 				<!-- /.brand -->
@@ -88,9 +88,6 @@
 
 							<li><a href="base/goto/login.html"> <i class="icon-off"></i>
 									退出登录
-							</a></li>
-							<li><a href="base/goto/login.html"> <i class="icon-off"></i>
-									修改密码
 							</a></li>
 						</ul></li>
 				</ul>
@@ -132,11 +129,11 @@
 
 						<ul class="submenu">
 							<li><a href="base/goto/common/selectInforList.html" target="myiframe"> <i
-									class="icon-plus"></i> 查看饲养员
+									class="icon-eye-open"></i> 查看饲养员
 							</a></li>
 
 							<li><a href="base/goto/common/viewAddInfor.html" target="myiframe"> <i
-									class="icon-eye-open"></i> 添加饲养员
+									class="icon-plus"></i> 添加饲养员
 							</a></li>
 						</ul></li>
 

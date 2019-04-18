@@ -1,6 +1,5 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%
 	String path = request.getContextPath();
 	String basePath = request.getScheme() + "://"
@@ -32,6 +31,7 @@
 <link rel="stylesheet" href="assets/css/ace-skins.min.css" />
 <script src="assets/js/ace-extra.min.js"></script>
 <script type="text/javascript" src="common/util/netutil-1.0.js"></script>
+
 <script type="text/javascript">
 $(function(){
 	//加载data
@@ -45,7 +45,7 @@ $(function(){
 		}
 ##判断select
 #foreach($field in ${table.fields})
-#if($cfg.propertyType.get($table.name).get($field.name) == 'select' || ${field.propertyName.contains('Id')})
+#if($cfg.propertyType.get($table.name).get($field.name) == 'select' || (${field.propertyName.contains('Id')} && !$cfg.propertyType.get($table.name).get($field.name)))
 #set($propertyName = $field.propertyName.replace('Id',''))
 		,
 		{
@@ -107,7 +107,7 @@ function remove(id){
 #foreach($field in ${table.fields})
 ##判断排除字段
 #if(!$cfg.colExclude.get($table.name).get($field.name))
-#if(!${field.keyFlag})
+#if(!${field.keyFlag} || $cfg.propertyType.get($table.name).get($field.name))
 					<th style="text-align: center;">${field.comment}</th>
 #end
 #end
@@ -119,11 +119,11 @@ function remove(id){
 #foreach($field in ${table.fields})
 ##判断排除字段
 #if(!$cfg.colExclude.get($table.name).get($field.name))
-#if(!${field.keyFlag})
+#if(!${field.keyFlag} || $cfg.propertyType.get($table.name).get($field.name))
 ##判断文件类型
-#if($cfg.propertyType.get($table.name).get($field.name) == 'file' || ${field.propertyName.contains('file')})
+#if($cfg.propertyType.get($table.name).get($field.name) == 'file' || ${field.propertyName.contains('image')})
 					<th style="text-align: center;"><img width="80" height="80" alt="" :src="#tolowercase($entity).${field.propertyName}"></th>
-#elseif($cfg.propertyType.get($table.name).get($field.name) == 'select' || ${field.propertyName.contains('Id')})
+#elseif($cfg.propertyType.get($table.name).get($field.name) == 'select' || (${field.propertyName.contains('Id')} && !$cfg.propertyType.get($table.name).get($field.name)))
 					<th>
 #set($propertyName = $field.propertyName.replace('Id',''))
 						{{data.${propertyName}obj[#tolowercase($entity).${field.propertyName}]}}
@@ -131,6 +131,14 @@ function remove(id){
 #elseif($cfg.propertyType.get($table.name).get($field.name) == 'sex' || $field.propertyName == 'sex')
 					<th>
 						{{#tolowercase($entity).${field.propertyName} == true? '男' : '女'}}
+					</th>
+#elseif($field.type == 'date'))
+					<th>
+						{{ formatDate(classify.${field.propertyName}) }}
+					</th>
+#elseif($field.type == 'datetime')
+					<th>
+						{{ formatDateTime(classify.${field.propertyName},false) }}
 					</th>
 #else
 					<th style="text-align: center;">{{ #tolowercase($entity).${field.propertyName} }}</th>

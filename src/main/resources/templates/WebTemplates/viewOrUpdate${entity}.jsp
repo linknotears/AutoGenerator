@@ -42,7 +42,6 @@ width: 160px;
 </style>
 
 <script type="text/javascript">
-
 $(function(){
 	//加载data
 	loadUrls =[
@@ -55,7 +54,7 @@ $(function(){
 		}
 ##判断select
 #foreach($field in ${table.fields})
-#if($cfg.propertyType.get($table.name).get($field.name) == 'select' || ${field.propertyName.contains('Id')})
+#if($cfg.propertyType.get($table.name).get($field.name) == 'select' || (${field.propertyName.contains('Id')} && !$cfg.propertyType.get($table.name).get($field.name)))
 #set($propertyName = $field.propertyName.replace('Id',''))
 		,
 		{
@@ -144,15 +143,15 @@ function viewOrUpdateThis(){
 #foreach($field in ${table.fields})
 ##尽量不要在这里排除字段，显示会乱
 #if(!$cfg.colExclude.get($table.name).get($field.name))
-#if(!${field.keyFlag})
+#if(!${field.keyFlag} || $cfg.propertyType.get($table.name).get($field.name))
 ##判断文件类型
-#if($cfg.propertyType.get($table.name).get($field.name) == 'file' || ${field.propertyName.contains('file')})
+#if($cfg.propertyType.get($table.name).get($field.name) == 'file' || ${field.propertyName.contains('image')})
 						<th style="text-align: center;">${field.comment}</th>
 						<th>
 							<input type="file" style="display: none;" name="${field.propertyName}file">
 							<span><img width="80" height="80" :src="data.#tolowercase($entity).${field.propertyName}"/></sapn>
 						</th>
-#elseif($cfg.propertyType.get($table.name).get($field.name) == 'select' || ${field.propertyName.contains('Id')})
+#elseif($cfg.propertyType.get($table.name).get($field.name) == 'select' || (${field.propertyName.contains('Id')} && !$cfg.propertyType.get($table.name).get($field.name)))
 						<th style="text-align: center;">${field.comment}</th>
 						<th>
 							<select name="${field.propertyName}" style="display: none;" :value="data.#tolowercase($entity).${field.propertyName}">
@@ -162,12 +161,28 @@ function viewOrUpdateThis(){
 							<span>{{data.${propertyName}obj[data.#tolowercase($entity).${field.propertyName}]}}</span>
 						</th>
 #elseif($cfg.propertyType.get($table.name).get($field.name) == 'sex' || $field.propertyName == 'sex')
+						<th style="text-align: center;">${field.comment}</th>
 						<th>
 							<select name="${field.propertyName}" style="display: none;" :value="data.#tolowercase($entity).${field.propertyName}">
 								<option value="true">男</option>
 								<option value="false">女</option>
 							</select>
 							<span>{{data.#tolowercase($entity).${field.propertyName} == true? '男' : '女'}}</span>
+						</th>
+#elseif($field.type.contains('int') || $field.type.contains('double') || $field.type.contains('decimal'))
+						<th>
+							<input type="number" name="${field.propertyName}" style="display: none;" :value="data.#tolowercase($entity).${field.propertyName}">
+							<span>{{data.#tolowercase($entity).${field.propertyName}}}</span>
+						</th>
+#elseif($field.type == 'date')
+						<th>
+							<input type="date" name="${field.propertyName}" style="display: none;" :value="formatDate(data.#tolowercase($entity).${field.propertyName})">
+							<span>{{ formatDate(data.#tolowercase($entity).${field.propertyName} }}</span>
+						</th>
+#elseif($field.type == 'datetime')
+						<th>
+							<input type="datetime-local" name="${field.propertyName}" style="display: none;" :value="dateFormat(data.#tolowercase($entity).${field.propertyName})">
+							<span>{{ formatDateTime(data.#tolowercase($entity).${field.propertyName},false) }}</span>
 						</th>
 #else
 						<th style="text-align: center;">${field.comment}</th>

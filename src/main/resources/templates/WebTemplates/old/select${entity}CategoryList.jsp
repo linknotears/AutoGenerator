@@ -31,14 +31,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 <script src="assets/js/ace-extra.min.js"></script>
 <script type="text/javascript" src="common/util/netutil-1.0.js"></script>
-#foreach($field in ${table.fields})
-#if($field.type.contains('date'))
-#set($isHaveDateType = true)
-#end
-#end
-#if($isHaveDateType)
 
-#end
 <script type="text/javascript">
 //添加方法
 function add(){
@@ -202,7 +195,7 @@ $(function(){
 								</th>
 #elseif($cfg.propertyType.get($table.name).get($field.name) == 'select' || (${field.propertyName.contains('Id')} && !$cfg.propertyType.get($table.name).get($field.name)))
 								<th>
-									<select name="${field.propertyName}" style="display: none;" :value="classify.${field.propertyName}">
+									<select name="${field.propertyName}" style="display: none;" :value="data.#tolowercase($entity).${field.propertyName}">
 #set($propertyName = $field.propertyName.replace('Id',''))
 										<option v-for="${propertyName}temp in data.${propertyName}s" :value="${propertyName}temp.id">{{ ${propertyName}temp.name }}</option>
 									</select>
@@ -215,21 +208,6 @@ $(function(){
 										<option value="false">女</option>
 									</select>
 									<span>{{classify.${field.propertyName} == true? '男' : '女'}}</span>
-								</th>
-#elseif($field.type.contains('int') || $field.type.contains('double') || $field.type.contains('decimal'))
-								<th>
-									<input type="number" name="${field.propertyName}" style="display: none;" :value="classify.${field.propertyName}">
-									<span>{{classify.${field.propertyName}}}</span>
-								</th>
-#elseif($field.type == 'date')
-								<th>
-									<input type="date" name="${field.propertyName}" style="display: none;" :value="formatDate(classify.${field.propertyName})">
-									<span>{{ formatDate(classify.${field.propertyName} }}</span>
-								</th>
-#elseif($field.type == 'datetime')
-								<th>
-									<input type="datetime-local" name="${field.propertyName}" style="display: none;" :value="dateFormat(classify.${field.propertyName},'yyyy-MM-ddThh:mm')">
-									<span>{{ formatDateTime(classify.${field.propertyName},false) }}</span>
 								</th>
 #else
 								<th>
@@ -267,18 +245,6 @@ $(function(){
 #set($propertyName = $field.propertyName.replace('Id',''))
 										<option v-for="${propertyName}temp in data.${propertyName}s" :value="${propertyName}temp.id">{{ ${propertyName}temp.name }}</option>
 									</select>
-								</th>
-#elseif($field.type.contains('int') || $field.type.contains('double') || $field.type.contains('decimal'))
-								<th>
-									<input type="number" name="${field.propertyName}">
-								</th>
-#elseif($field.type == 'date')
-								<th>
-									<input type="date" name="${field.propertyName}" :value="formatDate()">
-								</th>
-#elseif($field.type == 'datetime')
-								<th>
-									<input type="datetime-local" name="${field.propertyName}" :value="dateFormat()">
 								</th>
 #else
 								<th>

@@ -1,5 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%
 	String path = request.getContextPath();
 	String basePath = request.getScheme() + "://"
@@ -15,16 +16,15 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-
 <base href="<%=basePath%>">
 
-<title>添加</title>
+<title>查看用户详细</title>
 
 <meta http-equiv="pragma" content="no-cache">
 <meta http-equiv="cache-control" content="no-cache">
 <meta http-equiv="expires" content="0">
 <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
-<meta http-equiv="gdescription" content="This is my page">
+<meta http-equiv="description" content="This is my page">
 <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
 <link rel="stylesheet" href="assets/css/font-awesome.min.css" />
 <link rel="stylesheet" href="assets/css/ace.min.css" />
@@ -32,52 +32,52 @@
 <link rel="stylesheet" href="assets/css/ace-skins.min.css" />
 <script src="assets/js/ace-extra.min.js"></script>
 <script type="text/javascript" src="common/util/netutil-1.0.js"></script>
-<style type="text/css">
-select{
-width: 160px;
-}
-input {
-width: 160px;
-}
-</style>
-
 <script type="text/javascript">
-
 $(function(){
 	//加载data
 	loadUrls =[
+		{
+			url:"#tolowercase($entity)/findPage.html",
+			data:{
+				page:getParameter("page",1)##第几页是服务器返回的
+			},
+			refNames:['#tolowercase($entity)s','pageData']
+		}
 ##判断select
 #foreach($field in ${table.fields})
 #if($cfg.propertyType.get($table.name).get($field.name) == 'select' || (${field.propertyName.contains('Id')} && !$cfg.propertyType.get($table.name).get($field.name)))
 #set($propertyName = $field.propertyName.replace('Id',''))
+		,
 		{
 			url:"${propertyName}/findList.html",
-			refNames:['${propertyName}s']
+			refNames:['${propertyName}s'],
+			successHandle: data => { 				
+				//改造pettypes
+				globalData.data.${propertyName}obj = arrJsonToMapping(globalData.data.${propertyName}s,"id","name");
+			}
 		}
-#set($fieldCount = $fieldCount + 1)
-#if(${foreach.hasNext})
-		,
-#end
 #end
 #end
 	];
 	//加载标签
-	loadEls = ['#mainData'];
+	loadEls = ['#mainData',"#pageSelect"];
 	//初始化数据
 	init();
-
+	
 });
 
-function saveOrUpdate(form){
-	return request({
-		url: "#tolowercase($entity)/saveOrUpdate.html",
-		form: form,
-		successHandle:function(data){
-			alert("添加成功！");
-			this.form.reset();
-		},
-		isMultipart:true,
-		checkHandle:function(){return true;}
+function viewUpdate(id){
+	window.location.href = "base/goto/admin/viewUpdate${entity}.html?id="+id;
+}
+
+function remove(id){
+	request({
+		url:'#tolowercase($entity)/remove.html',
+		data:{'id':id},
+		successHandle:data =>{
+			//重新获取数据
+			loadData();
+		}
 	});
 }
 </script>
@@ -100,71 +100,64 @@ function saveOrUpdate(form){
 
 	<div class="row">
 		<center>
-#set($temp = 1)
-		<form onsubmit="return saveOrUpdate(this);" method="post" enctype="multipart/form-data">
 			<table id="mainData"
-					class="table table-striped table-bordered table-hover"
-					style="width:70%">
-					<tr>
+				class="table table-striped table-bordered table-hover"
+				style="width:70%">
+				<tr>
 #foreach($field in ${table.fields})
-##尽量不要在这里排除字段，显示会乱
+##判断排除字段
+#if(!$cfg.colExclude.get($table.name).get($field.name))
+#if(!${field.keyFlag} || $cfg.propertyType.get($table.name).get($field.name))
+					<th style="text-align: center;">${field.comment}</th>
+#end
+#end
+#end
+					<th>操作</th>
+				</tr>
+				<tr>
+				<tr v-for="#tolowercase($entity) in data.#tolowercase($entity)s">
+#foreach($field in ${table.fields})
+##判断排除字段
 #if(!$cfg.colExclude.get($table.name).get($field.name))
 #if(!${field.keyFlag} || $cfg.propertyType.get($table.name).get($field.name))
 ##判断文件类型
 #if($cfg.propertyType.get($table.name).get($field.name) == 'file' || ${field.propertyName.contains('image')})
-						<th style="text-align: center;">${field.comment}</th>
-						<th><input type="file" name="${field.propertyName}file"></th>
+					<th style="text-align: center;"><img width="80" height="80" alt="" :src="#tolowercase($entity).${field.propertyName}"></th>
 #elseif($cfg.propertyType.get($table.name).get($field.name) == 'select' || (${field.propertyName.contains('Id')} && !$cfg.propertyType.get($table.name).get($field.name)))
-						<th style="text-align: center;">${field.comment}</th>
-						<th>
-							<select name="${field.propertyName}">
+					<th>
 #set($propertyName = $field.propertyName.replace('Id',''))
-								<option v-for="${propertyName} in data.${propertyName}s" :value="${propertyName}.id">{{ ${propertyName}.name }}</option>
-							</select>
-						</th>
+						{{data.${propertyName}obj[#tolowercase($entity).${field.propertyName}]}}
+					</th>
 #elseif($cfg.propertyType.get($table.name).get($field.name) == 'sex' || $field.propertyName == 'sex')
-						<th style="text-align: center;">${field.comment}</th>
-						<th>
-							<select name="${field.propertyName}">
-								<option value="true">男</option>
-								<option value="false">女</option>
-							</select>
-						</th>
-#elseif($field.type.contains('int') || $field.type.contains('double') || $field.type.contains('decimal'))
-						<th style="text-align: center;">${field.comment}</th>
-						<th>
-							<input type="number" name="${field.propertyName}">
-						</th>
-#elseif($field.type == 'date')
-						<th style="text-align: center;">${field.comment}</th>
-						<th>
-							<input type="date" name="${field.propertyName}" :value="formatDate()">
-						</th>
-#elseif($field.type == 'datetime')
-						<th style="text-align: center;">${field.comment}</th>
-						<th>
-							<input type="datetime-local" name="${field.propertyName}" :value="dateFormat()">
-						</th>
+					<th>
+						{{#tolowercase($entity).${field.propertyName} == true? '男' : '女'}}
+					</th>
 #else
-						<th style="text-align: center;">${field.comment}</th>
-						<th><input type="text" name="${field.propertyName}"></th>
-#end
-#if(($temp % 2) == 0)
-					</tr>
-					<tr>
-#end
-##自增
-#set($temp = $temp + 1)
+					<th style="text-align: center;">{{ #tolowercase($entity).${field.propertyName} }}</th>
 #end
 #end
 #end
-					</tr>
-				</table>
-			<input class="btn btn-primary" type="submit" value="提交" />
-			<input class="btn" type="reset" value="重置" />
-			</form>
+#end
+					<th><center>
+					<button @click="viewUpdate(#tolowercase($entity).${table.fields[0].propertyName})">修改</button>&nbsp;
+					<button @click="remove(#tolowercase($entity).${table.fields[0].propertyName})">删除</button>
+					</center></th>
+				</tr>
+			</table>
 		</center>
-
+			<center id="pageSelect">
+					<div v-if="page.totalPage != 0">
+						当前{{page.page }}/{{page.totalPage }}页     &nbsp;&nbsp;
+		 				<span v-if="page.page != 1">
+		 					<a :href="page.pageUri+'?page=1'">首页</a>&nbsp;&nbsp;
+		 					<a :href="page.pageUri+'?page='+(page.page-1)">上一页 </a>&nbsp;&nbsp;
+		 				</span>
+		 				<span v-if="page.page!=page.totalPage">
+		 					<a :href="page.pageUri+'?page='+(page.page+1)">下一页 </a>&nbsp;&nbsp;
+		 					<a :href="page.pageUri+'?page='+page.totalPage">末页</a>&nbsp;&nbsp;
+		 				</span>
+		 			</div>
+		 		</center>
 	</div>
 </body>
 </html>

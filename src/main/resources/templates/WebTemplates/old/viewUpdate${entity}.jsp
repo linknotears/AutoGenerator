@@ -18,7 +18,7 @@
 
 <base href="<%=basePath%>">
 
-<title>添加</title>
+<title>更新</title>
 
 <meta http-equiv="pragma" content="no-cache">
 <meta http-equiv="cache-control" content="no-cache">
@@ -46,18 +46,22 @@ width: 160px;
 $(function(){
 	//加载data
 	loadUrls =[
+		{
+			url:"#tolowercase($entity)/findById.html",
+			data:{
+				'id':getParameter("id")
+			},
+			refNames:['#tolowercase($entity)']
+		}
 ##判断select
 #foreach($field in ${table.fields})
 #if($cfg.propertyType.get($table.name).get($field.name) == 'select' || (${field.propertyName.contains('Id')} && !$cfg.propertyType.get($table.name).get($field.name)))
 #set($propertyName = $field.propertyName.replace('Id',''))
+		,
 		{
 			url:"${propertyName}/findList.html",
 			refNames:['${propertyName}s']
 		}
-#set($fieldCount = $fieldCount + 1)
-#if(${foreach.hasNext})
-		,
-#end
 #end
 #end
 	];
@@ -73,8 +77,7 @@ function saveOrUpdate(form){
 		url: "#tolowercase($entity)/saveOrUpdate.html",
 		form: form,
 		successHandle:function(data){
-			alert("添加成功！");
-			this.form.reset();
+			window.location.href = "base/goto/admin/select${entity}List.html";
 		},
 		isMultipart:true,
 		checkHandle:function(){return true;}
@@ -106,6 +109,7 @@ function saveOrUpdate(form){
 					class="table table-striped table-bordered table-hover"
 					style="width:70%">
 					<tr>
+					<input type="hidden" name="id" :value="data.#tolowercase($entity).${table.fields[0].propertyName}">
 #foreach($field in ${table.fields})
 ##尽量不要在这里排除字段，显示会乱
 #if(!$cfg.colExclude.get($table.name).get($field.name))
@@ -117,37 +121,21 @@ function saveOrUpdate(form){
 #elseif($cfg.propertyType.get($table.name).get($field.name) == 'select' || (${field.propertyName.contains('Id')} && !$cfg.propertyType.get($table.name).get($field.name)))
 						<th style="text-align: center;">${field.comment}</th>
 						<th>
-							<select name="${field.propertyName}">
+							<select name="${field.propertyName}" :value="data.#tolowercase($entity).${field.propertyName}">
 #set($propertyName = $field.propertyName.replace('Id',''))
 								<option v-for="${propertyName} in data.${propertyName}s" :value="${propertyName}.id">{{ ${propertyName}.name }}</option>
 							</select>
 						</th>
 #elseif($cfg.propertyType.get($table.name).get($field.name) == 'sex' || $field.propertyName == 'sex')
-						<th style="text-align: center;">${field.comment}</th>
 						<th>
-							<select name="${field.propertyName}">
+							<select name="${field.propertyName}" :value="data.#tolowercase($entity).${field.propertyName}">
 								<option value="true">男</option>
 								<option value="false">女</option>
 							</select>
 						</th>
-#elseif($field.type.contains('int') || $field.type.contains('double') || $field.type.contains('decimal'))
-						<th style="text-align: center;">${field.comment}</th>
-						<th>
-							<input type="number" name="${field.propertyName}">
-						</th>
-#elseif($field.type == 'date')
-						<th style="text-align: center;">${field.comment}</th>
-						<th>
-							<input type="date" name="${field.propertyName}" :value="formatDate()">
-						</th>
-#elseif($field.type == 'datetime')
-						<th style="text-align: center;">${field.comment}</th>
-						<th>
-							<input type="datetime-local" name="${field.propertyName}" :value="dateFormat()">
-						</th>
 #else
 						<th style="text-align: center;">${field.comment}</th>
-						<th><input type="text" name="${field.propertyName}"></th>
+						<th><input type="text" name="${field.propertyName}" :value="data.#tolowercase($entity).${field.propertyName}"></th>
 #end
 #if(($temp % 2) == 0)
 					</tr>

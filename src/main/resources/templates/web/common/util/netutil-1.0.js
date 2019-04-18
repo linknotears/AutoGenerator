@@ -2,7 +2,10 @@
 	addScript("common/util/jquery-1.10.2.min.js");
 	addScript("common/util/vue.min.js");
 	function addScript(url){
-		document.write("<script language=javascript src="+url+"></script>");
+		document.write("<script language='javascript' src='"+url+"'></script>");
+	}
+	function addMoudle(url){
+		document.write("<script type='module' src='"+url+"'></script>");
 	}
 	//通过索引复制的时候需用用Vue.set(target,i,target[i])通知vue
 	//全局变量
@@ -152,7 +155,53 @@
 				//绑定vue(同一个id只有首次渲染起作用)
 				new Vue({
 					el: loadEls[i],
-					data: globalData
+					data: globalData,
+					methods:{
+						dateFormat: function(date, fmt) {
+							//如果等于空，则使用现在的时间
+							if(!date){// "",null,undefined,NaN
+								date = new Date();
+							}else if(!(date instanceof Date)){
+								date = new Date(date);
+							}
+							if(!fmt){
+								fmt = "yyyy-MM-ddThh:mm";
+							}
+							if (/(y+)/.test(fmt)) {
+							  fmt = fmt.replace(RegExp.$1, (date.getFullYear() + '').substr(4 - RegExp.$1.length))
+						  	}
+						  	let o = {
+						  			'M+': date.getMonth() + 1,
+						  			'd+': date.getDate(),
+						  			'h+': date.getHours(),
+						  			'm+': date.getMinutes(),
+						  			's+': date.getSeconds()
+						  	}
+							  for (let k in o) {
+								  if (new RegExp(`(${k})`).test(fmt)) {
+									  let str = o[k] + ''
+									  fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? str : this.padLeftZero(str))
+								  }
+							  }
+							  return fmt
+						},
+						
+						formatDateTime: function(time,isShowSecond){
+							var formatStr = "yyyy-MM-dd hh:mm";
+							if(isShowSecond){
+								formatStr = "yyyy-MM-dd hh:mm:ss";
+							}
+							return this.dateFormat(time, formatStr)
+						},
+						
+						formatDate: function(time) {
+							return this.dateFormat(time, "yyyy-MM-dd")
+						},
+						
+						padLeftZero: function(str) {
+						  return ('00' + str).substr(str.length)
+						}
+					}
 				});
 			}
 		}

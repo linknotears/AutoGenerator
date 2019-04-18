@@ -53,7 +53,7 @@
 					<div class="login-container">
 						<div class="center">
 							<h1>
-								<i class="icon-leaf green"></i> <span class="red">宠物旅店管理系统</span>
+								<i class="icon-leaf green"></i> <span class="red">后台管理系统</span>
 								<span class="white"></span>
 							</h1>
 						</div>

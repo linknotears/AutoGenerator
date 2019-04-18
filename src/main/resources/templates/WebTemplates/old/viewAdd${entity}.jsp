@@ -46,18 +46,19 @@ width: 160px;
 $(function(){
 	//加载data
 	loadUrls =[
+		{
+			url:"#tolowercase($entity)/findList.html",
+			refNames:['#tolowercase($entity)s']
+		}
 ##判断select
 #foreach($field in ${table.fields})
 #if($cfg.propertyType.get($table.name).get($field.name) == 'select' || (${field.propertyName.contains('Id')} && !$cfg.propertyType.get($table.name).get($field.name)))
 #set($propertyName = $field.propertyName.replace('Id',''))
+		,
 		{
 			url:"${propertyName}/findList.html",
 			refNames:['${propertyName}s']
 		}
-#set($fieldCount = $fieldCount + 1)
-#if(${foreach.hasNext})
-		,
-#end
 #end
 #end
 	];
@@ -123,27 +124,11 @@ function saveOrUpdate(form){
 							</select>
 						</th>
 #elseif($cfg.propertyType.get($table.name).get($field.name) == 'sex' || $field.propertyName == 'sex')
-						<th style="text-align: center;">${field.comment}</th>
 						<th>
 							<select name="${field.propertyName}">
 								<option value="true">男</option>
 								<option value="false">女</option>
 							</select>
-						</th>
-#elseif($field.type.contains('int') || $field.type.contains('double') || $field.type.contains('decimal'))
-						<th style="text-align: center;">${field.comment}</th>
-						<th>
-							<input type="number" name="${field.propertyName}">
-						</th>
-#elseif($field.type == 'date')
-						<th style="text-align: center;">${field.comment}</th>
-						<th>
-							<input type="date" name="${field.propertyName}" :value="formatDate()">
-						</th>
-#elseif($field.type == 'datetime')
-						<th style="text-align: center;">${field.comment}</th>
-						<th>
-							<input type="datetime-local" name="${field.propertyName}" :value="dateFormat()">
 						</th>
 #else
 						<th style="text-align: center;">${field.comment}</th>

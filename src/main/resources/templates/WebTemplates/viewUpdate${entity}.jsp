@@ -42,7 +42,6 @@ width: 160px;
 </style>
 
 <script type="text/javascript">
-
 $(function(){
 	//加载data
 	loadUrls =[
@@ -55,7 +54,7 @@ $(function(){
 		}
 ##判断select
 #foreach($field in ${table.fields})
-#if($cfg.propertyType.get($table.name).get($field.name) == 'select' || ${field.propertyName.contains('Id')})
+#if($cfg.propertyType.get($table.name).get($field.name) == 'select' || (${field.propertyName.contains('Id')} && !$cfg.propertyType.get($table.name).get($field.name)))
 #set($propertyName = $field.propertyName.replace('Id',''))
 		,
 		{
@@ -113,12 +112,12 @@ function saveOrUpdate(form){
 #foreach($field in ${table.fields})
 ##尽量不要在这里排除字段，显示会乱
 #if(!$cfg.colExclude.get($table.name).get($field.name))
-#if(!${field.keyFlag})
+#if(!${field.keyFlag} || $cfg.propertyType.get($table.name).get($field.name))
 ##判断文件类型
-#if($cfg.propertyType.get($table.name).get($field.name) == 'file' || ${field.propertyName.contains('file')})
+#if($cfg.propertyType.get($table.name).get($field.name) == 'file' || ${field.propertyName.contains('image')})
 						<th style="text-align: center;">${field.comment}</th>
 						<th><input type="file" name="${field.propertyName}file"></th>
-#elseif($cfg.propertyType.get($table.name).get($field.name) == 'select' || ${field.propertyName.contains('Id')})
+#elseif($cfg.propertyType.get($table.name).get($field.name) == 'select' || (${field.propertyName.contains('Id')} && !$cfg.propertyType.get($table.name).get($field.name)))
 						<th style="text-align: center;">${field.comment}</th>
 						<th>
 							<select name="${field.propertyName}" :value="data.#tolowercase($entity).${field.propertyName}">
@@ -127,11 +126,27 @@ function saveOrUpdate(form){
 							</select>
 						</th>
 #elseif($cfg.propertyType.get($table.name).get($field.name) == 'sex' || $field.propertyName == 'sex')
+						<th style="text-align: center;">${field.comment}</th>
 						<th>
 							<select name="${field.propertyName}" :value="data.#tolowercase($entity).${field.propertyName}">
 								<option value="true">男</option>
 								<option value="false">女</option>
 							</select>
+						</th>
+#elseif($field.type.contains('int') || $field.type.contains('double') || $field.type.contains('decimal'))
+						<th style="text-align: center;">${field.comment}</th>
+						<th>
+							<input type="number" name="${field.propertyName}" :value="data.#tolowercase($entity).${field.propertyName}">
+						</th>
+#elseif($field.type == 'date')
+						<th style="text-align: center;">${field.comment}</th>
+						<th>
+							<input type="date" name="${field.propertyName}" :value="formatDate(data.#tolowercase($entity).${field.propertyName})">
+						</th>
+#elseif($field.type == 'datetime')
+						<th style="text-align: center;">${field.comment}</th>
+						<th>
+							<input type="datetime-local" name="${field.propertyName}" :value="dateFormat(data.#tolowercase($entity).${field.propertyName})">
 						</th>
 #else
 						<th style="text-align: center;">${field.comment}</th>

@@ -26,8 +26,17 @@
 	 <!-- 扫描指定包下面的注解 @Controller @Service @Repository -->
 	<context:component-scan base-package="${cfg.basePackage}"></context:component-scan>
 	<!-- 添加mvc的注解驱动 --><!-- 同时开启json格式的支持 -->
-	<mvc:annotation-driven  content-negotiation-manager="contentNegotiationManager" ></mvc:annotation-driven>
-	
+	<mvc:annotation-driven conversion-service="conversionService" content-negotiation-manager="contentNegotiationManager" ></mvc:annotation-driven>
+	<!-- 定义类型转换器 -->
+	<bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">    
+        <property name="converters">    
+            <list>
+            	<!-- 每一种类型只能有一个转换器，如果多了，后者覆盖前者 -->
+            	<!-- 日期类型转换器 -->
+                <bean class="${basePackage}.util.DatetimeConverter" />
+            </list>    
+        </property>    
+	</bean> 
 	<!-- 设置html后缀返回json -->
 	<bean id="contentNegotiationManager" class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean"> 
         <property name="mediaTypes">  
