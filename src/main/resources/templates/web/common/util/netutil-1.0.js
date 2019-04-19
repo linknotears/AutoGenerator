@@ -15,7 +15,7 @@
 	loadParameters = [];
 	//定义全局变量
 	function define(defineData){
-		Object.assign(globalData, globalData,defineData);
+		Object.assign(globalData,defineData);
 	}
 	//params.idcard.isDefault
 	/*模板
@@ -200,6 +200,47 @@
 						
 						padLeftZero: function(str) {
 						  return ('00' + str).substr(str.length)
+						},
+						//数组搜索对象
+						findObj: function(arr,condition,refName){
+							var conditionCount = Object.getOwnPropertyNames(condition).length;
+							for(var x in arr){
+								var arrObjCount = 0;
+								var arrObj = arr[x];
+								for(var key in condition){
+									var arrValue = arrObj[key];
+									var value = condition[key];
+									if(value == arrValue){
+										arrObjCount++;
+									}
+								}
+								//如果条件都符合则返回对象
+								if(arrObjCount == conditionCount){
+									//添加vue参照
+									if(!refName){
+										//清空对象属性
+										for(let x in this['item']){
+											delete this['item'][x];
+										}
+										//item的值被改变了，重新渲染视图导致无限循环
+										Object.assign(this.item,arrObj);
+									}else{
+										//初始化变量
+										if(!this[refName]){
+											this[refName] = {};
+										}else{
+											//清空对象属性
+											for(let x in this[refName]){
+												delete this[refName][x];
+											}
+										}
+										Object.assign(this[refName], arrObj);
+									}
+									return arrObj;
+								}
+							}
+							//如果没找这则返回null
+							return null;
 						}
 					}
 				});

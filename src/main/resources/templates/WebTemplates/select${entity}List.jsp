@@ -39,7 +39,7 @@ $(function(){
 		{
 			url:"#tolowercase($entity)/findPage.html",
 			data:{
-				page:getParameter("page",1)##第几页是服务器返回的
+				page: getParameter("page",1)//第几页是服务器返回的
 			},
 			refNames:['#tolowercase($entity)s','pageData']
 		}
@@ -134,11 +134,11 @@ function remove(id){
 					</th>
 #elseif($field.type == 'date'))
 					<th>
-						{{ formatDate(classify.${field.propertyName}) }}
+						{{ formatDate(#tolowercase($entity).${field.propertyName}) }}
 					</th>
 #elseif($field.type == 'datetime')
 					<th>
-						{{ formatDateTime(classify.${field.propertyName},false) }}
+						{{ formatDateTime(#tolowercase($entity).${field.propertyName},false) }}
 					</th>
 #else
 					<th style="text-align: center;">{{ #tolowercase($entity).${field.propertyName} }}</th>
