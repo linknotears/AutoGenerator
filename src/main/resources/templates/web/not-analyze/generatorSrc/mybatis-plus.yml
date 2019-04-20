@@ -1,0 +1,145 @@
+#AutoGenerator
+#普通配置
+OutputDir: D:/Project/TeachingAidSys/src
+#配置文件路径
+OutputDirConfig: D:/Project/TeachingAidSys/config
+#webroot路径
+OutputDirWeb: D:/Project/TeachingAidSys/WebRoot
+#作者名
+author: aidsys
+#基础包名
+basePackage: com.teaching.aid.sys
+#登录表名
+login.table: admin
+login.usercolumn: username
+login.pwdcolumn: password
+#需要逆向的表(不写默认是全部表)
+tables: 
+#是否初始化（生成拷贝文件）
+isInit: !!str true
+#是否覆盖文件（xml和entity或其他拷贝文件除外）
+isOverFile: !!str false
+
+#jdbc配置
+jdbc.driver: com.mysql.cj.jdbc.Driver
+jdbc.url: jdbc:mysql://localhost:3306/teaching_aid_sys?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=CONVERT_TO_NULL
+jdbc.user: root
+jdbc.pwd: root
+
+mysql.version: !!str 8.0
+
+#数组默认生成的是ArrayList
+#模板
+#conj.infor: 
+#  - 
+#    table: orders
+#    relation: one
+#    innertables: 
+#      - 
+#        table: orderitem
+#        relation: many
+#        innertables: 
+#          - 
+#            table: goods
+#            relation: one
+#    #不写默认是null
+#    condition: orders.id = orderitem.order_id and orderitem.goods_id = goods.id
+#    #内连接 inner、左连接 left ，不写默认inner
+#    conjtype: inner
+conj.infor: 
+  - 
+    table: course_table
+    relation: one
+    condition: course.id = course_id
+    conjtype: inner
+    innertables: 
+      - 
+        table: course
+        relation: one
+  - 
+    table: grade
+    relation: one
+    conjtype: inner
+    condition: course.id = course_id
+    innertables: 
+      - 
+        table: course
+        relation: one
+#一个表可能有多个模板，所以这里面有多少个就要建多少个FileOutput
+webtemplates: 
+#  - 
+#    tables: [video]
+#    template: select${entity}List.jsp
+#    outpath: admin/select${entity}List.jsp
+#    exclude: video.play_num,video.comment_num,video.void_url
+#  - 
+#    tables: [video]
+#    template: viewAdd${entity}.jsp
+#    outpath: admin/viewAdd${entity}.jsp
+#    exclude: video.play_num,video.comment_num
+#  - 
+#    tables: [video]
+#    template: viewUpdate${entity}.jsp
+#    outpath: admin/viewUpdate${entity}.jsp
+#    exclude: video.play_num,video.comment_num
+#  - 
+#    tables: [user]
+#    template: login.jsp
+#    outpath: login.jsp
+#  - 
+#    tables: [category,categorysecond,img_url]
+#    template: select${entity}CategoryList.jsp
+#    outpath: admin/select${entity}CategoryList.jsp
+#    exclude: img_url.link
+#  - 
+#    tables: [user]
+#    template: viewOrUpdate${entity}.jsp
+#    outpath: common/viewOrUpdate${entity}.jsp
+#    exclude: user.password
+
+  - 
+    tables: [student,application,course_table,grade]
+    template: select${entity}List.jsp
+    outpath: admin/select${entity}List.jsp
+    exclude: video.play_num,video.comment_num,video.void_url
+  - 
+    tables: [student,course_table,grade]
+    template: viewAdd${entity}.jsp
+    outpath: admin/viewAdd${entity}.jsp
+    exclude: video.play_num,video.comment_num
+  - 
+    tables: [student,course_table,grade]
+    template: viewUpdate${entity}.jsp
+    outpath: admin/viewUpdate${entity}.jsp
+    exclude: video.play_num,video.comment_num
+  - 
+    tables: [admin]
+    template: login.jsp
+    outpath: login.jsp
+  - 
+    tables: [course,chat,exam_arrange,class]
+    template: select${entity}CategoryList.jsp
+    outpath: admin/select${entity}CategoryList.jsp
+    exclude: img_url.link
+  - 
+    tables: [admin]
+    template: viewOrUpdate${entity}.jsp
+    outpath: common/viewOrUpdate${entity}.jsp
+    exclude: admin.password
+
+#指定文件类型（表名重复时不识别）:select、sex、file
+propertyType: 
+#  img_url: 
+#    url: file
+#  video: 
+#    cover_img: file
+#    void_url: file
+#  user:
+#    avatar: file
+  student: 
+    id: number
+  course_table: 
+    course_length: sex
+    course_start: sex
+    course_time: sex
+    

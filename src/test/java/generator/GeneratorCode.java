@@ -184,7 +184,7 @@ public class GeneratorCode {
 		                		String yamlTableName = outTableList.get(i);
 		                		String sqlTableName = tableInfo.getName();
 		                		if(sqlTableName.equals(yamlTableName)){
-		                			this.setTemplatePath("/templates/WebTemplates/" + tempInfo.get("template"));
+		                			this.setTemplatePath("/templates/web/assign/" + tempInfo.get("template"));
 		                			String filePath = ((String) tempInfo.get("outpath")).replace("${entity}", tableInfo.getEntityName());
 		                			return (String)yamlMap.get("OutputDirWeb") + "/WEB-INF/views/" + filePath;
 		                		}
@@ -215,12 +215,13 @@ public class GeneratorCode {
 	        //复制不需要解析的文件
 	        //复制web文件
 	        {
-	        	templatesToNotAnalyze("web",(String)yamlMap.get("OutputDirWeb"));
-	        	
+	        	templatesToNotAnalyze("web/not-analyze",(String)yamlMap.get("OutputDirWeb"));
 	        }
-	        //拷贝一份配置到generatorSrc
+	        //拷贝解析的web
 	        {
-	        	
+	        	String templateDir = "web/analyze";
+	        	String outPath = (String)yamlMap.get("OutputDirWeb");
+	        	templatesTo(focList,templateDir,outPath);
 	        }
         }
         //属性注入用于传入模板
@@ -235,8 +236,6 @@ public class GeneratorCode {
                 Map<String, Object> map = new HashMap<String, Object>();
                 map.put("abc", globalConfig.getAuthor() + "-rb");
                 
-                
-
 				//指定view显示类型
 				map.put("propertyType", (Map<String,Object>) yamlMap.get("propertyType"));
                 
@@ -358,6 +357,15 @@ public class GeneratorCode {
 	            			0,0);
 	                map.put("conjInfoMap", conjInfoMap);
                 }
+
+                //web模板配置信息
+                map.put("webtemplates", yamlMap.get("webtemplates"));
+                //设置表信息map（表名对应表信息）
+                HashMap<String,TableInfo> tableInfoMap = new HashMap<String,TableInfo>();
+                tableInfoList.forEach(tableInfo -> {
+                	tableInfoMap.put(tableInfo.getName(), tableInfo);
+                });
+                map.put("tableInfoMap", tableInfoMap);
                 this.setMap(map);
             }
         };
