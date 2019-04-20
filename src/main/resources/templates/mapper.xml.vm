@@ -57,6 +57,7 @@ $cfg.conjInfoMap.get($table.name).get('conjQueryStr')
 			#end
     	</if>
    	</where>
+   	${condition.orderby}
   </select>
   
   <select id="selectCount" parameterType="${package.Entity}.${entity}" resultType="java.lang.Integer">

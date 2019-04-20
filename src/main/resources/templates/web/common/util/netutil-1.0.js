@@ -53,18 +53,20 @@
 		return request({
 			url: "user/login.do",
 			form: "loginForm",
-			successHandle:function(data){
+			success:function(data){
 				window.location.href = "user/index.do";
 			},
 			isMultipart:false,
-			checkHandle:function(){return true;}
+			check:function(){return true;}
 		});
 		*/
-		var url = config.url,
-		form = config.form,
-		successHandle = config.successHandle,
-		isMultipart = config.isMultipart,
-		checkHandle = config.checkHandle,
+		var _this = this;
+		this.url = config.url;
+		this.data = config.data;
+		this.form = config.form;
+		this.success = config.success;
+		this.isMultipart = config.isMultipart;
+		this.check = config.check;
 		//模板
 		/* 
 		for (var index = 0; index < form.length; index++) {
@@ -77,7 +79,6 @@
 		}
 		*/
 		
-		data = config.data;
 		//如果form为null这则不传参数
 		if(data == undefined){
 			data = {}
@@ -111,8 +112,8 @@
 		
 		//校验表单
 		var checkFlag = true;
-		if(checkHandle != undefined){
-			checkFlag = checkHandle(form);
+		if(check != undefined){
+			checkFlag = check(form);
 		}
 		if(!checkFlag){
 			return false;
@@ -128,7 +129,7 @@
 	        dataType:'json',
 			success:function(result){
 				if(result.code==0){
-					successHandle(result.data);
+					_this.success(result.data);
 				}else if(result.message != null && result.message != undefined){
 					alert(result.message);
 				}else{
@@ -250,11 +251,24 @@
 	
 	//更新数据
 	function loadData(){
+		var next = function(data,layer){
+			if(!layer){
+				layer = 1;
+			}
+			var loadObj = loadUrls[loadIndex + layer];
+			if(!loadObj.data){
+				loadObj.data = {}
+			}
+			Object.assign(loadObj.data, data)
+			return loadObj;
+		}
 		for(var i = 0; i < loadUrls.length; i++){
 			request({
 				url: loadUrls[i].url,
 				data: loadUrls[i].data==undefined? {} : loadUrls[i].data,
-				successHandle: function(data){
+				success: function(data){
+					window.loadIndex = i;
+					window.next = next;
 					for(var j = 0; j < loadUrls[i].refNames.length; j++){
 						if(loadUrls[i].refNames[j] != 'pageData'){
 							globalData.data[loadUrls[i].refNames[j]] = data[loadUrls[i].refNames[j]];
@@ -264,8 +278,10 @@
 							globalData.page["pageUri"] = url;
 						}
 					}
-					if(loadUrls[i].successHandle != undefined){
-						loadUrls[i].successHandle(data);
+					if(loadUrls[i].success != undefined){
+						//this是数组对象
+						var success = loadUrls[i].success;
+						success(data);
 					}
 				}
 			});
@@ -327,7 +343,7 @@
 	//把json数组中的json的key和value，转换成对应的映射
 	//模板
 	
-	function arrJsonToMapping(array,refKey,refValue){
+	function objArrToMap(array,refKey,refValue){
 		var mapping = {};
 		for(var x in array){
 			var key = array[x][refKey];

@@ -22,18 +22,18 @@
 <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
 <link rel="stylesheet" href="assets/css/font-awesome.min.css" />
 <script type="text/javascript" src="assets/js/jquery-1.10.2.min.js"></script>
-<script type="text/javascript" src="common/util/netutil.js"></script>
+<script type="text/javascript" src="common/util/netutil-1.0.js"></script>
 
 <script type="text/javascript">
 	function loginForm(){
-		return formSubmit({
+		return request({
 			url: "user/login.html",
 			form: "loginForm",
-			successHandle:function(data){
+			success:function(data){
 				window.location.href = "user/index.html";
 			},
-			isMultipart:false,
-			checkHandle:function(){return true;}
+			isMultipart: false,
+			check: function(){return true;}
 		});
 	}
 </script>
@@ -141,7 +141,7 @@
 														<i class="icon-envelope"></i>
 												</span>
 												</label>
-												<p>真实姓名</p>
+												<p>姓名</p>
 												<label class="block clearfix"> <span
 													class="block input-icon input-icon-right"> <input
 														type="text" class="form-control" name="name" placeholder="姓名" />
@@ -178,15 +178,15 @@
 									
 									<script type="text/javascript">
 										function register(){
-											return formSubmit({
+											return request({
 												url: "user/regist.html",
 												form: "registId",
-												successHandle:function(data){
+												success: function(data){
 													alert('注册成功！');
 													window.location.href = "user/index.html";
 												},
 												isMultipart:false,
-												checkHandle:function(){return true;}
+												check: function(){return true;}
 											});
 										}
 									</script>

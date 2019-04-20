@@ -51,9 +51,9 @@ $(function(){
 		{
 			url:"${propertyName}/findList.html",
 			refNames:['${propertyName}s'],
-			successHandle: data => { 				
+			success: data => { 				
 				//改造pettypes
-				globalData.data.${propertyName}obj = arrJsonToMapping(globalData.data.${propertyName}s,"id","name");
+				globalData.data.${propertyName}Map = objArrToMap(globalData.data.${propertyName}s,"id","name");
 			}
 		}
 #end
@@ -74,7 +74,7 @@ function remove(id){
 	request({
 		url:'#tolowercase($entity)/remove.html',
 		data:{'id':id},
-		successHandle:data =>{
+		success:data =>{
 			//重新获取数据
 			loadData();
 		}
@@ -102,7 +102,7 @@ function remove(id){
 		<center>
 			<table id="mainData"
 				class="table table-striped table-bordered table-hover"
-				style="width:70%">
+				style="width:75%">
 				<tr>
 #foreach($field in ${table.fields})
 ##判断排除字段
@@ -126,7 +126,7 @@ function remove(id){
 #elseif($cfg.propertyType.get($table.name).get($field.name) == 'select' || (${field.propertyName.contains('Id')} && !$cfg.propertyType.get($table.name).get($field.name)))
 					<th>
 #set($propertyName = $field.propertyName.replace('Id',''))
-						{{data.${propertyName}obj[#tolowercase($entity).${field.propertyName}]}}
+						{{data.${propertyName}Map[#tolowercase($entity).${field.propertyName}]}}
 					</th>
 #elseif($cfg.propertyType.get($table.name).get($field.name) == 'sex' || $field.propertyName == 'sex')
 					<th>

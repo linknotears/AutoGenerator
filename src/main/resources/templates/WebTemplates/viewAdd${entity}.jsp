@@ -72,12 +72,12 @@ function saveOrUpdate(form){
 	return request({
 		url: "#tolowercase($entity)/saveOrUpdate.html",
 		form: form,
-		successHandle:function(data){
+		success: function(data){
 			alert("添加成功！");
 			this.form.reset();
 		},
-		isMultipart:true,
-		checkHandle:function(){return true;}
+		isMultipart: true,
+		check: function(){return true;}
 	});
 }
 </script>

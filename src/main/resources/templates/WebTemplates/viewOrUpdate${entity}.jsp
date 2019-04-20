@@ -60,9 +60,9 @@ $(function(){
 		{
 			url:"${propertyName}/findList.html",
 			refNames:['${propertyName}s'],
-			successHandle: data => { 				
+			success: data => { 				
 				//改造pettypes
-				globalData.data.${propertyName}obj = arrJsonToMapping(globalData.data.${propertyName}s,"id","name");
+				globalData.data.${propertyName}Map = objArrToMap(globalData.data.${propertyName}s,"id","name");
 			}
 		}
 #end
@@ -108,7 +108,7 @@ function viewOrUpdateThis(){
 		url: "#tolowercase($entity)/saveOrUpdate.html",
 		data: data,
 		form: form,
-		successHandle:function(data){
+		success: function(data){
 			loadData();
 		},
 		isMultipart:true
@@ -158,7 +158,7 @@ function viewOrUpdateThis(){
 #set($propertyName = $field.propertyName.replace('Id',''))
 								<option v-for="${propertyName}temp in data.${propertyName}s" :value="${propertyName}temp.id">{{ ${propertyName}temp.name }}</option>
 							</select>
-							<span>{{data.${propertyName}obj[data.#tolowercase($entity).${field.propertyName}]}}</span>
+							<span>{{data.${propertyName}Map[data.#tolowercase($entity).${field.propertyName}]}}</span>
 						</th>
 #elseif($cfg.propertyType.get($table.name).get($field.name) == 'sex' || $field.propertyName == 'sex')
 						<th style="text-align: center;">${field.comment}</th>

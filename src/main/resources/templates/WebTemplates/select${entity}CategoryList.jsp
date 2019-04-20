@@ -59,12 +59,12 @@ function add(){
 		url: "#tolowercase($entity)/saveOrUpdate.html",
 		data: data,
 		form: form,
-		successHandle:function(data){
+		success:function(data){
 			loadData();
 			inputEls.val("");//有效
 		},
 		isMultipart:true,
-		checkHandle:function(){return true;}
+		check:function(){return true;}
 	});
 }
 //删除方法
@@ -72,7 +72,7 @@ function deleteThis(id){
 	request({
 		url: "#tolowercase($entity)/remove.html",
 		data: {id: id},
-		successHandle:function(data){
+		success:function(data){
 			loadData();
 		}
 	});
@@ -113,7 +113,7 @@ function viewOrUpdateThis(id){
 		url: "#tolowercase($entity)/saveOrUpdate.html",
 		data: data,
 		form: form,
-		successHandle:function(data){
+		success:function(data){
 			loadData();
 		},
 		isMultipart:true
@@ -137,9 +137,9 @@ $(function(){
 		{
 			url:"${propertyName}/findList.html",
 			refNames:['${propertyName}s'],
-			successHandle: data =>{				
+			success: data =>{				
 				//改造pettypes
-				globalData.data.${propertyName}obj = arrJsonToMapping(globalData.data.${propertyName}s,"id","name");
+				globalData.data.${propertyName}Map = objArrToMap(globalData.data.${propertyName}s,"id","name");
 			}
 		}
 #end
@@ -206,7 +206,7 @@ $(function(){
 #set($propertyName = $field.propertyName.replace('Id',''))
 										<option v-for="${propertyName}temp in data.${propertyName}s" :value="${propertyName}temp.id">{{ ${propertyName}temp.name }}</option>
 									</select>
-									<span>{{data.${propertyName}obj[classify.${field.propertyName}]}}</span>
+									<span>{{data.${propertyName}Map[classify.${field.propertyName}]}}</span>
 								</th>
 #elseif($cfg.propertyType.get($table.name).get($field.name) == 'sex' || $field.propertyName == 'sex')
 								<th>

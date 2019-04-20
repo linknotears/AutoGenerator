@@ -75,11 +75,11 @@ function saveOrUpdate(form){
 	return request({
 		url: "#tolowercase($entity)/saveOrUpdate.html",
 		form: form,
-		successHandle:function(data){
+		success: function(data){
 			window.location.href = "base/goto/admin/select${entity}List.html";
 		},
-		isMultipart:true,
-		checkHandle:function(){return true;}
+		isMultipart: true,
+		check: function(){return true;}
 	});
 }
 </script>
