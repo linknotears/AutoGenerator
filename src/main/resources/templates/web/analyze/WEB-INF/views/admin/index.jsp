@@ -14,7 +14,7 @@
 <script type="text/javascript">
 </script>
 <title>管理员</title>
-
+#set($uri = '')
 <meta http-equiv="pragma" content="no-cache">
 <meta http-equiv="cache-control" content="no-cache">
 <meta http-equiv="expires" content="0">
@@ -77,7 +77,7 @@
 						class="dropdown-toggle"><img class="nav-user-photo"
 							src="assets/avatars/user.jpg" alt="Jason's Photo" />
 					<span
-							class="user-info"> <small>欢迎,</small>${sessionScope.existUser.name }
+							class="user-info"> <small>欢迎,</small>${sessionScope.existUser.name}
 						</span> <i class="icon-caret-down"></i>
 					</a>
 
@@ -119,30 +119,31 @@
 
 
 				</div>
-
 				<!--   菜单栏详情 -->
 				<ul class="nav nav-list">
 					#foreach($webtemplate in $cfg.webtemplates)
-					#if($webtemplate.template == "select${entity}List.jsp")
+					#set($temp = ($webtemplate.template == 'select${entity}List.jsp'))
+					#if($webtemplate.template == 'select${entity}List.jsp')
 					#foreach($tableName in $webtemplate.tables)
 					#set($comment = ${cfg.tableInfoMap.get($tableName).comment})
-					#set($entity = ${cfg.tableInfoMap.get($tableName).entityName})
-					<li class="open">
+					#set($entityName = ${cfg.tableInfoMap.get($tableName).entityName})
+					#set($uri = ${webtemplate.outpath.replace('${entity}',$entityName).replace('.jsp','.html')})
+					<li>
 						<a class="dropdown-toggle"> 
 							<i class="icon-edit"></i>
 							<span class="menu-text"> ${comment}信息管理 </span> 
 							<b class="arrow icon-angle-down"></b>
 						</a>
-						<ul class="submenu" style="display: block;">
+						<ul class="submenu" style="display: none;">
 							<li>
-								<a href="base/goto/${webtemplate.outpath.replace("${entity}",${entity}).replace(".jsp",".html")}" target="myiframe"> 
+								<a href="base/goto/$uri" target="myiframe"> 
 									<i class="icon-eye-open"></i> 
 									查看${comment}
 								</a>
 							</li>
 							
 							<li>
-								<a href="base/goto/${webtemplate.outpath.split("/.+\.jsp")[0]}/viewAdd${entity}.html" target="myiframe"> 
+								<a href="base/goto/${uri.split("/.+\.html")[0]}/viewAdd${entityName}.html" target="myiframe"> 
 									<i class="icon-plus"></i> 
 									添加${comment}
 								</a>
@@ -150,22 +151,26 @@
 						</ul>
 					</li>
 					#end
-					#elseif($webtemplate.template == "select${entity}CategoryList.jsp")
+					#elseif($webtemplate.template == 'select${entity}CategoryList.jsp')
 					#foreach($tableName in $webtemplate.tables)
 					#set($comment = ${cfg.tableInfoMap.get($tableName).comment})
-					#set($entity = ${cfg.tableInfoMap.get($tableName).entityName})
+					#set($entityName = ${cfg.tableInfoMap.get($tableName).entityName})
+					#set($uri = ${webtemplate.outpath.replace('${entity}',$entityName).replace('.jsp','.html')})
 					<li>
-						<a href="base/goto/${webtemplate.outpath.replace("${entity}",${entity}).replace(".jsp",".html")}" target="myiframe" class="dropdown-toggle"> 
+						<a href="base/goto/$uri" target="myiframe" class="dropdown-toggle"> 
 							<i class="icon-desktop"></i>
 							<span class="menu-text">${comment}管理</span> 
 							<b class="icon-double-angle-right"></b>
 						</a>
 					</li>
 					#end
-					#elseif($webtemplate.template == "viewOrUpdate${entity}.jsp")
+					#elseif($webtemplate.template == 'viewOrUpdate${entity}.jsp')
 					#foreach($tableName in $webtemplate.tables)
+					#set($comment = ${cfg.tableInfoMap.get($tableName).comment})
+					#set($entityName = ${cfg.tableInfoMap.get($tableName).entityName})
+					#set($uri = ${webtemplate.outpath.replace('${entity}',$entityName).replace('.jsp','.html')})
 					<li>
-						<a href="base/goto/${webtemplate.outpath.replace("${entity}",${entity}).replace(".jsp",".html")}" target="myiframe" class="dropdown-toggle"> 
+						<a href="base/goto/$uri" target="myiframe" class="dropdown-toggle"> 
 							<i class="icon-desktop"></i>
 							<span class="menu-text">${comment}信息管理</span> 
 							<b class="icon-double-angle-right"></b>
@@ -192,7 +197,7 @@
 			<div class="main-content" style="width: 85%;">
 
 				<iframe style="text-align:center;" name="myiframe" frameborder="0"
-					width="100%" height="100%" src="base/goto/admin/selectOrderList.html"></iframe>
+					width="100%" height="100%" src="base/goto/${uri}"></iframe>
 			</div>
 			<!-- /.main-content -->
 

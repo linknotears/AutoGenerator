@@ -33,7 +33,7 @@
             <list>
             	<!-- 每一种类型只能有一个转换器，如果多了，后者覆盖前者 -->
             	<!-- 日期类型转换器 -->
-                <bean class="${basePackage}.util.DatetimeConverter" />
+                <bean class="${cfg.basePackage}.util.DatetimeConverter" />
             </list>    
         </property>    
 	</bean> 

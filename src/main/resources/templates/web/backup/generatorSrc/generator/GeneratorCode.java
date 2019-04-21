@@ -414,7 +414,7 @@ public class GeneratorCode {
             int len = 0;
             try {
             	//read()一次读一个字节
-            	out =new FileOutputStream(outFile);
+            	out = new FileOutputStream(outFile);
             	while((len = in.read(buffer))!=-1){
             		out.write(buffer, 0, len);
             	}
@@ -465,9 +465,9 @@ public class GeneratorCode {
 			if(f.isDirectory())	//若是目录，则递归打印该目录下的文件
 				getShortPath(f,list,splitName);
 			if(f.isFile()){		//若是文件，直接打印
-				String fStr = f.toString();
-				int index = f.toString().lastIndexOf("templates\\"+splitName+"\\");
-				String shortPath = fStr.substring(index+splitName.length()+10);
+				String fStr = f.toString().replace("\\","/");
+				int index = fStr.lastIndexOf("templates/"+splitName+"/");
+				String shortPath = fStr.substring(index + splitName.length() + 10);
 				list.add(shortPath);
 				System.out.println("shortPath:"+shortPath);
 			}
