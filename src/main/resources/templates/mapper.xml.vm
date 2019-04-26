@@ -56,6 +56,7 @@ $cfg.conjInfoMap.get($table.name).get('conjQueryStr')
     		</if>
 			#end
     	</if>
+    	${condition.customCondition}
    	</where>
    	${condition.orderby}
   </select>
@@ -72,6 +73,7 @@ $cfg.conjInfoMap.get($table.name).get('conjQueryStr')
     		</if>
 			#end
     	</if>
+    	${condition.customCondition}
    	</where>
   </select>
   
@@ -87,6 +89,7 @@ $cfg.conjInfoMap.get($table.name).get('conjQueryStr')
     		</if>
 			#end
     	</if>
+    	${condition.customCondition}
    	</where>
     ${orderby}
     limit #{start },#{limit }

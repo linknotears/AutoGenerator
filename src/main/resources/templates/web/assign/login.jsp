@@ -27,7 +27,7 @@
 <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
 <link rel="stylesheet" href="assets/css/font-awesome.min.css" />
 <script type="text/javascript" src="assets/js/jquery-1.10.2.min.js"></script>
-<script type="text/javascript" src="common/util/netutil-1.0.js"></script>
+<script type="text/javascript" src="common/util/request-tool-1.1.js"></script>
 
 <script type="text/javascript">
 	function loginForm(form){
@@ -156,7 +156,7 @@
 												<p>输入密码</p>
 												<label class="block clearfix"> <span
 													class="block input-icon input-icon-right"> <input
-														type="password" class="form-control" name="${cfg.loginUsercolumn}" placeholder="密码" />
+														type="password" class="form-control" name="${cfg.loginPwdcolumn}" placeholder="密码" />
 														<i class="icon-envelope"></i>
 												</span>
 												</label>

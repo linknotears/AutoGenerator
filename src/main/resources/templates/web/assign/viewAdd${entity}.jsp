@@ -31,7 +31,7 @@
 <link rel="stylesheet" href="assets/css/ace-rtl.min.css" />
 <link rel="stylesheet" href="assets/css/ace-skins.min.css" />
 <script src="assets/js/ace-extra.min.js"></script>
-<script type="text/javascript" src="common/util/netutil-1.0.js"></script>
+<script type="text/javascript" src="common/util/request-tool-1.1.js"></script>
 <style type="text/css">
 select{
 width: 160px;
@@ -164,7 +164,10 @@ function saveOrUpdate(form){
 			<input class="btn" type="reset" value="重置" />
 			</form>
 		</center>
-
+		
+		<script type="text/javascript">
+			$("table input,select").css("width","185px");
+		</script>
 	</div>
 </body>
 </html>

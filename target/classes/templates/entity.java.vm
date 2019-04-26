@@ -1,4 +1,6 @@
 package ${package.Entity};
+## 首字母大写
+#macro(toheaduppercase $str)$str.substring(0,1).toUpperCase()$str.substring(1)#end
 
 import java.io.Serializable;
 #foreach($pkg in ${table.importPackages})
@@ -37,12 +39,13 @@ $conjEntityProp
 #if(!${entityLombokModel})
 #foreach($field in ${table.fields})
 #if(${field.propertyType.equals("boolean")})
-#set($getprefix="is")
+#set($getprefix="get")
 #else
 #set($getprefix="get")
 #end
 
-	public ${field.propertyType} ${getprefix}${field.capitalName}() {
+	##public ${field.propertyType} ${getprefix}${field.capitalName}() {
+	public ${field.propertyType} ${getprefix}#toheaduppercase(${field.propertyType})() {
 		return ${field.propertyName};
 	}
 
@@ -86,7 +89,7 @@ $conjEntityProp
 	}
 
 	public void setCustomCondition(String customCondition) {
-		this.customCondition = customCondition;
+		this.customCondition = "and " + customCondition;
 	}
 	
 	public String getOrderby() {
@@ -94,6 +97,6 @@ $conjEntityProp
 	}
 
 	public void setOrderby(String orderby) {
-		this.orderby = orderby;
+		this.orderby = "ORDER BY " + orderby;
 	}
 }

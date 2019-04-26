@@ -1,16 +1,16 @@
 #AutoGenerator
 #普通配置
-OutputDir: D:/Project/TeachingAidSys/src
+OutputDir: D:/Project/MeetingManagement/src
 #配置文件路径
-OutputDirConfig: D:/Project/TeachingAidSys/config
+OutputDirConfig: D:/Project/MeetingManagement/config
 #webroot路径
-OutputDirWeb: D:/Project/TeachingAidSys/WebRoot
+OutputDirWeb: D:/Project/MeetingManagement/WebRoot
 #作者名
-author: aidsys
+author: meeting
 #基础包名
-basePackage: com.teaching.aid.sys
+basePackage: com.meeting.management
 #登录表名
-login.table: admin
+login.table: user
 login.usercolumn: username
 login.pwdcolumn: password
 #需要逆向的表(不写默认是全部表)
@@ -22,7 +22,7 @@ isOverFile: !!str false
 
 #jdbc配置
 jdbc.driver: com.mysql.cj.jdbc.Driver
-jdbc.url: jdbc:mysql://localhost:3306/teaching_aid_sys?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=CONVERT_TO_NULL
+jdbc.url: jdbc:mysql://localhost:3306/meeting_management?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=CONVERT_TO_NULL
 jdbc.user: root
 jdbc.pwd: root
 
@@ -48,23 +48,27 @@ mysql.version: !!str 8.0
 #    conjtype: inner
 conj.infor: 
   - 
-    table: course_table
+    table: orders
     relation: one
-    condition: course.id = course_id
+    condition: orders.id = order_id and goods.id = goods_id
     conjtype: inner
     innertables: 
       - 
-        table: course
-        relation: one
+        table: orderitem
+        relation: many
+        innertables: 
+          - 
+            table: goods
+            relation: one
   - 
-    table: grade
+    table: classify
     relation: one
-    conjtype: inner
-    condition: course.id = course_id
+    condition: classify.id = classify_id
+    conjtype: left
     innertables: 
       - 
-        table: course
-        relation: one
+        table: goods
+        relation: many
 #一个表可能有多个模板，所以这里面有多少个就要建多少个FileOutput
 webtemplates: 
 #  - 
@@ -91,41 +95,34 @@ webtemplates:
 #    template: select${entity}CategoryList.jsp
 #    outpath: admin/select${entity}CategoryList.jsp
 #    exclude: img_url.link
-#  - 
-#    tables: [user]
-#    template: viewOrUpdate${entity}.jsp
-#    outpath: common/viewOrUpdate${entity}.jsp
-#    exclude: user.password
 
   - 
-    tables: [student,application,course_table,grade]
+    tables: [meeting]
     template: select${entity}List.jsp
     outpath: admin/select${entity}List.jsp
-    exclude: video.play_num,video.comment_num,video.void_url
   - 
-    tables: [student,course_table,grade]
+    tables: [meeting]
     template: viewAdd${entity}.jsp
     outpath: admin/viewAdd${entity}.jsp
-    exclude: video.play_num,video.comment_num
+    exclude: meeting.create_time
   - 
-    tables: [student,course_table,grade]
+    tables: [meeting]
     template: viewUpdate${entity}.jsp
     outpath: admin/viewUpdate${entity}.jsp
-    exclude: video.play_num,video.comment_num
+    exclude: meeting.create_time
   - 
-    tables: [admin]
+    tables: [address]
+    template: select${entity}CategoryList.jsp
+    outpath: admin/select${entity}CategoryList.jsp
+  -  
+    tables: [user]
     template: login.jsp
     outpath: login.jsp
   - 
-    tables: [course,chat,exam_arrange,class]
-    template: select${entity}CategoryList.jsp
-    outpath: admin/select${entity}CategoryList.jsp
-    exclude: img_url.link
-  - 
-    tables: [admin]
+    tables: [user]
     template: viewOrUpdate${entity}.jsp
-    outpath: common/viewOrUpdate${entity}.jsp
-    exclude: admin.password
+    outpath: admin/viewOrUpdate${entity}.jsp
+    exclude: user.password
 
 #指定文件类型（表名重复时不识别）:select、sex、file
 propertyType: 
@@ -136,10 +133,12 @@ propertyType:
 #    void_url: file
 #  user:
 #    avatar: file
-  student: 
-    id: number
-  course_table: 
-    course_length: sex
-    course_start: sex
-    course_time: sex
+  user:
+    avatar: file
+    sex: sex
+    root: sex
+  meeting: 
+    allow_messages: sex
+  goods: 
+    pic: file
     
