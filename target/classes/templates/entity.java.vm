@@ -44,8 +44,8 @@ $conjEntityProp
 #set($getprefix="get")
 #end
 
-	##public ${field.propertyType} ${getprefix}${field.capitalName}() {
-	public ${field.propertyType} ${getprefix}#toheaduppercase(${field.propertyType})() {
+##public ${field.propertyType} ${getprefix}${field.capitalName}() {
+	public ${field.propertyType} ${getprefix}#toheaduppercase(${field.propertyName})() {
 		return ${field.propertyName};
 	}
 

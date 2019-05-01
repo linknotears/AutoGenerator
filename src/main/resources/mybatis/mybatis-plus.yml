@@ -1,14 +1,14 @@
 #AutoGenerator
 #普通配置
-OutputDir: D:/Project/MeetingManagement/src
+OutputDir: D:/Project/ShoolGuide/src
 #配置文件路径
-OutputDirConfig: D:/Project/MeetingManagement/config
+OutputDirConfig: D:/Project/ShoolGuide/config
 #webroot路径
-OutputDirWeb: D:/Project/MeetingManagement/WebRoot
+OutputDirWeb: D:/Project/ShoolGuide/WebRoot
 #作者名
-author: meeting
+author: guide
 #基础包名
-basePackage: com.meeting.management
+basePackage: com.shool.guide
 #登录表名
 login.table: user
 login.usercolumn: username
@@ -22,7 +22,7 @@ isOverFile: !!str false
 
 #jdbc配置
 jdbc.driver: com.mysql.cj.jdbc.Driver
-jdbc.url: jdbc:mysql://localhost:3306/meeting_management?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=CONVERT_TO_NULL
+jdbc.url: jdbc:mysql://localhost:3306/shool_guide?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=CONVERT_TO_NULL
 jdbc.user: root
 jdbc.pwd: root
 
@@ -97,21 +97,19 @@ webtemplates:
 #    exclude: img_url.link
 
   - 
-    tables: [meeting]
+    tables: [introduce]
     template: select${entity}List.jsp
     outpath: admin/select${entity}List.jsp
   - 
-    tables: [meeting]
+    tables: [introduce]
     template: viewAdd${entity}.jsp
     outpath: admin/viewAdd${entity}.jsp
-    exclude: meeting.create_time
   - 
-    tables: [meeting]
+    tables: [introduce]
     template: viewUpdate${entity}.jsp
     outpath: admin/viewUpdate${entity}.jsp
-    exclude: meeting.create_time
   - 
-    tables: [address]
+    tables: [setting]
     template: select${entity}CategoryList.jsp
     outpath: admin/select${entity}CategoryList.jsp
   -  
