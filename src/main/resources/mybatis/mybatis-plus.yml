@@ -1,0 +1,148 @@
+#AutoGenerator
+#普通配置
+OutputDir: D:/Project/test/src/main/java
+#配置文件路径
+OutputDirConfig: D:/Project/test/src/main/resources
+#webroot路径
+OutputDirWeb: D:/Project/test/src/main/webapp
+#作者名
+author: test
+#基础包名
+basePackage: com.atguigu
+#登录表名
+login.table: user
+login.usercolumn: username
+login.pwdcolumn: password
+#需要逆向的表(不写默认是全部表)
+tables: withdraw_info,withdraw_order
+#是否初始化（生成拷贝文件）只生成baseclass、xml、和各层的文件
+isInit: !!str false
+#是否覆盖文件（（xml）和entity、mapper或其他拷贝文件除外）
+isOverFile: !!str false
+
+#jdbc配置
+jdbc.driver: com.mysql.cj.jdbc.Driver
+jdbc.url: jdbc:mysql://wx.j66c.com:3306/gyyd_db?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=CONVERT_TO_NULL
+jdbc.user: root
+jdbc.pwd: wwwj66ccom
+
+mysql.version: !!str 8.0
+#各层包名配置
+package.suffix.mapper: mapper
+package.suffix.entity: entity
+package.suffix.service: service
+package.suffix.serviceImpl: service.impl
+package.suffix.controller: controller
+package.suffix.xml: mapper
+#数组默认生成的是ArrayList
+#模板
+#conj.infor: 
+#  - 
+#    table: orders
+#    relation: one
+#    innertables: 
+#      - 
+#        table: orderitem
+#        relation: many
+#        innertables: 
+#          - 
+#            table: goods
+#            relation: one
+#    #不写默认是null
+#    condition: orders.id = orderitem.order_id and orderitem.goods_id = goods.id
+#    #内连接 inner、左连接 left ，不写默认inner
+#    conjtype: inner
+conj.infor: 
+  - 
+    table: orders
+    relation: one
+    condition: orders.id = order_id and goods.id = goods_id
+    conjtype: inner
+    innertables: 
+      - 
+        table: orderitem
+        relation: many
+        innertables: 
+          - 
+            table: goods
+            relation: one
+  - 
+    table: classify
+    relation: one
+    condition: classify.id = classify_id
+    conjtype: left
+    innertables: 
+      - 
+        table: goods
+        relation: many
+#一个表可能有多个模板，所以这里面有多少个就要建多少个FileOutput
+webtemplates: 
+#  - 
+#    tables: [video]
+#    template: select${entity}List.jsp
+#    outpath: admin/select${entity}List.jsp
+#    exclude: video.play_num,video.comment_num,video.void_url
+#  - 
+#    tables: [video]
+#    template: viewAdd${entity}.jsp
+#    outpath: admin/viewAdd${entity}.jsp
+#    exclude: video.play_num,video.comment_num
+#  - 
+#    tables: [video]
+#    template: viewUpdate${entity}.jsp
+#    outpath: admin/viewUpdate${entity}.jsp
+#    exclude: video.play_num,video.comment_num
+#  - 
+#    tables: [user]
+#    template: login.jsp
+#    outpath: login.jsp
+#  - 
+#    tables: [category,categorysecond,img_url]
+#    template: select${entity}CategoryList.jsp
+#    outpath: admin/select${entity}CategoryList.jsp
+#    exclude: img_url.link
+
+  - 
+    tables: [introduce]
+    template: select${entity}List.jsp
+    outpath: admin/select${entity}List.jsp
+  - 
+    tables: [introduce]
+    template: viewAdd${entity}.jsp
+    outpath: admin/viewAdd${entity}.jsp
+  - 
+    tables: [introduce]
+    template: viewUpdate${entity}.jsp
+    outpath: admin/viewUpdate${entity}.jsp
+  - 
+    tables: [setting]
+    template: select${entity}CategoryList.jsp
+    outpath: admin/select${entity}CategoryList.jsp
+  -  
+    tables: [user]
+    template: login.jsp
+    outpath: login.jsp
+  - 
+    tables: [user]
+    template: viewOrUpdate${entity}.jsp
+    outpath: admin/viewOrUpdate${entity}.jsp
+    exclude: user.password
+
+#指定文件类型（表名重复时不识别）:select、sex、file
+propertyType: 
+#  img_url: 
+#    url: file
+#  video: 
+#    cover_img: file
+#    void_url: file
+#  user:
+#    avatar: file
+  user:
+    avatar: file
+    sex: sex
+    root: sex
+  meeting: 
+    allow_messages: sex
+  goods: 
+    pic: file
+    
