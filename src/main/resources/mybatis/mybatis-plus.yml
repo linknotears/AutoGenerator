@@ -7,7 +7,7 @@ OutputDirConfig: D:/Project/test/src/main/resources
 OutputDirWeb: D:/Project/test/src/main/webapp
 #作者名
 author: test
-#基础包名 
+#基础包名  
 basePackage: com.atguigu
 #登录表名
 login.table: user
