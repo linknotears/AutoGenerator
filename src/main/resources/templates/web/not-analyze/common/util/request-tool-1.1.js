@@ -346,9 +346,21 @@
 	function objArrToMap(array,refKey,refValue){
 		var mapping = {};
 		for(var x in array){
-			var key = array[x][refKey];
-			var value = array[x][refValue];
+			var key = this.getField(array[x], refKey);
+  			var value = this.getField(array[x],refValue);
 			mapping[key] = value;
 		}
 		return mapping;
+	}
+	
+	//对象中的属性获取方法
+	function getField(data, fields) {
+		var arr = fields.split('.');
+
+	    for (var x in arr) {
+	      if(data != undefined && data != null) {
+	        data = data[arr[x]];
+	      }
+	    }
+	    return data;
 	}

@@ -1,20 +1,20 @@
 #AutoGenerator
-#普通配置
-OutputDir: D:/Project/test/src/main/java
+#普通配置 -- 俩id挂了
+OutputDir: D:/Project/springbootlearn-yb/src/main/java
 #配置文件路径
-OutputDirConfig: D:/Project/test/src/main/resources
+OutputDirConfig: D:/Project/springbootlearn-yb/src/main/resources
 #webroot路径
-OutputDirWeb: D:/Project/test/src/main/webapp
+OutputDirWeb: D:/Project/springbootlearn-yb/src/main/webapp
 #作者名
 author: test
-#基础包名
+#基础包名  
 basePackage: com.atguigu
 #登录表名
 login.table: user
 login.usercolumn: username
 login.pwdcolumn: password
 #需要逆向的表(不写默认是全部表)
-tables: withdraw_info,withdraw_order
+tables: user_remark
 #是否初始化（生成拷贝文件）只生成baseclass、xml、和各层的文件
 isInit: !!str false
 #是否覆盖文件（（xml）和entity、mapper或其他拷贝文件除外）
@@ -28,7 +28,7 @@ jdbc.pwd: wwwj66ccom
 
 mysql.version: !!str 8.0
 #各层包名配置
-package.suffix.mapper: mapper
+package.suffix.mapper: dao
 package.suffix.entity: entity
 package.suffix.service: service
 package.suffix.serviceImpl: service.impl
