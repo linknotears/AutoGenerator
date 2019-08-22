@@ -86,4 +86,20 @@ public class BaseServiceImpl<T> implements BaseService<T> {
 		}
 		return i;
 	}
+	
+	@Override
+	public int saveOrUpdateByCheck(Object id,T entity){
+		int i = 0;
+		if(id!=null){
+			Object testObj = baseMapper.selectById(id);
+			if(testObj!=null) {
+				i = baseMapper.updateByPartIdIgnoreNull(id,entity);
+			}else {
+				i = baseMapper.insert(entity);
+			}
+		}else{
+			i = baseMapper.insert(entity);
+		}
+		return i;
+	}
 }

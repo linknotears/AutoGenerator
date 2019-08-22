@@ -28,4 +28,6 @@ List<T> findList(T condition);
 	T findById(Object id);
 	
 	int saveOrUpdate(Object id,T entity);
+	
+	int saveOrUpdateByCheck(Object id,T entity);
 }
