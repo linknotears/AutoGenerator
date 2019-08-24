@@ -116,7 +116,7 @@ function saveOrUpdate(form){
 ##判断文件类型
 #if($cfg.propertyType.get($table.name).get($field.name) == 'file' || ${field.propertyName.contains('image')})
 						<th style="text-align: center;">${field.comment}</th>
-						<th><input type="file" name="${field.propertyName}file"></th>
+						<th><input type="file" name="${field.propertyName}File"></th>
 #elseif($cfg.propertyType.get($table.name).get($field.name) == 'select' || (${field.propertyName.contains('Id')} && !$cfg.propertyType.get($table.name).get($field.name)))
 						<th style="text-align: center;">${field.comment}</th>
 						<th>

@@ -197,7 +197,7 @@ $(function(){
 ##判断文件类型
 #if($cfg.propertyType.get($table.name).get($field.name) == 'file' || ${field.propertyName.contains('image')})
 								<th>
-									<input type="file" style="display: none;" name="${field.propertyName}file">
+									<input type="file" style="display: none;" name="${field.propertyName}File">
 									<span><img width="80" height="80" :src="classify.${field.propertyName}"/></sapn>
 								</th>
 #elseif($cfg.propertyType.get($table.name).get($field.name) == 'select' || (${field.propertyName.contains('Id')} && !$cfg.propertyType.get($table.name).get($field.name)))
@@ -259,7 +259,7 @@ $(function(){
 ##判断文件类型
 #if($cfg.propertyType.get($table.name).get($field.name) == 'file' || ${field.propertyName.contains('image')})
 								<th>
-									<input type="file" name="${field.propertyName}file">
+									<input type="file" name="${field.propertyName}File">
 								</th>
 #elseif($cfg.propertyType.get($table.name).get($field.name) == 'select' || (${field.propertyName.contains('Id')} && !$cfg.propertyType.get($table.name).get($field.name)))
 								<th>
