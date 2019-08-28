@@ -1,5 +1,6 @@
 #AutoGenerator
-#普通配置 -- 俩id挂了
+#普通配置 
+#-- 俩id挂了、generator之前做个备份、saveOrUpdateByCheck方法bug:检测没有记录无法插入id、增加一个条件更新
 OutputDir: D:/Project/springbootlearn-yb/src/main/java
 #配置文件路径
 OutputDirConfig: D:/Project/springbootlearn-yb/src/main/resources
@@ -14,7 +15,7 @@ login.table: user
 login.usercolumn: username
 login.pwdcolumn: password
 #需要逆向的表(不写默认是全部表)
-tables: member_file
+tables: wallet
 #是否初始化（生成拷贝文件）只生成baseclass、xml、和各层的文件
 isInit: !!str false
 #是否覆盖文件（（xml）和entity、mapper或其他拷贝文件除外）
@@ -35,45 +36,47 @@ package.suffix.serviceImpl: service.impl
 package.suffix.controller: controller
 package.suffix.xml: mapper
 #数组默认生成的是ArrayList
-#模板
+#使用说明
+# 使用方法一开始为一个数组，第一层为所需要连接的表（为主表），第二层是要连接的表，可以是多个，第三层是第二层要连接的表
 #conj.infor: 
 #  - 
-#    table: orders
-#    relation: one
-#    innertables: 
+#    table: orders #表名
+#    relation: one #连接关系，第一层可以不写（one or many）
+#    condition: orders.id = order_id and goods.id = goods_id #连接条件不管什么条件全在第一层写
+#    conjtype: inner #连接类型，可以是left或inner，不写默认是inner
+#    innertables:  #要连接的表，可以是多个
 #      - 
-#        table: orderitem
-#        relation: many
+#        table: orderitem #要连接的表名
+#        relation: many #指定连接的类型
 #        innertables: 
 #          - 
 #            table: goods
 #            relation: one
-#    #不写默认是null
-#    condition: orders.id = orderitem.order_id and orderitem.goods_id = goods.id
-#    #内连接 inner、左连接 left ，不写默认inner
-#    conjtype: inner
+#  - #第二个连接表
+#    table: classify
+#    condition: classify.id = classify_id
+#    conjtype: left
+#    innertables: 
+#      - 
+#        table: goods
+#        relation: many
+## 使用方法一开始为一个数组，第一层为所需要连接的表（为主表），第二层是要连接的表，可以是多个，第三层是第二层要连接的表
 conj.infor: 
   - 
-    table: orders
-    relation: one
-    condition: orders.id = order_id and goods.id = goods_id
-    conjtype: inner
-    innertables: 
-      - 
-        table: orderitem
-        relation: many
-        innertables: 
-          - 
-            table: goods
-            relation: one
-  - 
-    table: classify
-    relation: one
-    condition: classify.id = classify_id
+    table: member_case
+    condition: member_case.case_id = user_icons.user_id
+     and member_case.mem_id = member.mem_id
+     and member_case.coach_id = coach.coach_id
     conjtype: left
-    innertables: 
+    innertables: #mybatis结果集是有顺序的，一对一的必须要写在前边
+      -
+        table: coach
+        relation: one
+      -
+        table: member
+        relation: one
       - 
-        table: goods
+        table: user_icons
         relation: many
 #一个表可能有多个模板，所以这里面有多少个就要建多少个FileOutput
 webtemplates: 
