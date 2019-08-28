@@ -32,4 +32,6 @@ public interface BaseMapper<T> {
 	int updateByPartIdIgnoreNull(@Param("id") Object id,@Param("entity") T entity);
 	
 	int updateByPartId(@Param("id") Object id,@Param("entity") T entity);
+	
+	int updateByCondition(@Param("id") T entity, @Param("condition") T condition);
 }

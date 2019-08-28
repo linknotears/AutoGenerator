@@ -77,7 +77,7 @@ public class BaseServiceImpl<T> implements BaseService<T> {
 	}
 	
 	@Override
-	public int saveOrUpdate(Object id,T entity){
+	public int saveOrUpdate(Object id, T entity){
 		int i = 0;
 		if(id!=null){
 			i = baseMapper.updateByPartIdIgnoreNull(id,entity);
@@ -88,7 +88,7 @@ public class BaseServiceImpl<T> implements BaseService<T> {
 	}
 	
 	@Override
-	public int saveOrUpdateByCheck(Object id,T entity){
+	public int saveOrUpdateByCheck(Object id, T entity){
 		int i = 0;
 		if(id!=null){
 			Object testObj = baseMapper.selectById(id);
@@ -101,5 +101,10 @@ public class BaseServiceImpl<T> implements BaseService<T> {
 			i = baseMapper.insert(entity);
 		}
 		return i;
+	}
+	
+	@Override
+	public int updateByCondition(T entity, T condition) {
+		return baseMapper.updateByCondition(entity, condition);
 	}
 }

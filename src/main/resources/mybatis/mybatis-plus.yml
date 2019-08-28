@@ -1,10 +1,11 @@
 #AutoGenerator
-#普通配置 -- 俩id挂了
-OutputDir: D:/Project/test/src/main/java
+#普通配置 
+#-- 俩id挂了、generator之前做个备份、saveOrUpdateByCheck方法bug:检测没有记录无法插入id、增加一个条件更新
+OutputDir: D:/Project/springbootlearn-yb/src/main/java
 #配置文件路径
-OutputDirConfig: D:/Project/test/src/main/resources
+OutputDirConfig: D:/Project/springbootlearn-yb/src/main/resources
 #webroot路径
-OutputDirWeb: D:/Project/test/src/main/webapp
+OutputDirWeb: D:/Project/springbootlearn-yb/src/main/webapp
 #作者名
 author: test
 #基础包名  
@@ -14,7 +15,7 @@ login.table: user
 login.usercolumn: username
 login.pwdcolumn: password
 #需要逆向的表(不写默认是全部表)
-tables: member_case,user_icons
+tables: wallet
 #是否初始化（生成拷贝文件）只生成baseclass、xml、和各层的文件
 isInit: !!str false
 #是否覆盖文件（（xml）和entity、mapper或其他拷贝文件除外）
@@ -64,8 +65,16 @@ conj.infor:
   - 
     table: member_case
     condition: member_case.case_id = user_icons.user_id
+     and member_case.mem_id = member.mem_id
+     and member_case.coach_id = coach.coach_id
     conjtype: left
-    innertables: 
+    innertables: #mybatis结果集是有顺序的，一对一的必须要写在前边
+      -
+        table: coach
+        relation: one
+      -
+        table: member
+        relation: one
       - 
         table: user_icons
         relation: many

@@ -2,6 +2,8 @@ package ${package.Service};
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import ${package.Entity}.vo.PageData;
 
 public interface BaseService<T> {
@@ -30,4 +32,6 @@ List<T> findList(T condition);
 	int saveOrUpdate(Object id,T entity);
 	
 	int saveOrUpdateByCheck(Object id,T entity);
+	
+	int updateByCondition(T entity, T condition);
 }

@@ -353,7 +353,6 @@ public class GeneratorCode {
                 	}
                 	String fieldNamesStr = fieldNamesBuf.toString();
                 	fieldNamesStr = fieldNamesStr.substring(0,fieldNamesStr.length()-1);
-                	
                 	//替换字段绝对别名字符串
                 	absoluteNameStrMap.put(tableName, fieldNamesStr);
                 }
