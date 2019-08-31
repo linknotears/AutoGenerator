@@ -202,7 +202,7 @@ $cfg.conjInfoMap.get($table.name).get('conjQueryStr')
     <where>
     #foreach($field in ${table.fields})
       <if test="condition.${field.propertyName} != null" >
-        and ${field.name} = #{condition.${field.propertyName},javaType=${field.columnType}},
+        and ${field.name} = #{condition.${field.propertyName},javaType=${field.columnType}}
       </if>
 	#end  
     </where>
