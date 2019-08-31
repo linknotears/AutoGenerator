@@ -14,7 +14,7 @@ login.table: user
 login.usercolumn: username
 login.pwdcolumn: password
 #需要逆向的表(不写默认是全部表)
-tables: withdraw_info,withdraw_order
+tables: application,application_type
 #是否初始化（生成拷贝文件）只生成baseclass、xml、和各层的文件
 isInit: !!str false
 #是否覆盖文件（（xml）和entity、mapper或其他拷贝文件除外）
