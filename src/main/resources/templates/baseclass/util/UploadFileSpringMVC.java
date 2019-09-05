@@ -9,7 +9,7 @@ import javax.servlet.ServletContext;
 
 import org.springframework.web.multipart.MultipartFile;
 
-public class UploadFileSpringmvc {
+public class UploadFileSpringMVC {
 	/**
 	 * 
 	 * @param imagefile
@@ -20,10 +20,11 @@ public class UploadFileSpringmvc {
 		String sqlPath = null;
 		if(cmfile!=null){
 			if(!cmfile.isEmpty()){
-				//String imagename = cmfile.getOriginalFilename();
+				String imagename = cmfile.getOriginalFilename();
+				String suffix = imagename.substring(imagename.lastIndexOf("."));
 				String uuid = UUID.randomUUID().toString().replace("-", "");
 				String webPath = servletContext.getRealPath("/");
-				sqlPath = "upload/"+outDir+"/"+uuid+"_"++(new Date().getTime());
+				sqlPath = "upload/" + outDir + "/" + uuid+"_" + (new Date().getTime()) + suffix;
 				File newfile = new File(webPath+"/"+sqlPath);
 				//如果父目录不存在就创建
 				File parentFile = newfile.getParentFile();
