@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 #end
 
 #if($isHaveFile)
-import ${cfg.basePackage}.util.UploadFileSpringmvc;
+import ${cfg.basePackage}.util.UploadFileSpringMVC;
 import org.springframework.web.multipart.MultipartFile;
 #end
 
@@ -74,7 +74,7 @@ public class ${table.controllerName} extends BaseController{
 			if(${field.propertyName}file != null){
 				if(!${field.propertyName}file.isEmpty()){
 					#tab([1..5])#tolowercase($entity).set#toheaduppercase(${field.propertyName})(
-						UploadFileSpringmvc.getUploadPath(${field.propertyName}file,"image",#tolowercase($entity).get#toheaduppercase(${field.propertyName})(),servletContext)
+						UploadFileSpringMVC.getUploadPath(${field.propertyName}file,"image",#tolowercase($entity).get#toheaduppercase(${field.propertyName})(),servletContext)
 					);
 				}
 			}
