@@ -2,11 +2,12 @@ package ${cfg.basePackage}.util;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 import java.util.UUID;
 
 import javax.servlet.ServletContext;
 
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
 public class UploadFileSpringmvc {
 	/**
@@ -15,14 +16,14 @@ public class UploadFileSpringmvc {
 	 * @param servletContext
 	 * @return 返回文件成功上传的位置，上传不成功返回null
 	 */
-	public static String getUploadPath(CommonsMultipartFile cmfile,String outDir,String oldFilePath,ServletContext servletContext){
+	public static String getUploadPath(MultipartFile cmfile,String outDir,String oldFilePath,ServletContext servletContext){
 		String sqlPath = null;
 		if(cmfile!=null){
 			if(!cmfile.isEmpty()){
-				String imagename = cmfile.getOriginalFilename();
+				//String imagename = cmfile.getOriginalFilename();
 				String uuid = UUID.randomUUID().toString().replace("-", "");
 				String webPath = servletContext.getRealPath("/");
-				sqlPath = "upload/"+outDir+"/"+uuid+"_"+imagename;
+				sqlPath = "upload/"+outDir+"/"+uuid+"_"++(new Date().getTime());
 				File newfile = new File(webPath+"/"+sqlPath);
 				//如果父目录不存在就创建
 				File parentFile = newfile.getParentFile();

@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 #if($isHaveFile)
 import ${cfg.basePackage}.util.UploadFileSpringmvc;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 #end
 
 #if($isHaveDate)
@@ -62,7 +62,7 @@ public class ${table.controllerName} extends BaseController{
 	public @ResponseBody ResultData saveOrUpdate(@RequestParam(value="id",required=false) #touppercase(${columnType}) id,${entity} #tolowercase($entity)#if($cfg.loginTable==$table.name),HttpSession session#end
 	#foreach($field in ${table.fields})
 	#if($cfg.propertyType.get($table.name).get($field.name) == 'file' ||  ${field.propertyName.contains('image')})
-	,@RequestParam(value="${field.propertyName}File",required=false)CommonsMultipartFile ${field.propertyName}file
+	,@RequestParam(value="${field.propertyName}File",required=false) MultipartFile ${field.propertyName}file
 	#end
 	#end
 	) { 
