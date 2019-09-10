@@ -104,30 +104,17 @@ webtemplates:
 #    exclude: img_url.link
 
   - 
-    tables: [introduce]
+    tables: [coach]
     template: select${entity}List.jsp
     outpath: admin/select${entity}List.jsp
   - 
-    tables: [introduce]
+    tables: [coach]
     template: viewAdd${entity}.jsp
     outpath: admin/viewAdd${entity}.jsp
   - 
-    tables: [introduce]
+    tables: [coach]
     template: viewUpdate${entity}.jsp
     outpath: admin/viewUpdate${entity}.jsp
-  - 
-    tables: [setting]
-    template: select${entity}CategoryList.jsp
-    outpath: admin/select${entity}CategoryList.jsp
-  -  
-    tables: [user]
-    template: login.jsp
-    outpath: login.jsp
-  - 
-    tables: [user]
-    template: viewOrUpdate${entity}.jsp
-    outpath: admin/viewOrUpdate${entity}.jsp
-    exclude: user.password
 
 #指定文件类型（表名重复时不识别）:select、sex、file
 propertyType: 
