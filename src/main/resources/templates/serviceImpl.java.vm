@@ -16,7 +16,7 @@ import java.util.List;
  * @author ${author}
  * @since ${date}
  */
-@Service
+@Service("${package.ServiceImpl}.${serviceImpl}")
 public class ${table.serviceImplName} extends BaseServiceImpl<${entity}> implements ${table.serviceName} {
 	protected ${table.mapperName} #tolowercase(${entity})Mapper;
 	@Autowired

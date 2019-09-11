@@ -3,9 +3,10 @@ package ${package.Mapper};
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
-
+import org.springframework.stereotype.Repository;
 import ${package.Entity}.vo.PageData;
 
+@Repository("${package.Mapper}.BaseMapper")
 public interface BaseMapper<T> {
 	List<T> selectList(@Param("condition") T condition);
 	

@@ -6,7 +6,7 @@ import ${package.Entity}.vo.PageData;
 import ${package.Mapper}.BaseMapper;
 import ${package.Service}.BaseService;
 
-public class BaseServiceImpl<T> implements BaseService<T> {
+public abstract class BaseServiceImpl<T> implements BaseService<T> {
 
 	protected BaseMapper<T> baseMapper;
 	

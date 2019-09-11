@@ -52,7 +52,7 @@ import ${package.Service}.${table.serviceName};
  * @author ${author}
  * @since ${date}
  */
-@Controller
+@Controller("${package.Controller}.${controller}")
 @RequestMapping("/#tolowercase($entity)")
 public class ${table.controllerName} extends BaseController{
 	@Autowired
