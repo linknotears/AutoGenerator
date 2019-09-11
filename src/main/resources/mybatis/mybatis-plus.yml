@@ -1,4 +1,4 @@
-#AutoGenerator
+#AutoGenerator 
 #普通配置 
 #-- 俩id挂了、generator之前做个备份、saveOrUpdateByCheck方法bug:检测没有记录无法插入id、增加一个条件更新
 OutputDir: D:/Project/guyueconsole-master/src/main/java
