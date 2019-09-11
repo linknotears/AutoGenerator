@@ -10,6 +10,8 @@ OutputDirWeb: D:/Project/guyueconsole-master/src/main/webapp
 OutputDirTemplates: D:/Project/guyueconsole-master/src/main/resources/templates/test
 #作者名
 author: linking
+#uri前缀
+suffix.uri: /extra
 #基础包名  
 basePackage: com.bootdo.extra
 #登录表名
@@ -106,15 +108,15 @@ webtemplates:
   - 
     tables: [coach]
     template: select${entity}List.jsp
-    outpath: admin/select${entity}List.jsp
+    outpath: extra/select${entity}List.jsp
   - 
     tables: [coach]
     template: viewAdd${entity}.jsp
-    outpath: admin/viewAdd${entity}.jsp
+    outpath: extra/viewAdd${entity}.jsp
   - 
     tables: [coach]
     template: viewUpdate${entity}.jsp
-    outpath: admin/viewUpdate${entity}.jsp
+    outpath: extra/viewUpdate${entity}.jsp
 
 #指定文件类型（表名重复时不识别）:select、sex、file
 propertyType: 

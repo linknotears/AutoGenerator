@@ -53,7 +53,7 @@ import ${package.Service}.${table.serviceName};
  * @since ${date}
  */
 @Controller("${package.Controller}.${controller}")
-@RequestMapping("/#tolowercase($entity)")
+@RequestMapping("${cfg.suffixUri}/#tolowercase($entity)")
 public class ${table.controllerName} extends BaseController{
 	@Autowired
 	private ${table.serviceName} #tolowercase($entity)Service;

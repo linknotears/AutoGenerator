@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller("${package.Controller}.BaseController")
-@RequestMapping("/base")
+@RequestMapping("${cfg.suffixUri}/base")
 public class BaseController {
 	@Autowired
 	protected ServletContext servletContext;
