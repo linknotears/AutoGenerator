@@ -1,22 +1,31 @@
-#AutoGenerator
-#普通配置homehomehomehomehomehomehomehomehomehomehome
-OutputDir: D:/Project/springbootlearn-yb/src/main/java
+#AutoGenerator 
+#普通配置 
+#-- 俩id挂了、generator之前做个备份、saveOrUpdateByCheck方法bug:检测没有记录无法插入id、增加一个条件更新
+OutputDir: D:/Project/guyueconsole-master/src/main/java
 #配置文件路径
-OutputDirConfig: D:/Project/springbootlearn-yb/src/main/resources
+OutputDirConfig: D:/Project/guyueconsole-master/src/main/resources
 #webroot路径
-OutputDirWeb: D:/Project/springbootlearn-yb/src/main/webapp
+OutputDirWeb: D:/Project/guyueconsole-master/src/main/webapp
+#templatesDir D:/Project/guyueconsole-master/src/main/webapp/WEB-INF/views
+OutputDirTemplates: D:/Project/guyueconsole-master/src/main/resources/templates/test
 #作者名
-author: test
-#基础包名
-basePackage: com.atguigu
+author: linking
+#uri前缀
+suffix.uri: /extra
+#基础包名  
+basePackage: com.bootdo.extra
 #登录表名
 login.table: user
 login.usercolumn: username
 login.pwdcolumn: password
 #需要逆向的表(不写默认是全部表)
-tables: application,application_type
+tables: coach
 #是否初始化（生成拷贝文件）只生成baseclass、xml、和各层的文件
-isInit: !!str false
+createWebtemplates: !!str true
+createConfig: !!str false
+createNotAnalyze: !!str false
+createAnalyze: !!str false
+
 #是否覆盖文件（（xml）和entity、mapper或其他拷贝文件除外）
 isOverFile: !!str false
 
@@ -28,52 +37,46 @@ jdbc.pwd: wwwj66ccom
 
 mysql.version: !!str 8.0
 #各层包名配置
-package.suffix.mapper: mapper
+package.suffix.mapper: dao
 package.suffix.entity: entity
 package.suffix.service: service
 package.suffix.serviceImpl: service.impl
 package.suffix.controller: controller
-package.suffix.xml: mapper
+package.suffix.xml: mybatis.extra
 #数组默认生成的是ArrayList
-#模板
+#使用说明
+# 使用方法一开始为一个数组，第一层为所需要连接的表（为主表），第二层是要连接的表，可以是多个，第三层是第二层要连接的表
 #conj.infor: 
 #  - 
-#    table: orders
-#    relation: one
-#    innertables: 
+#    table: orders #表名
+#    relation: one #连接关系，第一层可以不写（one or many）
+#    condition: orders.id = order_id and goods.id = goods_id #连接条件不管什么条件全在第一层写
+#    conjtype: inner #连接类型，可以是left或inner，不写默认是inner
+#    innertables:  #要连接的表，可以是多个
 #      - 
-#        table: orderitem
-#        relation: many
+#        table: orderitem #要连接的表名
+#        relation: many #指定连接的类型
 #        innertables: 
 #          - 
 #            table: goods
 #            relation: one
-#    #不写默认是null
-#    condition: orders.id = orderitem.order_id and orderitem.goods_id = goods.id
-#    #内连接 inner、左连接 left ，不写默认inner
-#    conjtype: inner
+#  - #第二个连接表
+#    table: classify
+#    condition: classify.id = classify_id
+#    conjtype: left
+#    innertables: 
+#      - 
+#        table: goods
+#        relation: many
+## 使用方法一开始为一个数组，第一层为所需要连接的表（为主表），第二层是要连接的表，可以是多个，第三层是第二层要连接的表
 conj.infor: 
   - 
-    table: orders
-    relation: one
-    condition: orders.id = order_id and goods.id = goods_id
-    conjtype: inner
-    innertables: 
-      - 
-        table: orderitem
-        relation: many
-        innertables: 
-          - 
-            table: goods
-            relation: one
-  - 
-    table: classify
-    relation: one
-    condition: classify.id = classify_id
+    table: application
+    condition: application.app_id = application_img.app_id
     conjtype: left
-    innertables: 
-      - 
-        table: goods
+    innertables: #mybatis结果集是有顺序的，一对一的必须要写在前边
+      -
+        table: application_img
         relation: many
 #一个表可能有多个模板，所以这里面有多少个就要建多少个FileOutput
 webtemplates: 
@@ -103,30 +106,17 @@ webtemplates:
 #    exclude: img_url.link
 
   - 
-    tables: [introduce]
+    tables: [coach]
     template: select${entity}List.jsp
-    outpath: admin/select${entity}List.jsp
+    outpath: extra/select${entity}List.jsp
   - 
-    tables: [introduce]
+    tables: [coach]
     template: viewAdd${entity}.jsp
-    outpath: admin/viewAdd${entity}.jsp
+    outpath: extra/viewAdd${entity}.jsp
   - 
-    tables: [introduce]
+    tables: [coach]
     template: viewUpdate${entity}.jsp
-    outpath: admin/viewUpdate${entity}.jsp
-  - 
-    tables: [setting]
-    template: select${entity}CategoryList.jsp
-    outpath: admin/select${entity}CategoryList.jsp
-  -  
-    tables: [user]
-    template: login.jsp
-    outpath: login.jsp
-  - 
-    tables: [user]
-    template: viewOrUpdate${entity}.jsp
-    outpath: admin/viewOrUpdate${entity}.jsp
-    exclude: user.password
+    outpath: extra/viewUpdate${entity}.jsp
 
 #指定文件类型（表名重复时不识别）:select、sex、file
 propertyType: 
@@ -137,12 +127,5 @@ propertyType:
 #    void_url: file
 #  user:
 #    avatar: file
-  user:
-    avatar: file
-    sex: sex
-    root: sex
-  meeting: 
-    allow_messages: sex
-  goods: 
-    pic: file
-    
+  application_img:
+    icon_url: file

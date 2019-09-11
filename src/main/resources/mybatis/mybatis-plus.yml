@@ -7,7 +7,7 @@ OutputDirConfig: D:/Project/guyueconsole-master/src/main/resources
 #webroot路径
 OutputDirWeb: D:/Project/guyueconsole-master/src/main/webapp
 #templatesDir D:/Project/guyueconsole-master/src/main/webapp/WEB-INF/views
-OutputDirTemplates: D:/Project/guyueconsole-master/src/main/resources/templates/test
+OutputDirTemplates: D:/Project/guyueconsole-master/src/main/resources/templates
 #作者名
 author: linking
 #uri前缀
@@ -19,7 +19,7 @@ login.table: user
 login.usercolumn: username
 login.pwdcolumn: password
 #需要逆向的表(不写默认是全部表)
-tables: coach
+tables: coach,club,course
 #是否初始化（生成拷贝文件）只生成baseclass、xml、和各层的文件
 createWebtemplates: !!str true
 createConfig: !!str false
@@ -71,13 +71,18 @@ package.suffix.xml: mybatis.extra
 ## 使用方法一开始为一个数组，第一层为所需要连接的表（为主表），第二层是要连接的表，可以是多个，第三层是第二层要连接的表
 conj.infor: 
   - 
-    table: application
-    condition: application.app_id = application_img.app_id
+    table: coach
+    condition: coach.coach_id = course.coach_id and course.club_id = club.club_id
     conjtype: left
     innertables: #mybatis结果集是有顺序的，一对一的必须要写在前边
-      -
-        table: application_img
+      - 
+        table: club
         relation: many
+        innertables:
+          - 
+            table: course
+            relation: many
+          
 #一个表可能有多个模板，所以这里面有多少个就要建多少个FileOutput
 webtemplates: 
 #  - 
@@ -108,15 +113,15 @@ webtemplates:
   - 
     tables: [coach]
     template: select${entity}List.jsp
-    outpath: extra/select${entity}List.jsp
+    outpath: coach/extra/select${entity}List.jsp
   - 
     tables: [coach]
     template: viewAdd${entity}.jsp
-    outpath: extra/viewAdd${entity}.jsp
+    outpath: coach/extra/viewAdd${entity}.jsp
   - 
     tables: [coach]
     template: viewUpdate${entity}.jsp
-    outpath: extra/viewUpdate${entity}.jsp
+    outpath: coach/extra/viewUpdate${entity}.jsp
 
 #指定文件类型（表名重复时不识别）:select、sex、file
 propertyType: 

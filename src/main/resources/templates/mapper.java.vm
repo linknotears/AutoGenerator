@@ -15,7 +15,7 @@ import ${package.Entity}.vo.PageData;
  * @author ${author}
  * @since ${date}
  */
-@Repository("${package.Mapper}.${mapper}")
+@Repository("${package.Mapper}.${table.mapperName}")
 public interface ${table.mapperName} extends ${superMapperClass}<${entity}> {
 	#if($cfg.conjInfoMap.get($table.name).get('resultStr'))
 	//联合查询接口
