@@ -47,7 +47,7 @@ import ${package.Service}.${table.serviceName};
 ## 宏的参数有数据类型区别
 #set( $columnType = ${table.fields[0].columnType.toString()})
 /**
- * $!{table.comment} 前端控制器
+ * $!{table.comment} 控制器
  *
  * @author ${author}
  * @since ${date}

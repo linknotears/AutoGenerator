@@ -175,64 +175,70 @@ public class GeneratorCode {
         }
         
         Map<String,List<String>> colExcludeMap = new HashMap<String,List<String>>();        
-        if(!"false".equals((String)yamlMap.get("isInit"))){
-        	//模板排除字段map
-        	//模板配置
-        	List<Map<String,Object>> webtemplates = (List<Map<String, Object>>) yamlMap.get("webtemplates");
-        	//自定义web模板
-        	if(webtemplates!=null){
-	        	for(Map<String,Object> tempInfo : webtemplates){
-	        		//记录排除输出字段
-	        		String excludeStr = (String) tempInfo.get("exclude");
-	        		if(excludeStr != null) { 
-	        			List<String> excludes = Arrays.asList(excludeStr.split(","));
-	        			String templateStr = (String) tempInfo.get("template");
-	        			//截掉后缀
-	        			int index = templateStr.lastIndexOf(".");
-	        			if(index != -1){
-	        				templateStr = templateStr.substring(0, index);
-	        			}
-	        			//文件名换成正则
-	        			templateStr = templateStr.replace("${entity}", "[a-zA-Z]+") + "\\.[a-zA-Z]+";
-	        			colExcludeMap.put(templateStr, excludes);
-	        		}
-	        		//判断输出模板
-		        	focList.add(new FileOutConfig() {
-		                @Override
-		                public String outputFile(TableInfo tableInfo) {
-		                	List<String> outTableList = (List<String>) tempInfo.get("tables");
-		                	for (int i = 0; i < outTableList.size(); i++) {
-		                		String yamlTableName = outTableList.get(i);
-		                		String sqlTableName = tableInfo.getName();
-		                		if(sqlTableName.equals(yamlTableName)){
-		                			this.setTemplatePath("/templates/web/assign/" + tempInfo.get("template"));
-		                			String filePath = ((String) tempInfo.get("outpath")).replace("${entity}", tableInfo.getEntityName());
-		                			return (String)yamlMap.get("OutputDirWeb") + "/WEB-INF/views/" + filePath;
-		                		}
-							}
-		                	//置空
-		                	//避免因之前数据引起空指针
-		                	this.setTemplatePath(null);
-		                	return null;
-		                }
-		            });
-	        	}
+        {
+        	//创建模板输出信息
+        	if(!"false".equals((String)yamlMap.get("createWebtemplates"))) {
+        		//模板配置
+        		List<Map<String,Object>> webtemplates = (List<Map<String, Object>>) yamlMap.get("webtemplates");
+            	//自定义web模板
+            	if(webtemplates!=null){
+    	        	for(Map<String,Object> tempInfo : webtemplates){
+    	        		//记录排除输出字段
+    	        		String excludeStr = (String) tempInfo.get("exclude");
+    	        		if(excludeStr != null) { 
+    	        			List<String> excludes = Arrays.asList(excludeStr.split(","));
+    	        			String templateStr = (String) tempInfo.get("template");
+    	        			//截掉后缀
+    	        			int index = templateStr.lastIndexOf(".");
+    	        			if(index != -1){
+    	        				templateStr = templateStr.substring(0, index);
+    	        			}
+    	        			//文件名换成正则
+    	        			templateStr = templateStr.replace("${entity}", "[a-zA-Z]+") + "\\.[a-zA-Z]+";
+    	        			colExcludeMap.put(templateStr, excludes);
+    	        		}
+    	        		//判断输出模板
+    		        	focList.add(new FileOutConfig() {
+    		                @Override
+    		                public String outputFile(TableInfo tableInfo) {
+    		                	List<String> outTableList = (List<String>) tempInfo.get("tables");
+    		                	for (int i = 0; i < outTableList.size(); i++) {
+    		                		String yamlTableName = outTableList.get(i);
+    		                		String sqlTableName = tableInfo.getName();
+    		                		if(sqlTableName.equals(yamlTableName)){
+    		                			this.setTemplatePath("/templates/web/assign/" + tempInfo.get("template"));
+    		                			String filePath = ((String) tempInfo.get("outpath")).replace("${entity}", tableInfo.getEntityName());
+    		                			return (String)yamlMap.get("OutputDirTemplates") + "/" + filePath;
+    		                		}
+    							}
+    		                	//置空
+    		                	//避免因之前数据引起空指针
+    		                	this.setTemplatePath(null);
+    		                	return null;
+    		                }
+    		            });
+    	        	}
+            	}
         	}
+        	
+
         	//拿共有参数时适用，非共用不适用
-	        //拷贝配置
-	        {
+	        //创建spring等配置拷贝配置
+        	if(!"false".equals((String)yamlMap.get("createConfig"))){
 	        	String templateDir = "config";
 	        	String outPath = (String)yamlMap.get("OutputDirConfig");
 	        	templatesTo(focList,templateDir,outPath);
-	        }
+        	}
+        	
 	        
 	        //复制不需要解析的文件
 	        //复制web文件
-	        {
+        	if(!"false".equals((String)yamlMap.get("createNotAnalyze"))){
 	        	templatesToNotAnalyze("web/not-analyze",(String)yamlMap.get("OutputDirWeb"));
 	        }
+	        
 	        //拷贝解析的web
-	        {
+        	if(!"false".equals((String)yamlMap.get("createAnalyze"))){
 	        	String templateDir = "web/analyze";
 	        	String outPath = (String)yamlMap.get("OutputDirWeb");
 	        	templatesTo(focList,templateDir,outPath);

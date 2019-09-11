@@ -14,7 +14,7 @@ public class UploadFileSpringMVC {
 	 * 
 	 * @param imagefile
 	 * @param servletContext
-	 * @return 返回文件成功上传的位置，上传不成功返回null
+	 * @return 返回文件成功上传的位置，上传不成功返回null 
 	 */
 	public static String getUploadPath(MultipartFile cmfile,String outDir,String oldFilePath,ServletContext servletContext){
 		String sqlPath = null;
