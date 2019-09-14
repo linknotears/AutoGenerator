@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Field;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -522,7 +523,7 @@ public class GeneratorCode {
 			String conjtype,
 			String condition,
 			int count,
-			int conjCount){
+			Integer conjCount){
 		if(conjInfoMap==null){
 			conjInfoMap = new HashMap<String,Object>();
 			count = 0;
@@ -558,7 +559,7 @@ public class GeneratorCode {
 							}
 						}
 						//置零
-						conjCount = 0;
+						conjCount = new Integer(0);
 						//重新建立一个StringBuilder
 						resultBuilder = new StringBuilder();
 						resultBuilder
@@ -704,7 +705,14 @@ public class GeneratorCode {
 								.append(condition.split(" and ")[conjCount])
 								.append("\n");
 							}
-							conjCount++;
+							
+							try {
+								Field field = Integer.class.getDeclaredField("value");
+								field.setAccessible(true);
+								field.setInt(conjCount, conjCount + 1);
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
 						}else{
 							//对齐
 							if(conjCount != 0){
@@ -721,7 +729,14 @@ public class GeneratorCode {
 								.append(condition.split(" and ")[conjCount])
 								.append("\n");
 							}
-							conjCount++;
+							
+							try {
+								Field field = Integer.class.getDeclaredField("value");
+								field.setAccessible(true);
+								field.setInt(conjCount, conjCount + 1);
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
 						}
 						
 						//打印层级
@@ -862,8 +877,9 @@ public class GeneratorCode {
 						String[] conditionArr = condition.split(" and ");
 						conjBuilder
 						.append("\t\t<where>\n\t\t\t");
-						for(int i = conjCount + 1; i < conditionArr.length; i++) {
-							if( i > (conjCount + 1) ) {
+						System.out.println("conjCount=" + conjCount + ", condition.length=" + conditionArr.length);
+						for(int i = conjCount; i < conditionArr.length; i++) {
+							if( i > conjCount ) {
 								conjBuilder
 								.append("\t\t\t");
 							}
@@ -894,8 +910,8 @@ public class GeneratorCode {
 						//添加连接条件
 						conjBuilder
 						.append("\t\t<where>\n\t\t\t");
-						for(int i = conjCount + 1; i < conditionArr.length; i++) {
-							if( i > (conjCount + 1) ) {
+						for(int i = conjCount; i < conditionArr.length; i++) {
+							if( i > conjCount ) {
 								conjBuilder
 								.append("\t\t\t");
 							}
@@ -926,8 +942,8 @@ public class GeneratorCode {
 						//添加连接条件
 						conjBuilder
 						.append("\t\t<where>\n\t\t\t");
-						for(int i = conjCount + 1; i < conditionArr.length; i++) {
-							if( i > (conjCount + 1) ) {
+						for(int i = conjCount; i < conditionArr.length; i++) {
+							if( i > conjCount ) {
 								conjBuilder
 								.append("\t\t\t");
 							}
@@ -959,9 +975,8 @@ public class GeneratorCode {
 						//添加连接条件
 						conjBuilder
 						.append("\t\t<where>\n\t\t\t");
-						System.out.println("conjCount="+conjCount);
-						for(int i = conjCount + 1; i < conditionArr.length; i++) {
-							if( i > (conjCount + 1) ) {
+						for(int i = conjCount; i < conditionArr.length; i++) {
+							if( i > conjCount ) {
 								conjBuilder
 								.append("\t\t\t");
 							}
@@ -985,7 +1000,10 @@ public class GeneratorCode {
 						
 						
 						
-						
+
+						//连接次数置零
+						//利用反射赋值改变的是缓冲区中的包装Integer的对象的值0
+						//下次使用0给包装类型赋值时0就变成了改变的值
 						Map<String, Object> tableMap = (Map<String, Object>) conjInfoMap.get(tableInfo.getName());
 						tableMap.put("resultStr", resultBuilder.toString());
 						tableMap.put("conjQueryStr", conjBuilder.toString());
