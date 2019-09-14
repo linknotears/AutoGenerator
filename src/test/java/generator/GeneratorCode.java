@@ -693,8 +693,6 @@ public class GeneratorCode {
 							//对齐
 							if(conjCount != 0){
 								conjTablesBuilder.append("\t\t\t");
-							}else{
-								conjTablesBuilder.append(" ");
 							}
 							conjTablesBuilder
 							.append("INNER JOIN ")
@@ -717,8 +715,6 @@ public class GeneratorCode {
 							//对齐
 							if(conjCount != 0){
 								conjTablesBuilder.append("\t\t\t");
-							}else{
-								conjTablesBuilder.append(" ");
 							}
 							conjTablesBuilder
 							.append("LEFT JOIN ")

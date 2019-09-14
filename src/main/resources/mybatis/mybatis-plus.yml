@@ -51,11 +51,11 @@ package.suffix.xml: mybatis.extra
 #    table: orders #表名
 #    relation: one #连接关系，第一层可以不写（one or many）
 #    condition: orders.id = order_id and goods.id = goods_id #连接条件不管什么条件全在第一层写
-#    conjtype: inner #连接类型，可以是left或inner，不写默认是inner
 #    innertables:  #要连接的表，可以是多个
 #      - 
 #        table: orderitem #要连接的表名
 #        relation: many #指定连接的类型
+#        conjtype: inner #连接类型，可以是left或inner，不写默认是inner（新版本conjtype代表前表以什么方式连接此表）
 #        innertables: 
 #          - 
 #            table: goods
@@ -77,10 +77,11 @@ conj.infor:
       - 
         table: club
         relation: many
-        conjtype: left
+        conjtype: inner
         innertables:
           - 
             table: course
+            conjtype: left
             relation: many
           
 #一个表可能有多个模板，所以这里面有多少个就要建多少个FileOutput
@@ -112,15 +113,15 @@ webtemplates:
 
   - 
     tables: [coach]
-    template: select${entity}List.jsp
+    template: ${entity}List.html
     outpath: coach/extra/select${entity}List.html
   - 
     tables: [coach]
-    template: viewAdd${entity}.jsp
+    template: add${entity}.html
     outpath: coach/extra/viewAdd${entity}.html
   - 
     tables: [coach]
-    template: viewUpdate${entity}.jsp
+    template: edit${entity}.html
     outpath: coach/extra/viewUpdate${entity}.html
 
 #指定文件类型（表名重复时不识别）:select、sex、file
