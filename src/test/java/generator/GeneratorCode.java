@@ -522,12 +522,12 @@ public class GeneratorCode {
 			String conjtype,
 			String condition,
 			int count,
-			int leftCount){
+			int conjCount){
 		if(conjInfoMap==null){
 			conjInfoMap = new HashMap<String,Object>();
 			count = 0;
 			conjtype = (String) conjInfoList.get(0).get("conjtype");
-			leftCount = 0;
+			conjCount = 0;
 		}
 
 		for(Map<String,Object> ymlMap : conjInfoList){
@@ -552,8 +552,13 @@ public class GeneratorCode {
 					//开始
 					if(count == 0){
 						condition = (String)ymlMap.get("condition");
+						if(condition != null) {
+							if(condition.substring(0, 4).equals("and ")) {
+								condition = " " + condition;
+							}
+						}
 						//置零
-						leftCount = 0;
+						conjCount = 0;
 						//重新建立一个StringBuilder
 						resultBuilder = new StringBuilder();
 						resultBuilder
@@ -576,7 +581,8 @@ public class GeneratorCode {
 						//连接查询集合
 						conjTablesBuilder = new StringBuilder();
 						conjTablesBuilder
-						.append(tableInfo.getName());
+						.append(tableInfo.getName())
+						.append("\n\t\t\t");
 						
 					}else{
 						//添加结果列
@@ -680,15 +686,28 @@ public class GeneratorCode {
 							
 							set.add(sb.toString());
 						}
-						
+						String conjtypeEach = (String) ymlMap.get("conjtype");
 						//搜集联合表
-						if(!"left".equals(conjtype)){
+						if(!"left".equals(conjtypeEach)){
+							//对齐
+							if(conjCount != 0){
+								conjTablesBuilder.append("\t\t\t");
+							}else{
+								conjTablesBuilder.append(" ");
+							}
 							conjTablesBuilder
-							.append(",")
-							.append(tableInfo.getName());
+							.append("INNER JOIN ")
+							.append(tableInfo.getName())
+							.append("\n");
+							if(!condition.split(" and ")[conjCount].equals("")) {
+								conjTablesBuilder.append("\t\t\tON ")
+								.append(condition.split(" and ")[conjCount])
+								.append("\n");
+							}
+							conjCount++;
 						}else{
 							//对齐
-							if(leftCount != 0){
+							if(conjCount != 0){
 								conjTablesBuilder.append("\t\t\t");
 							}else{
 								conjTablesBuilder.append(" ");
@@ -696,10 +715,13 @@ public class GeneratorCode {
 							conjTablesBuilder
 							.append("LEFT JOIN ")
 							.append(tableInfo.getName())
-							.append("\n\t\t\tON ")
-							.append(condition.split(" and ")[leftCount])
 							.append("\n");
-							leftCount++;
+							if(!condition.split(" and ")[conjCount].equals("")) {
+								conjTablesBuilder.append("\t\t\tON ")
+								.append(condition.split(" and ")[conjCount])
+								.append("\n");
+							}
+							conjCount++;
 						}
 						
 						//打印层级
@@ -784,7 +806,7 @@ public class GeneratorCode {
 								conjtype,
 								condition,
 								count + 1,
-								leftCount);
+								conjCount);
 					}
 					
 					//结束
@@ -835,17 +857,14 @@ public class GeneratorCode {
 						.append(tableInfo.getEntityName())
 						.append("\">\n")
 						.append("\t\tselect \n\t\t<include refid=\"Conj_Column_List\" />\n\t\tfrom ")
-						.append(conjTablesBuilder.toString())
-						.append("\n");
+						.append(conjTablesBuilder.toString());
 						//添加连接条件
-						if("left".equals(ymlMap.get("conjtype"))){
-							conjBuilder
-							.append("\n\t\t<where>\n");
-						}else{
+						String[] conditionArr = condition.split(" and ");
+						for(int i = conjCount + 1; i < conditionArr.length; i++) {
 							conjBuilder
 							.append("\t\t<where>\n\t\t\t")
 							.append("and ")
-							.append(condition)
+							.append(conditionArr[i])
 							.append("\n");
 						}
 						//实体条件
@@ -866,17 +885,13 @@ public class GeneratorCode {
 						.append(tableInfo.getEntityName())
 						.append("\" resultType=\"java.lang.Integer\">\n")
 						.append("\t\tselect \n\t\tcount(1)\n\t\tfrom ")
-						.append(conjTablesBuilder.toString())
-						.append("\n");
+						.append(conjTablesBuilder.toString());
 						//添加连接条件
-						if("left".equals(ymlMap.get("conjtype"))){
-							conjBuilder
-							.append("\n\t\t<where>\n");
-						}else{
+						for(int i = conjCount + 1; i < conditionArr.length; i++) {
 							conjBuilder
 							.append("\t\t<where>\n\t\t\t")
 							.append("and ")
-							.append(condition)
+							.append(conditionArr[i])
 							.append("\n");
 						}
 						//实体条件
@@ -897,17 +912,13 @@ public class GeneratorCode {
 						.append("vo.PageData")
 						.append("\">\n")
 						.append("\t\tselect \n\t\t<include refid=\"Conj_Column_List\" />\n\t\tfrom ")
-						.append(conjTablesBuilder.toString())
-						.append("\n");
+						.append(conjTablesBuilder.toString());
 						//添加连接条件
-						if("left".equals(ymlMap.get("conjtype"))){
-							conjBuilder
-							.append("\n\t\t<where>\n");
-						}else{
+						for(int i = conjCount + 1; i < conditionArr.length; i++) {
 							conjBuilder
 							.append("\t\t<where>\n\t\t\t")
 							.append("and ")
-							.append(condition)
+							.append(conditionArr[i])
 							.append("\n");
 						}
 						//实体条件
@@ -929,17 +940,13 @@ public class GeneratorCode {
 						.append(tableInfo.getEntityName())
 						.append("\">\n")
 						.append("\t\tselect \n\t\t<include refid=\"Conj_Column_List\" />\n\t\tfrom ")
-						.append(conjTablesBuilder.toString())
-						.append("\n");
+						.append(conjTablesBuilder.toString());
 						//添加连接条件
-						if("left".equals(ymlMap.get("conjtype"))){
-							conjBuilder
-							.append("\n\t\t<where>\n");
-						}else{
+						for(int i = conjCount + 1; i < conditionArr.length; i++) {
 							conjBuilder
 							.append("\t\t<where>\n\t\t\t")
 							.append("and ")
-							.append(condition)
+							.append(conditionArr[i])
 							.append("\n");
 						}
 						//条件
