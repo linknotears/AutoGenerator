@@ -860,9 +860,14 @@ public class GeneratorCode {
 						.append(conjTablesBuilder.toString());
 						//添加连接条件
 						String[] conditionArr = condition.split(" and ");
+						conjBuilder
+						.append("\t\t<where>\n\t\t\t");
 						for(int i = conjCount + 1; i < conditionArr.length; i++) {
+							if( i > (conjCount + 1) ) {
+								conjBuilder
+								.append("\t\t\t");
+							}
 							conjBuilder
-							.append("\t\t<where>\n\t\t\t")
 							.append("and ")
 							.append(conditionArr[i])
 							.append("\n");
@@ -887,9 +892,14 @@ public class GeneratorCode {
 						.append("\t\tselect \n\t\tcount(1)\n\t\tfrom ")
 						.append(conjTablesBuilder.toString());
 						//添加连接条件
+						conjBuilder
+						.append("\t\t<where>\n\t\t\t");
 						for(int i = conjCount + 1; i < conditionArr.length; i++) {
+							if( i > (conjCount + 1) ) {
+								conjBuilder
+								.append("\t\t\t");
+							}
 							conjBuilder
-							.append("\t\t<where>\n\t\t\t")
 							.append("and ")
 							.append(conditionArr[i])
 							.append("\n");
@@ -914,9 +924,14 @@ public class GeneratorCode {
 						.append("\t\tselect \n\t\t<include refid=\"Conj_Column_List\" />\n\t\tfrom ")
 						.append(conjTablesBuilder.toString());
 						//添加连接条件
+						conjBuilder
+						.append("\t\t<where>\n\t\t\t");
 						for(int i = conjCount + 1; i < conditionArr.length; i++) {
+							if( i > (conjCount + 1) ) {
+								conjBuilder
+								.append("\t\t\t");
+							}
 							conjBuilder
-							.append("\t\t<where>\n\t\t\t")
 							.append("and ")
 							.append(conditionArr[i])
 							.append("\n");
@@ -942,9 +957,15 @@ public class GeneratorCode {
 						.append("\t\tselect \n\t\t<include refid=\"Conj_Column_List\" />\n\t\tfrom ")
 						.append(conjTablesBuilder.toString());
 						//添加连接条件
+						conjBuilder
+						.append("\t\t<where>\n\t\t\t");
+						System.out.println("conjCount="+conjCount);
 						for(int i = conjCount + 1; i < conditionArr.length; i++) {
+							if( i > (conjCount + 1) ) {
+								conjBuilder
+								.append("\t\t\t");
+							}
 							conjBuilder
-							.append("\t\t<where>\n\t\t\t")
 							.append("and ")
 							.append(conditionArr[i])
 							.append("\n");
