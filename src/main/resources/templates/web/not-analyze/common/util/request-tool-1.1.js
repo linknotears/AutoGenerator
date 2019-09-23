@@ -1,6 +1,6 @@
 	//模板：<script type="text/javascript" src="common/util/netutil.js"></script>
-	addScript("common/util/jquery-1.10.2.min.js");
-	addScript("common/util/vue.min.js");
+	addScript("/common/util/jquery-1.10.2.min.js");
+	addScript("/common/util/vue.min.js");
 	function addScript(url){
 		document.write("<script language='javascript' src='"+url+"'></script>");
 	}
@@ -242,6 +242,12 @@
 							}
 							//如果没找这则返回null
 							return null;
+						},
+						invert: function(event,invertName) {
+							var checked = event.currentTarget.checked;
+							if(checked){
+								globalData[invertName] = [];
+							}
 						}
 					}
 				});
@@ -269,13 +275,15 @@
 				success: function(data){
 					window.loadIndex = i;
 					window.next = next;
-					for(var j = 0; j < loadUrls[i].refNames.length; j++){
-						if(loadUrls[i].refNames[j] != 'pageData'){
-							globalData.data[loadUrls[i].refNames[j]] = data[loadUrls[i].refNames[j]];
-						}else{
-							globalData.page = data[loadUrls[i].refNames[j]];
-							var url = window.location.href.split("?")[0];
-							globalData.page["pageUri"] = url;
+					if(loadUrls[i].refNames){
+						for(var j = 0; j < loadUrls[i].refNames.length; j++){
+							if(loadUrls[i].refNames[j] != 'pageData'){
+								globalData.data[loadUrls[i].refNames[j]] = data[loadUrls[i].refNames[j]];
+							}else{
+								globalData.page = data[loadUrls[i].refNames[j]];
+								var url = window.location.href.split("?")[0];
+								globalData.page["pageUri"] = url;
+							}
 						}
 					}
 					if(loadUrls[i].success != undefined){
@@ -303,7 +311,6 @@
 			globalData.params[key] = {'value':value,'isDefault':isDefault};
 		}
 	}
-	
 	
 	function init(){
 		//加载页功能数据，如果存在的话
