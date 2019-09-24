@@ -19,7 +19,7 @@ login.table: user
 login.usercolumn: username
 login.pwdcolumn: password
 #需要逆向的表(不写默认是全部表)
-tables: coach_club,club
+tables: order_mod_record,order_dtl
 #是否初始化（生成拷贝文件）只生成baseclass、xml、和各层的文件
 createWebtemplates: !!str true
 createConfig: !!str false
@@ -50,7 +50,7 @@ package.suffix.xml: mybatis.extra
 #  - 
 #    table: orders #表名
 #    relation: one #连接关系，第一层可以不写（one or many）
-#    condition: orders.id = order_id and goods.id = goods_id #连接条件不管什么条件全在第一层写
+#    condition: orders.id = order_id and goods.id = goods_id #新版本改成每一层条件分离，第一层的是额外条件
 #    innertables:  #要连接的表，可以是多个
 #      - 
 #        table: orderitem #要连接的表名
@@ -71,12 +71,13 @@ package.suffix.xml: mybatis.extra
 ## 使用方法一开始为一个数组，第一层为所需要连接的表（为主表），第二层是要连接的表，可以是多个，第三层是第二层要连接的表
 conj.infor: 
   - 
-    table: coach_club
-    condition: club.club_id = coach_club.club_id
+    table: order_mod_record
+    condition: order_mod_record.id1 = club_.id2 and 111 = 111111
     innertables: #mybatis结果集是有顺序的，一对一的必须要写在前边
       - 
-        table: club
-        relation: many
+        table: order_dtl
+        condition: test1.id = test2.id2 and jjjjjjjj.id = jjjjj2.id
+        relation: one
         conjtype: inner
 #一个表可能有多个模板，所以这里面有多少个就要建多少个FileOutput
 webtemplates: 

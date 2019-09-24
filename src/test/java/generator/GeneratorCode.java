@@ -5,7 +5,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.lang.reflect.Field;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -553,11 +552,6 @@ public class GeneratorCode {
 					//开始
 					if(count == 0){
 						condition = (String)ymlMap.get("condition");
-						if(condition != null) {
-							if(condition.substring(0, 4).equals("and ")) {
-								condition = " " + condition;
-							}
-						}
 						//置零
 						conjCount = new Integer(0);
 						//重新建立一个StringBuilder
@@ -688,6 +682,10 @@ public class GeneratorCode {
 							set.add(sb.toString());
 						}
 						String conjtypeEach = (String) ymlMap.get("conjtype");
+						String ownCondition = (String)ymlMap.get("condition");
+						if(ownCondition != null) {
+							ownCondition = ownCondition.replace(" and ", "\n\t\t\tAND ");
+						}
 						//搜集联合表
 						if(!"left".equals(conjtypeEach)){
 							//对齐
@@ -698,19 +696,18 @@ public class GeneratorCode {
 							.append("INNER JOIN ")
 							.append(tableInfo.getName())
 							.append("\n");
-							if(!condition.split(" and ")[conjCount].equals("")) {
+							if(ownCondition != null) {
 								conjTablesBuilder.append("\t\t\tON ")
-								.append(condition.split(" and ")[conjCount])
+								.append(ownCondition)
 								.append("\n");
 							}
 							
-							try {
-								Field field = Integer.class.getDeclaredField("value");
-								field.setAccessible(true);
-								field.setInt(conjCount, conjCount + 1);
-							} catch (Exception e) {
-								e.printStackTrace();
-							}
+							conjCount++;
+							/*
+							 * try { Field field = Integer.class.getDeclaredField("value");
+							 * field.setAccessible(true); field.setInt(conjCount, conjCount + 1); } catch
+							 * (Exception e) { e.printStackTrace(); }
+							 */
 						}else{
 							//对齐
 							if(conjCount != 0){
@@ -720,19 +717,14 @@ public class GeneratorCode {
 							.append("LEFT JOIN ")
 							.append(tableInfo.getName())
 							.append("\n");
-							if(!condition.split(" and ")[conjCount].equals("")) {
+							if(ownCondition != null) {
 								conjTablesBuilder.append("\t\t\tON ")
-								.append(condition.split(" and ")[conjCount])
+								.append(ownCondition)
 								.append("\n");
 							}
 							
-							try {
-								Field field = Integer.class.getDeclaredField("value");
-								field.setAccessible(true);
-								field.setInt(conjCount, conjCount + 1);
-							} catch (Exception e) {
-								e.printStackTrace();
-							}
+
+							conjCount++;
 						}
 						
 						//打印层级
@@ -873,9 +865,8 @@ public class GeneratorCode {
 						String[] conditionArr = condition.split(" and ");
 						conjBuilder
 						.append("\t\t<where>\n\t\t\t");
-						System.out.println("conjCount=" + conjCount + ", condition.length=" + conditionArr.length);
-						for(int i = conjCount; i < conditionArr.length; i++) {
-							if( i > conjCount ) {
+						for(int i = 0; i < conditionArr.length; i++) {
+							if( i > 0 ) {
 								conjBuilder
 								.append("\t\t\t");
 							}
@@ -906,8 +897,8 @@ public class GeneratorCode {
 						//添加连接条件
 						conjBuilder
 						.append("\t\t<where>\n\t\t\t");
-						for(int i = conjCount; i < conditionArr.length; i++) {
-							if( i > conjCount ) {
+						for(int i = 0; i < conditionArr.length; i++) {
+							if( i > 0 ) {
 								conjBuilder
 								.append("\t\t\t");
 							}
@@ -938,8 +929,8 @@ public class GeneratorCode {
 						//添加连接条件
 						conjBuilder
 						.append("\t\t<where>\n\t\t\t");
-						for(int i = conjCount; i < conditionArr.length; i++) {
-							if( i > conjCount ) {
+						for(int i = 0; i < conditionArr.length; i++) {
+							if( i > 0 ) {
 								conjBuilder
 								.append("\t\t\t");
 							}
@@ -971,8 +962,8 @@ public class GeneratorCode {
 						//添加连接条件
 						conjBuilder
 						.append("\t\t<where>\n\t\t\t");
-						for(int i = conjCount; i < conditionArr.length; i++) {
-							if( i > conjCount ) {
+						for(int i = 0; i < conditionArr.length; i++) {
+							if( i > 0 ) {
 								conjBuilder
 								.append("\t\t\t");
 							}
