@@ -350,7 +350,10 @@ public class GeneratorCode {
                 		String fieldName = field.getName();
                 		String absoluteName = tableName + "_" + fieldName;
                 		//传入模板
-                		fieldNamesBuf.append(tableName);
+                		fieldNamesBuf
+                		.append("`")
+                		.append(tableName)
+                		.append("`");
                 		fieldNamesBuf.append(".");
                 		fieldNamesBuf.append(fieldName);
                 		fieldNamesBuf.append(" AS ");
@@ -576,7 +579,9 @@ public class GeneratorCode {
 						//连接查询集合
 						conjTablesBuilder = new StringBuilder();
 						conjTablesBuilder
+						.append("`")
 						.append(tableInfo.getName())
+						.append("`")
 						.append("\n\t\t\t");
 						
 					}else{
@@ -693,8 +698,9 @@ public class GeneratorCode {
 								conjTablesBuilder.append("\t\t\t");
 							}
 							conjTablesBuilder
-							.append("INNER JOIN ")
+							.append("INNER JOIN `")
 							.append(tableInfo.getName())
+							.append("`")
 							.append("\n");
 							if(ownCondition != null) {
 								conjTablesBuilder.append("\t\t\tON ")
@@ -714,8 +720,9 @@ public class GeneratorCode {
 								conjTablesBuilder.append("\t\t\t");
 							}
 							conjTablesBuilder
-							.append("LEFT JOIN ")
+							.append("LEFT JOIN `")
 							.append(tableInfo.getName())
+							.append("`")
 							.append("\n");
 							if(ownCondition != null) {
 								conjTablesBuilder.append("\t\t\tON ")
@@ -829,7 +836,7 @@ public class GeneratorCode {
 						for(int i = 0; i < fields.size(); i++){
 							TableField f = fields.get(i);
 							if(f.isKeyFlag()){
-								idFieldName = tableInfo.getName() +"."+ f.getName();
+								idFieldName = "`"+tableInfo.getName() +"`."+ f.getName();
 								idPropertyName = f.getPropertyName();
 								idType = f.getPropertyType();
 							}
@@ -837,8 +844,9 @@ public class GeneratorCode {
 							.append("\n\t\t\t\t<if test=\"condition.")
 							.append(f.getPropertyName())
 							.append("!=null\">\n")
-							.append("\t\t\t\t\t and ")
+							.append("\t\t\t\t\t and `")
 							.append(tableInfo.getName())
+							.append("`")
 							.append(".")
 							.append(f.getName())
 							.append(" = #{condition.")
