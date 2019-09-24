@@ -2,45 +2,47 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="${package.Mapper}.${table.mapperName}">
 
-#if(${enableCache})
+<#if enableCache>
 	<!-- 开启二级缓存 -->
 	<cache type="org.mybatis.caches.ehcache.LoggingEhcache"/>
 
-#end
-#if(${baseResultMap})
+</#if>
+<#if baseResultMap>
 	<!-- 通用查询映射结果 -->
 	<resultMap id="BaseResultMap" type="${package.Entity}.${entity}">
-#foreach($field in ${table.fields})
-#if(${field.keyFlag})##生成主键排在第一位
-		<id column="${table.name}_${field.name}" property="${field.propertyName}" />
-#end
-#end
-#foreach($field in ${table.commonFields})##生成公共字段
-	<result column="${field.propertyName}" property="${field.name}" />
-#end
-#foreach($field in ${table.fields})
-#if(!${field.keyFlag})##生成普通字段
-		<result column="${table.name}_${field.name}" property="${field.propertyName}" />
-#end
-#end
-	</resultMap>
 
-#end
-#foreach($fieldNamesEntry in $cfg.absoluteNameStrMap.entrySet())
-#if($fieldNamesEntry.key == $table.name)
+<#list table.fields as field>
+	<#if field.keyFlag>
+	<id column="${table.name}_${field.name}" property="${field.propertyName}" />
+	</#if>
+</#list>
+<#list table.commonFields as field>
+	<result column="${field.propertyName}" property="${field.name}" />
+</#list>
+<#list table.fields as field>
+	<#if !field.keyFlag><#-- 生成普通字段  -->
+	<result column="${table.name}_${field.name}" property="${field.propertyName}" />
+	</#if>
+</#list>
+	</resultMap>
+</#if>
+
+<#assign keys=cfg.absoluteNameStrMap?keys/>
+<#list keys as key>
+<#if key == table.name>
 	<!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        $fieldNamesEntry.value
+        ${cfg.absoluteNameStrMap["${key}"]}
     </sql>
-#end
-#end
+</#if>
+</#list>
 
-#if($cfg.conjInfoMap.get($table.name).get('resultStr'))
+<#if cfg.conjInfoMap[table.name]["resultStr"]??>
 	<!-- 联合查询结果集 -->
-$cfg.conjInfoMap.get($table.name).get('resultStr')
+${cfg.conjInfoMap[table.name]["resultStr"]}
 	<!-- 联合查询 -->
-$cfg.conjInfoMap.get($table.name).get('conjQueryStr')
-#end
+${cfg.conjInfoMap["${table.name}"]["conjQueryStr"]}
+</#if>
 
 
 
@@ -50,15 +52,15 @@ $cfg.conjInfoMap.get($table.name).get('conjQueryStr')
    	from ${table.name}
    	<where>
    		<if test="condition!=null">
-			#foreach($field in ${table.fields})
+			<#list table.fields as field>
     		<if test="condition.${field.propertyName}!=null">
-    			and ${field.name} = #{condition.${field.propertyName},javaType=${field.columnType}}
+    			and ${field.name} = <#noparse>#</#noparse>{condition.${field.propertyName},javaType=${field.columnType}}
     		</if>
-			#end
+			</#list>
     	</if>
-    	${condition.customCondition}
+    	<#noparse>${condition.customCondition}</#noparse>
    	</where>
-   	${condition.orderby}
+   	<#noparse>${condition.orderby}</#noparse>
   </select>
   
   <select id="selectCount" parameterType="${package.Entity}.${entity}" resultType="java.lang.Integer">
@@ -67,13 +69,13 @@ $cfg.conjInfoMap.get($table.name).get('conjQueryStr')
    	from ${table.name}
    	<where>
    		<if test="condition!=null">
-			#foreach($field in ${table.fields})
+			<#list table.fields as field>
     		<if test="condition.${field.propertyName}!=null">
-    			and ${field.name} = #{condition.${field.propertyName},javaType=${field.columnType}}
+    			and ${field.name} = <#noparse>#</#noparse>{condition.${field.propertyName},javaType=${field.columnType}}
     		</if>
-			#end
+			</#list>
     	</if>
-    	${condition.customCondition}
+    	<#noparse>${condition.customCondition}</#noparse>
    	</where>
   </select>
   
@@ -83,23 +85,23 @@ $cfg.conjInfoMap.get($table.name).get('conjQueryStr')
    	from ${table.name}
    	<where>
    		<if test="condition!=null">
-			#foreach($field in ${table.fields})
+			<#list table.fields as field>
     		<if test="condition.${field.propertyName}!=null">
-    			and ${field.name} = #{condition.${field.propertyName},javaType=${field.columnType}}
+    			and ${field.name} = <#noparse>#</#noparse>{condition.${field.propertyName},javaType=${field.columnType}}
     		</if>
-			#end
+			</#list>
     	</if>
-    	${condition.customCondition}
+    	<#noparse>${condition.customCondition}</#noparse>
    	</where>
-    ${orderby}
-    limit #{start },#{limit }
+    <#noparse>${orderby}</#noparse>
+    limit <#noparse>#</#noparse>{start },<#noparse>#</#noparse>{limit }
   </select>
   
   <insert id="insertByList" parameterType="${package.Entity}.${entity}" useGeneratedKeys="true" keyProperty="${table.fields[0].propertyName}" keyColumn="${table.fields[0].name}">
   	insert into ${table.name} 
     values 
 	<foreach collection="list" item="item" separator=",">
-		(#foreach($field in ${table.fields})#{item.${field.propertyName},javaType=${field.columnType}}#if(${foreach.hasNext}) , #end #end)
+		(<#list table.fields as field><#noparse>#</#noparse>{item.${field.propertyName},javaType=${field.columnType}}<#if field_has_next> , </#if> </#list>)
     </foreach>
   </insert>
   
@@ -107,110 +109,114 @@ $cfg.conjInfoMap.get($table.name).get('conjQueryStr')
     select 
     <include refid="Base_Column_List" />
     from ${table.name}
-    where ${table.fields[0].name} = #{${table.fields[0].propertyName},javaType=${table.fields[0].columnType}}
+    where ${table.fields[0].name} = <#noparse>#</#noparse>{${table.fields[0].propertyName},javaType=${table.fields[0].columnType}}
   </select>
   
   <delete id="deleteById" parameterType="${package.Entity}.${entity}" >
     delete from ${table.name}
-    where ${table.fields[0].name} = #{${table.fields[0].propertyName},javaType=${table.fields[0].columnType}}
+    where ${table.fields[0].name} = <#noparse>#</#noparse>{${table.fields[0].propertyName},javaType=${table.fields[0].columnType}}
   </delete>
   
   <delete id="deleteBatchIds" parameterType="${package.Entity}.${entity}" >
     delete from ${table.name}
     where ${table.fields[0].name} in 
 	<foreach collection="array" item="item" open="(" separator="," close=")">
-		#{item,javaType=${table.fields[0].columnType}}
+		<#noparse>#</#noparse>{item,javaType=${table.fields[0].columnType}}
 	</foreach>
   </delete>
   
   <delete id="deleteByCondition" parameterType="${package.Entity}.${entity}" >
     delete from ${table.name}
 	<where>
-		#foreach($field in ${table.fields})
+		<#list table.fields as field>
 		<if test="${field.propertyName}!=null">
-			and ${field.name} = #{${field.propertyName},javaType=${field.columnType}}
+			and ${field.name} = <#noparse>#</#noparse>{${field.propertyName},javaType=${field.columnType}}
 		</if>
-		#end
+		</#list>
    	</where>
   </delete>
   
   <insert id="insert" parameterType="${package.Entity}.${entity}" useGeneratedKeys="true" keyProperty="${table.fields[0].propertyName}" keyColumn="${table.fields[0].name}">
     insert into ${table.name}
     <trim prefix="(" suffix=")" suffixOverrides="," >
-	#foreach($field in ${table.fields})
+	<#list table.fields as field>
 	  <if test="${field.propertyName} != null" >
         ${field.name},
 	  </if>
-    #end
+    </#list>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-    #foreach($field in ${table.fields})
+    <#list table.fields as field>
       <if test="${field.propertyName} != null" >
-        #{${field.propertyName},javaType=${field.columnType}},
+        <#noparse>#</#noparse>{${field.propertyName},javaType=${field.columnType}},
       </if>
-    #end
+    </#list>
     </trim>
   </insert>
   
   <update id="updateByIdIgnoreNull" parameterType="${package.Entity}.${entity}" >
     update ${table.name}
-    <set >
-	#foreach($field in ${table.fields})
-	  #if(!${field.keyFlag})
+    <set>
+	<#list table.fields as field>
+	<#if !field.keyFlag>
       <if test="${field.propertyName} != null" >
-        ${field.name} = #{${field.propertyName},javaType=${field.columnType}},
+        ${field.name} = <#noparse>#</#noparse>{${field.propertyName},javaType=${field.columnType}},
       </if>
-      #end
-	#end  
+	</#if>
+	</#list>
     </set>
-    where ${table.fields[0].name} = #{${table.fields[0].propertyName},javaType=${table.fields[0].columnType}}
+    where ${table.fields[0].name} = <#noparse>#</#noparse>{${table.fields[0].propertyName},javaType=${table.fields[0].columnType}}
   </update>
   
   <update id="updateById" parameterType="${package.Entity}.${entity}" >
     update ${table.name}
     set 
-	#foreach($field in ${table.fields})#if(!${field.keyFlag})${field.name} = #{${field.propertyName},javaType=${field.columnType}}#if(${foreach.hasNext}),#end#end#end  
-    where ${table.fields[0].name} = #{${table.fields[0].propertyName},javaType=${table.fields[0].columnType}}
+	#foreach($field in ${table.fields})#if(${field.keyFlag})#continue#end${field.name} = <#noparse>#</#noparse>{${field.propertyName},javaType=${field.columnType}}#if(field_has_next),#end#end  
+    where ${table.fields[0].name} = <#noparse>#</#noparse>{${table.fields[0].propertyName},javaType=${table.fields[0].columnType}}
   </update>
   
   <update id="updateByPartIdIgnoreNull" parameterType="${package.Entity}.${entity}" >
     update ${table.name}
-    <set>
-	#foreach($field in ${table.fields})
-	  #if(!${field.keyFlag})
-      <if test="entity.${field.propertyName} != null" >
-        ${field.name} = #{entity.${field.propertyName},javaType=${field.columnType}},
+    <set >
+	<#list table.fields as field>
+	<#if !field.keyFlag>
+	  <if test="entity.${field.propertyName} != null" >
+        ${field.name} = <#noparse>#</#noparse>{entity.${field.propertyName},javaType=${field.columnType}},
       </if>
-      #end
-	#end  
+	</#if>
+    </#list>
     </set>
-    where ${table.fields[0].name} = #{id,javaType=${table.fields[0].columnType}}
+    where ${table.fields[0].name} = <#noparse>#</#noparse>{id,javaType=${table.fields[0].columnType}}
   </update>
   
   <update id="updateByPartId" parameterType="${package.Entity}.${entity}" >
     update ${table.name}
     set 
-	#foreach($field in ${table.fields})#if(!${field.keyFlag})${field.name} = #{entity.${field.propertyName},javaType=${field.columnType}}#if(${foreach.hasNext}),#end#end#end  
-    where ${table.fields[0].name} = #{id,javaType=${table.fields[0].columnType}}
+	<#list table.fields as field>
+	<#if !field.keyFlag>
+		${field.name} = <#noparse>#</#noparse>{entity.${field.propertyName},javaType=${field.columnType}}<#if field_has_next>,</#if>
+	</#if>
+	</#list>
+    where ${table.fields[0].name} = <#noparse>#</#noparse>{id,javaType=${table.fields[0].columnType}}
   </update>
   
   <update id="updateByCondition" parameterType="${package.Entity}.${entity}" >
     update ${table.name}
-    <set>
-	#foreach($field in ${table.fields})
-	#if(!${field.keyFlag})
-      <if test="entity.${field.propertyName} != null" >
-        ${field.name} = #{entity.${field.propertyName},javaType=${field.columnType}},
+    <set >
+	<#list table.fields as field>
+	<#if !field.keyFlag>
+	  <if test="entity.${field.propertyName} != null" >
+        ${field.name} = <#noparse>#</#noparse>{entity.${field.propertyName},javaType=${field.columnType}},
       </if>
-    #end
-	#end  
+	</#if>
+    </#list> 
     </set>
     <where>
-    #foreach($field in ${table.fields})
+    <#list table.fields as field>
       <if test="condition.${field.propertyName} != null" >
-        and ${field.name} = #{condition.${field.propertyName},javaType=${field.columnType}}
+        and ${field.name} = <#noparse>#</#noparse>{condition.${field.propertyName},javaType=${field.columnType}}
       </if>
-	#end  
+	</#list>
     </where>
   </update>
 </mapper>

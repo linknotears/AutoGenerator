@@ -1,0 +1,31 @@
+package ${package.Mapper};
+
+import ${package.Entity}.${entity};
+import org.springframework.stereotype.Repository;
+#if($cfg.conjInfoMap.get($table.name).get('resultStr'))
+import java.util.List;
+import org.apache.ibatis.annotations.Param;
+import ${package.Entity}.vo.PageData;
+#end
+/**
+ * <p>
+  * $!{table.comment} Mapper 接口
+ * </p>
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+@Repository("${package.Mapper}.${table.mapperName}")
+public interface ${table.mapperName} extends ${superMapperClass}<${entity}> {
+	#if($cfg.conjInfoMap.get($table.name).get('resultStr'))
+	//联合查询接口
+	List<${entity}> conjQueryList(@Param("condition") ${entity} condition);
+	
+	List<${entity}> conjQueryPage(PageData<${entity}> pageData);
+	
+	int conjQueryCount(@Param("condition") ${entity} condition);
+	
+	${entity} conjQueryById(Object id);
+	#end
+	
+}

@@ -77,7 +77,7 @@ public class GeneratorCode {
         //设置为date,而不是LocalDateTime
         gc.setDateType(DateType.ONLY_DATE);
         mpg.setGlobalConfig(gc);
-
+        //mpg.setTemplateEngine(new FreemarkerTemplateEngine());
         // 数据源配置
         DataSourceConfig dsc = new DataSourceConfig();
         dsc.setDbType(DbType.MYSQL);

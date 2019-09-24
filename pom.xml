@@ -2,10 +2,10 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>cn.linkey</groupId>
-  <artifactId>HelloMybatisPuls</artifactId>
-  <packaging>war</packaging>
+  <artifactId>AutoGenerator</artifactId>
+  <packaging>jar</packaging>
   <version>0.0.1-SNAPSHOT</version>
-  <name>HelloMybatisPuls Maven Webapp</name>
+  <name>AutoGenerator Maven Webapp</name>
   <url>http://maven.apache.org</url>
   
   <properties>
@@ -26,6 +26,7 @@
     <yaml.version>1.19</yaml.version>
     <fileupload.version>1.2.2</fileupload.version>
     <io.version>2.0.1</io.version>
+    <freemarker.version>2.3.21</freemarker.version>
   </properties>
 
   <dependencies>
@@ -45,6 +46,12 @@
 	    <artifactId>mybatis-typehandlers-jsr310</artifactId>
 	    <version>1.0.1</version>
     </dependency>
+    
+    <dependency>
+	    <groupId>org.freemarker</groupId>
+	    <artifactId>freemarker</artifactId>
+	    <version>${freemarker.version}</version>
+	</dependency>
     
   	<dependency>
 	  	<groupId>org.yaml</groupId>

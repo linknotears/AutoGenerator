@@ -1,0 +1,254 @@
+[ERROR] [2019-09-24 16:02:28][freemarker.runtime]Error executing FreeMarker template
+FreeMarker template error:
+Can't convert boolean to string automatically, because the "boolean_format" setting was "true,false", which is the legacy default computer-language format, and hence isn't accepted.
+
+----
+Tip: If you just want "true"/"false" result as you are generting computer-language output, use "?c", like ${myBool?c}.
+----
+Tip: You can write myBool?string('yes', 'no') and like to specify boolean formatting in place.
+----
+Tip: If you need the same two values on most places, the programmers should set the "boolean_format" setting to something like "yes,no".
+----
+
+----
+FTL stack trace ("~" means nesting-related):
+	- Failed at: ${enableCache}  [in template "templates/mapper.xml.vm" at line 5, column 5]
+----
+
+Java stack trace (for programmers):
+----
+freemarker.core._MiscTemplateException: [... Exception message was already printed; see it above ...]
+	at freemarker.core.Configurable.formatBoolean(Configurable.java:519)
+	at freemarker.core.EvalUtil.coerceModelToString(EvalUtil.java:360)
+	at freemarker.core.Expression.evalAndCoerceToString(Expression.java:80)
+	at freemarker.core.DollarVariable.accept(DollarVariable.java:40)
+	at freemarker.core.Environment.visit(Environment.java:257)
+	at freemarker.core.MixedContent.accept(MixedContent.java:57)
+	at freemarker.core.Environment.visit(Environment.java:257)
+	at freemarker.core.Environment.process(Environment.java:235)
+	at freemarker.template.Template.process(Template.java:262)
+	at com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine.writer(FreemarkerTemplateEngine.java:52)
+	at com.baomidou.mybatisplus.generator.engine.AbstractTemplateEngine.batchOutput(AbstractTemplateEngine.java:86)
+	at com.baomidou.mybatisplus.generator.AutoGenerator.execute(AutoGenerator.java:102)
+	at generator.GeneratorCode.main(GeneratorCode.java:408)
+[ERROR] [2019-09-24 16:03:20][freemarker.runtime]Error executing FreeMarker template
+FreeMarker template error:
+For "${...}" content: Expected a string or something automatically convertible to string (number, date or boolean), but this evaluated to a sequence (wrapper: f.t.SimpleSequence):
+==> table.importPackages  [in template "templates/entity.java.vm" at line 3, column 20]
+
+----
+FTL stack trace ("~" means nesting-related):
+	- Failed at: ${table.importPackages}  [in template "templates/entity.java.vm" at line 3, column 18]
+----
+
+Java stack trace (for programmers):
+----
+freemarker.core.NonStringException: [... Exception message was already printed; see it above ...]
+	at freemarker.core.EvalUtil.coerceModelToString(EvalUtil.java:381)
+	at freemarker.core.Expression.evalAndCoerceToString(Expression.java:80)
+	at freemarker.core.DollarVariable.accept(DollarVariable.java:40)
+	at freemarker.core.Environment.visit(Environment.java:257)
+	at freemarker.core.MixedContent.accept(MixedContent.java:57)
+	at freemarker.core.Environment.visit(Environment.java:257)
+	at freemarker.core.Environment.process(Environment.java:235)
+	at freemarker.template.Template.process(Template.java:262)
+	at com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine.writer(FreemarkerTemplateEngine.java:52)
+	at com.baomidou.mybatisplus.generator.engine.AbstractTemplateEngine.batchOutput(AbstractTemplateEngine.java:86)
+	at com.baomidou.mybatisplus.generator.AutoGenerator.execute(AutoGenerator.java:102)
+	at generator.GeneratorCode.main(GeneratorCode.java:408)
+[ERROR] [2019-09-24 16:03:59][freemarker.runtime]Error executing FreeMarker template
+FreeMarker template error:
+For "${...}" content: Expected a string or something automatically convertible to string (number, date or boolean), but this evaluated to a sequence (wrapper: f.t.SimpleSequence):
+==> table.importPackages  [in template "templates/entity.java.ftl" at line 6, column 20]
+
+----
+FTL stack trace ("~" means nesting-related):
+	- Failed at: ${table.importPackages}  [in template "templates/entity.java.ftl" at line 6, column 18]
+----
+
+Java stack trace (for programmers):
+----
+freemarker.core.NonStringException: [... Exception message was already printed; see it above ...]
+	at freemarker.core.EvalUtil.coerceModelToString(EvalUtil.java:381)
+	at freemarker.core.Expression.evalAndCoerceToString(Expression.java:80)
+	at freemarker.core.DollarVariable.accept(DollarVariable.java:40)
+	at freemarker.core.Environment.visit(Environment.java:257)
+	at freemarker.core.MixedContent.accept(MixedContent.java:57)
+	at freemarker.core.Environment.visit(Environment.java:257)
+	at freemarker.core.Environment.process(Environment.java:235)
+	at freemarker.template.Template.process(Template.java:262)
+	at com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine.writer(FreemarkerTemplateEngine.java:52)
+	at com.baomidou.mybatisplus.generator.engine.AbstractTemplateEngine.batchOutput(AbstractTemplateEngine.java:96)
+	at com.baomidou.mybatisplus.generator.AutoGenerator.execute(AutoGenerator.java:102)
+	at generator.GeneratorCode.main(GeneratorCode.java:408)
+[ERROR] [2019-09-24 16:04:52][freemarker.runtime]Error executing FreeMarker template
+FreeMarker template error:
+The following has evaluated to null or missing:
+==> $table  [in template "templates/mapper.xml.ftl" at line 32, column 13]
+
+----
+Tip: Variable references must not start with "$", unless the "$" is really part of the variable name.
+----
+Tip: If the failing expression is known to be legally refer to something that's null or missing, either specify a default value like myOptionalVar!myDefault, or use <#if myOptionalVar??>when-present<#else>when-missing</#if>. (These only cover the last step of the expression; to cover the whole expression, use parenthesis: (myOptionalVar.foo)!myDefault, (myOptionalVar.foo)??
+----
+
+----
+FTL stack trace ("~" means nesting-related):
+	- Failed at: #if key == $table.name  [in template "templates/mapper.xml.ftl" at line 32, column 1]
+	- Reached through: #list keys as key  [in template "templates/mapper.xml.ftl" at line 31, column 1]
+----
+
+Java stack trace (for programmers):
+----
+freemarker.core.InvalidReferenceException: [... Exception message was already printed; see it above ...]
+	at freemarker.core.InvalidReferenceException.getInstance(InvalidReferenceException.java:108)
+	at freemarker.core.UnexpectedTypeException.newDesciptionBuilder(UnexpectedTypeException.java:60)
+	at freemarker.core.UnexpectedTypeException.<init>(UnexpectedTypeException.java:40)
+	at freemarker.core.NonHashException.<init>(NonHashException.java:46)
+	at freemarker.core.Dot._eval(Dot.java:45)
+	at freemarker.core.Expression.eval(Expression.java:76)
+	at freemarker.core.EvalUtil.compare(EvalUtil.java:111)
+	at freemarker.core.ComparisonExpression.evalToBoolean(ComparisonExpression.java:65)
+	at freemarker.core.ConditionalBlock.accept(ConditionalBlock.java:46)
+	at freemarker.core.Environment.visit(Environment.java:257)
+	at freemarker.core.IteratorBlock$Context.runLoop(IteratorBlock.java:145)
+	at freemarker.core.Environment.visitIteratorBlock(Environment.java:501)
+	at freemarker.core.IteratorBlock.accept(IteratorBlock.java:67)
+	at freemarker.core.Environment.visit(Environment.java:257)
+	at freemarker.core.MixedContent.accept(MixedContent.java:57)
+	at freemarker.core.Environment.visit(Environment.java:257)
+	at freemarker.core.Environment.process(Environment.java:235)
+	at freemarker.template.Template.process(Template.java:262)
+	at com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine.writer(FreemarkerTemplateEngine.java:52)
+	at com.baomidou.mybatisplus.generator.engine.AbstractTemplateEngine.batchOutput(AbstractTemplateEngine.java:86)
+	at com.baomidou.mybatisplus.generator.AutoGenerator.execute(AutoGenerator.java:102)
+	at generator.GeneratorCode.main(GeneratorCode.java:408)
+[ERROR] [2019-09-24 16:06:24][freemarker.runtime]Error executing FreeMarker template
+FreeMarker template error:
+The following has evaluated to null or missing:
+==> cfg.conjInfoMap["${table.name}"]['resultStr']  [in template "templates/mapper.xml.ftl" at line 40, column 6]
+
+----
+Tip: It's the final [] step that caused this error, not those before it.
+----
+Tip: If the failing expression is known to be legally refer to something that's null or missing, either specify a default value like myOptionalVar!myDefault, or use <#if myOptionalVar??>when-present<#else>when-missing</#if>. (These only cover the last step of the expression; to cover the whole expression, use parenthesis: (myOptionalVar.foo)!myDefault, (myOptionalVar.foo)??
+----
+Tip: It has been noticed that you are using ${...} as the sole content of a quoted string. That does nothing but forcably converts the value inside ${...} to string (as it inserts it into the enclosing string). If that's not what you meant, just remove the quotation marks, ${ and }; you don't need them. If you indeed wanted to convert to string, use myExpression?string instead.
+----
+
+----
+FTL stack trace ("~" means nesting-related):
+	- Failed at: #if cfg.conjInfoMap["\${table.name}"]...  [in template "templates/mapper.xml.ftl" at line 40, column 1]
+----
+
+Java stack trace (for programmers):
+----
+freemarker.core.InvalidReferenceException: [... Exception message was already printed; see it above ...]
+	at freemarker.core.InvalidReferenceException.getInstance(InvalidReferenceException.java:108)
+	at freemarker.core.UnexpectedTypeException.newDesciptionBuilder(UnexpectedTypeException.java:60)
+	at freemarker.core.UnexpectedTypeException.<init>(UnexpectedTypeException.java:40)
+	at freemarker.core.NonBooleanException.<init>(NonBooleanException.java:44)
+	at freemarker.core.Expression.modelToBoolean(Expression.java:134)
+	at freemarker.core.Expression.evalToBoolean(Expression.java:117)
+	at freemarker.core.Expression.evalToBoolean(Expression.java:108)
+	at freemarker.core.ConditionalBlock.accept(ConditionalBlock.java:46)
+	at freemarker.core.Environment.visit(Environment.java:257)
+	at freemarker.core.MixedContent.accept(MixedContent.java:57)
+	at freemarker.core.Environment.visit(Environment.java:257)
+	at freemarker.core.Environment.process(Environment.java:235)
+	at freemarker.template.Template.process(Template.java:262)
+	at com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine.writer(FreemarkerTemplateEngine.java:52)
+	at com.baomidou.mybatisplus.generator.engine.AbstractTemplateEngine.batchOutput(AbstractTemplateEngine.java:86)
+	at com.baomidou.mybatisplus.generator.AutoGenerator.execute(AutoGenerator.java:102)
+	at generator.GeneratorCode.main(GeneratorCode.java:408)
+[ERROR] [2019-09-24 16:07:05][freemarker.runtime]Error executing FreeMarker template
+FreeMarker template error:
+For "#if" condition: Expected a boolean, but this evaluated to a string (wrapper: f.t.SimpleScalar):
+==> cfg.conjInfoMap["${table.name}"]["resultStr"]  [in template "templates/mapper.xml.ftl" at line 40, column 6]
+
+----
+Tip: It has been noticed that you are using ${...} as the sole content of a quoted string. That does nothing but forcably converts the value inside ${...} to string (as it inserts it into the enclosing string). If that's not what you meant, just remove the quotation marks, ${ and }; you don't need them. If you indeed wanted to convert to string, use myExpression?string instead.
+----
+
+----
+FTL stack trace ("~" means nesting-related):
+	- Failed at: #if cfg.conjInfoMap["\${table.name}"]...  [in template "templates/mapper.xml.ftl" at line 40, column 1]
+----
+
+Java stack trace (for programmers):
+----
+freemarker.core.NonBooleanException: [... Exception message was already printed; see it above ...]
+	at freemarker.core.Expression.modelToBoolean(Expression.java:134)
+	at freemarker.core.Expression.evalToBoolean(Expression.java:117)
+	at freemarker.core.Expression.evalToBoolean(Expression.java:108)
+	at freemarker.core.ConditionalBlock.accept(ConditionalBlock.java:46)
+	at freemarker.core.Environment.visit(Environment.java:257)
+	at freemarker.core.MixedContent.accept(MixedContent.java:57)
+	at freemarker.core.Environment.visit(Environment.java:257)
+	at freemarker.core.Environment.process(Environment.java:235)
+	at freemarker.template.Template.process(Template.java:262)
+	at com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine.writer(FreemarkerTemplateEngine.java:52)
+	at com.baomidou.mybatisplus.generator.engine.AbstractTemplateEngine.batchOutput(AbstractTemplateEngine.java:86)
+	at com.baomidou.mybatisplus.generator.AutoGenerator.execute(AutoGenerator.java:102)
+	at generator.GeneratorCode.main(GeneratorCode.java:408)
+[ERROR] [2019-09-24 16:08:36][freemarker.runtime]Error executing FreeMarker template
+FreeMarker template error:
+The following has evaluated to null or missing:
+==> cfg.conjInfoMap[table.name]["resultStr"]  [in template "templates/mapper.xml.ftl" at line 40, column 6]
+
+----
+Tip: It's the final [] step that caused this error, not those before it.
+----
+Tip: If the failing expression is known to be legally refer to something that's null or missing, either specify a default value like myOptionalVar!myDefault, or use <#if myOptionalVar??>when-present<#else>when-missing</#if>. (These only cover the last step of the expression; to cover the whole expression, use parenthesis: (myOptionalVar.foo)!myDefault, (myOptionalVar.foo)??
+----
+
+----
+FTL stack trace ("~" means nesting-related):
+	- Failed at: #if cfg.conjInfoMap[table.name]["resu...  [in template "templates/mapper.xml.ftl" at line 40, column 1]
+----
+
+Java stack trace (for programmers):
+----
+freemarker.core.InvalidReferenceException: [... Exception message was already printed; see it above ...]
+	at freemarker.core.InvalidReferenceException.getInstance(InvalidReferenceException.java:108)
+	at freemarker.core.UnexpectedTypeException.newDesciptionBuilder(UnexpectedTypeException.java:60)
+	at freemarker.core.UnexpectedTypeException.<init>(UnexpectedTypeException.java:40)
+	at freemarker.core.NonBooleanException.<init>(NonBooleanException.java:44)
+	at freemarker.core.Expression.modelToBoolean(Expression.java:134)
+	at freemarker.core.Expression.evalToBoolean(Expression.java:117)
+	at freemarker.core.Expression.evalToBoolean(Expression.java:108)
+	at freemarker.core.ConditionalBlock.accept(ConditionalBlock.java:46)
+	at freemarker.core.Environment.visit(Environment.java:257)
+	at freemarker.core.MixedContent.accept(MixedContent.java:57)
+	at freemarker.core.Environment.visit(Environment.java:257)
+	at freemarker.core.Environment.process(Environment.java:235)
+	at freemarker.template.Template.process(Template.java:262)
+	at com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine.writer(FreemarkerTemplateEngine.java:52)
+	at com.baomidou.mybatisplus.generator.engine.AbstractTemplateEngine.batchOutput(AbstractTemplateEngine.java:86)
+	at com.baomidou.mybatisplus.generator.AutoGenerator.execute(AutoGenerator.java:102)
+	at generator.GeneratorCode.main(GeneratorCode.java:408)
+[ERROR] [2019-09-24 16:16:20][freemarker.runtime]Error executing FreeMarker template
+FreeMarker template error:
+For "${...}" content: Expected a string or something automatically convertible to string (number, date or boolean), but this evaluated to a sequence (wrapper: f.t.SimpleSequence):
+==> table.fields  [in template "templates/mapper.xml.ftl" at line 174, column 30]
+
+----
+FTL stack trace ("~" means nesting-related):
+	- Failed at: ${table.fields}  [in template "templates/mapper.xml.ftl" at line 174, column 28]
+----
+
+Java stack trace (for programmers):
+----
+freemarker.core.NonStringException: [... Exception message was already printed; see it above ...]
+	at freemarker.core.EvalUtil.coerceModelToString(EvalUtil.java:381)
+	at freemarker.core.Expression.evalAndCoerceToString(Expression.java:80)
+	at freemarker.core.DollarVariable.accept(DollarVariable.java:40)
+	at freemarker.core.Environment.visit(Environment.java:257)
+	at freemarker.core.MixedContent.accept(MixedContent.java:57)
+	at freemarker.core.Environment.visit(Environment.java:257)
+	at freemarker.core.Environment.process(Environment.java:235)
+	at freemarker.template.Template.process(Template.java:262)
+	at com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine.writer(FreemarkerTemplateEngine.java:52)
+	at com.baomidou.mybatisplus.generator.engine.AbstractTemplateEngine.batchOutput(AbstractTemplateEngine.java:86)
+	at com.baomidou.mybatisplus.generator.AutoGenerator.execute(AutoGenerator.java:102)
+	at generator.GeneratorCode.main(GeneratorCode.java:408)
