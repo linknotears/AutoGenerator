@@ -207,7 +207,9 @@ public class GeneratorCode {
     		                		String sqlTableName = tableInfo.getName();
     		                		if(sqlTableName.equals(yamlTableName)){
     		                			this.setTemplatePath("/templates/web/assign/" + tempInfo.get("template"));
-    		                			String filePath = ((String) tempInfo.get("outpath")).replace("${entity}", tableInfo.getEntityName());
+    		                			//首字母转小写
+    		                			String tip = tableInfo.getEntityName().substring(0, 1).toLowerCase() + tableInfo.getEntityName().substring(1);
+    		                			String filePath = ((String) tempInfo.get("outpath")).replace("${entity}", tip);
     		                			return (String)yamlMap.get("OutputDirTemplates") + "/" + filePath;
     		                		}
     							}
@@ -234,13 +236,13 @@ public class GeneratorCode {
 	        //复制不需要解析的文件
 	        //复制web文件
         	if(!"false".equals((String)yamlMap.get("createNotAnalyze"))){
-	        	templatesToNotAnalyze("web/not-analyze",(String)yamlMap.get("OutputDirWeb"));
+	        	templatesToNotAnalyze("web/not-analyze",(String)yamlMap.get("OutputDirStatic"));
 	        }
 	        
 	        //拷贝解析的web
         	if(!"false".equals((String)yamlMap.get("createAnalyze"))){
 	        	String templateDir = "web/analyze";
-	        	String outPath = (String)yamlMap.get("OutputDirWeb");
+	        	String outPath = (String)yamlMap.get("OutputDirStatic");
 	        	templatesTo(focList,templateDir,outPath);
 	        }
         }

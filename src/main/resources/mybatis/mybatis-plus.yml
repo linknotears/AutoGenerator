@@ -1,13 +1,13 @@
 #AutoGenerator 
 #普通配置 
 #-- 俩id挂了、generator之前做个备份、saveOrUpdateByCheck方法bug:检测没有记录无法插入id、增加一个条件更新
-OutputDir: D:/Project/test/src/main/java
+OutputDir: D:/Project/GoodsRental/src/main/java
 #配置文件路径
-OutputDirConfig: D:/Project/test/src/main/resources
-#webroot路径
-OutputDirWeb: D:/Project/test/src/main/webapp
+OutputDirConfig: D:/Project/GoodsRental/src/main/resources
+#静态资源路径
+OutputDirStatic: D:/Project/GoodsRental/src/main/resources/static
 #templatesDir D:/Project/guyueconsole-master/src/main/webapp/WEB-INF/views
-OutputDirTemplates: D:/Project/test/src/main/resources/templates
+OutputDirTemplates: D:/Project/GoodsRental/src/main/resources/views
 #作者名
 author: linking
 #controller uri前缀
@@ -15,17 +15,17 @@ suffix.uri: /extra
 #html uri前缀
 base.uri: /
 #基础包名  
-basePackage: com.bootdo.extra
+basePackage: com.linkey
 #登录表名
 login.table: user
 login.usercolumn: username
 login.pwdcolumn: password
 #需要逆向的表(不写默认是全部表)
-tables: order_mod_record,order_dtl
+tables: 
 #是否初始化（生成拷贝文件）只生成baseclass、xml、和各层的文件
 createWebtemplates: !!str true
 createConfig: !!str false
-createNotAnalyze: !!str false
+createNotAnalyze: !!str true
 createAnalyze: !!str false
 
 #是否覆盖文件（（xml）和entity、mapper或其他拷贝文件除外）
@@ -33,7 +33,7 @@ isOverFile: !!str false
 
 #jdbc配置
 jdbc.driver: com.mysql.cj.jdbc.Driver
-jdbc.url: jdbc:mysql://wx.j66c.com:3306/gyyd_db?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=CONVERT_TO_NULL
+jdbc.url: jdbc:mysql://wx.j66c.com:3306/test?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=CONVERT_TO_NULL
 jdbc.user: root
 jdbc.pwd: wwwj66ccom
 
@@ -44,7 +44,7 @@ package.suffix.entity: entity
 package.suffix.service: service
 package.suffix.serviceImpl: service.impl
 package.suffix.controller: controller
-package.suffix.xml: mybatis.extra
+package.suffix.xml: mapper
 #数组默认生成的是ArrayList
 #使用说明
 # 使用方法一开始为一个数组，第一层为所需要连接的表（为主表），第二层是要连接的表，可以是多个，第三层是第二层要连接的表
@@ -109,18 +109,17 @@ webtemplates:
 #    exclude: img_url.link
 
   - 
-    tables: [coach]
-    template: ${entity}List.html
-    outpath: coach/extra/select${entity}List.html
+    tables: [goods,user,banner,category,category_second]
+    template: list.html
+    outpath: user/${entity}/list.html
   - 
-    tables: [coach]
-    template: add${entity}.html
-    outpath: coach/extra/viewAdd${entity}.html
+    tables: [goods,user,banner,category,category_second]
+    template: add.html
+    outpath: user/${entity}/add.html
   - 
-    tables: [coach]
-    template: edit${entity}.html
-    outpath: coach/extra/viewUpdate${entity}.html
-
+    tables: [goods,user,banner,category,category_second]
+    template: edit.html
+    outpath: user/${entity}/edit.htmll
 #指定文件类型（表名重复时不识别,加时间下划线自动创建）:{0:女,1:男}、img、sex、file、date、datetime、uuid、no
 propertyType: 
 #  img_url: 
