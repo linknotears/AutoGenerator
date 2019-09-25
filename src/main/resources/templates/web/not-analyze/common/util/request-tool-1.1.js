@@ -56,7 +56,7 @@
 			success:function(data){
 				window.location.href = "user/index.do";
 			},
-			isMultipart:false,
+			multipart:false,
 			check:function(){return true;}
 		});
 		*/
@@ -65,7 +65,7 @@
 		this.data = config.data;
 		this.form = config.form;
 		this.success = config.success;
-		this.isMultipart = config.isMultipart;
+		this.multipart = config.multipart;
 		this.check = config.check;
 		//模板
 		/* 
@@ -103,7 +103,7 @@
 			}
 			//两种选择提交方式
 			data = $(form).serialize();
-			if(isMultipart != undefined && isMultipart == true){
+			if(multipart != undefined && multipart == true){
 				data = new FormData(form);
 				processData = false;
 				contentType = false;

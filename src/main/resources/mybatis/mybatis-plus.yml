@@ -10,8 +10,10 @@ OutputDirWeb: D:/Project/test/src/main/webapp
 OutputDirTemplates: D:/Project/test/src/main/resources/templates
 #作者名
 author: linking
-#uri前缀
+#controller uri前缀
 suffix.uri: /extra
+#html uri前缀
+base.uri: /
 #基础包名  
 basePackage: com.bootdo.extra
 #登录表名

@@ -5,11 +5,11 @@ import java.util.List;
 
 public class PageData<T> {
 	private int page = 1;//当前页
-	private int totalCount;//总记录数
+	private int total;//总记录数
 	private int totalPage;//总页数
-	private int start = 0;//页开始
+	private int offset = 0;//页开始
 	private int limit = 5;//每页最大记录数
-	private List<T> list;
+	private List<T> rows;
 	private T condition;
 	private String orderby = "";//排序
 	
@@ -21,17 +21,18 @@ public class PageData<T> {
 	public void setOrderby(String orderby) {
 		this.orderby = orderby==null? "" : orderby;
 	}
-	public int getStart() {
-		return start;
+	public int getOffset() {
+		return offset;
 	}
-	public void setStart(int start) {
-		this.start = start;
+	public void setOffset(int offset) {
+		this.offset = offset;
 	}
 	
 	
 	public PageData() {
 		setPage(1);
 	}
+	
 	
 	
 	public T getCondition() {
@@ -45,14 +46,14 @@ public class PageData<T> {
 	}
 	public void setPage(int page) {
 		this.page = page;
-		this.start = (page-1)*limit;
+		this.offset = (page-1)*limit;
 	}
-	public int getTotalCount() {
-		return totalCount;
+	public int getTotal() {
+		return total;
 	}
-	public void setTotalCount(int totalCount) {
-		this.totalCount = totalCount;
-		this.totalPage = totalCount%limit==0? totalCount/limit :totalCount/limit+1;
+	public void setTotal(int total) {
+		this.total = total;
+		this.totalPage = total % limit==0? total/limit : total/limit+1;
 	}
 	public int getTotalPage() {
 		return totalPage;
@@ -66,11 +67,11 @@ public class PageData<T> {
 	public void setLimit(int limit) {
 		this.limit = limit;
 	}
-	public List<T> getList() {
-		return list;
+	public List<T> getRows() {
+		return rows;
 	}
-	public void setList(List<T> list) {
-		this.list = list;
+	public void setList(List<T> rows) {
+		this.rows = rows;
 	}
 	
 }

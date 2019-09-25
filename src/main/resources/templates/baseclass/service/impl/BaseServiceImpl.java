@@ -23,11 +23,11 @@ public abstract class BaseServiceImpl<T> implements BaseService<T> {
 		//设置条件
 		pageData.setCondition(condition);
 		//设置数据
-		List<T> list = baseMapper.selectPage(pageData);
-		pageData.setList(list);
+		List<T> rows = baseMapper.selectPage(pageData);
+		pageData.setRows(rows);
 		//设置记录
-		int totalCount = baseMapper.selectCount(pageData.getCondition());
-		pageData.setTotalCount(totalCount);
+		int total = baseMapper.selectCount(pageData.getCondition());
+		pageData.setTotal(total);
 		return pageData;
 	}
 

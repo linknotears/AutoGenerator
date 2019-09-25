@@ -955,7 +955,7 @@ public class GeneratorCode {
 						.append("\n\t\t\t${condition.customCondition}\n")
 						.append("\t\t</where>\n")
 						.append("\t\t${orderby}")
-						.append("\t\tlimit #{start },#{limit }")
+						.append("\t\tlimit #{offset },#{limit }")
 						.append("\n\t</select>");
 						
 						//conjQueryById

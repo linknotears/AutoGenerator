@@ -92,7 +92,7 @@ $cfg.conjInfoMap.get($table.name).get('conjQueryStr')
     	${condition.customCondition}
    	</where>
     ${orderby}
-    limit #{start },#{limit }
+    limit #{offset },#{limit }
   </select>
   
   <insert id="insertByList" parameterType="${package.Entity}.${entity}" useGeneratedKeys="true" keyProperty="${table.fields[0].propertyName}" keyColumn="${table.fields[0].name}">
