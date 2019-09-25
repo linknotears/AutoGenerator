@@ -121,7 +121,7 @@ webtemplates:
     template: edit${entity}.html
     outpath: coach/extra/viewUpdate${entity}.html
 
-#指定文件类型（表名重复时不识别）:select、sex、file
+#指定文件类型（表名重复时不识别,加时间下划线自动创建）:{0:女,1:男}、img、sex、file、date、datetime、uuid、no
 propertyType: 
 #  img_url: 
 #    url: file

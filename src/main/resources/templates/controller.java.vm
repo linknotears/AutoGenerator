@@ -12,12 +12,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 #foreach($field in ${table.fields})
-#if($cfg.propertyType.get($table.name).get($field.name) == 'file')
+#set($type = $cfg.propertyType.get($table.name).get($field.name))
+#if($type == 'file' || $type == 'img')
 #set($isHaveFile = true)
+
+##判断手动设置类型
+#if($type == '_date' || $type == '_datetime' || $type == '_time')
+#set($isHaveDate = true)
+#if($type == 'uuid')
+#set($isHaveUUID = true)
 #end
+
+##自动识别
 #if(${field.propertyName} == 'createTime')
 #set($isHaveDate = true)
 #end
+
+#end
+
+#if($isHaveUUID)
+import java.util.UUID;
 #end
 
 #if($isHaveFile)
@@ -70,7 +84,8 @@ public class ${table.controllerName} extends BaseController{
 		int i = 0;
 		try {
 			#foreach($field in ${table.fields})
-			#if($cfg.propertyType.get($table.name).get($field.name) == 'file')			
+			#set( $type = $cfg.propertyType.get($table.name).get($field.name))
+			#if( $type == 'file' || $type == 'img')
 			if(${field.propertyName}file != null){
 				if(!${field.propertyName}file.isEmpty()){
 					#tab([1..5])#tolowercase($entity).set#toheaduppercase(${field.propertyName})(
@@ -78,6 +93,14 @@ public class ${table.controllerName} extends BaseController{
 					);
 				}
 			}
+			#elseif($type == '_date' || $type == '_datetime' || $type == '_time')
+			if(id == null) {
+				#tab([1..4])#tolowercase($entity).set#toheaduppercase(${field.propertyName})(new Date());
+			}
+			#elseif( $type == 'uuid')
+				#tab([1..4])#tolowercase($entity).set#toheaduppercase(${field.propertyName})(UUID.randomUUID().toString().replace("-", ""));
+			#elseif( $type == 'no')
+			
 			#end
 			#if(${field.propertyName} == 'createTime')
 			if(id == null) {

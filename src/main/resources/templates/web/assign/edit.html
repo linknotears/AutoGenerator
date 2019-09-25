@@ -86,7 +86,7 @@ function selectFile(inputId,imgId){
 </script>
 <style>
 [class*="col-sm-"] {
-	margin-left:-4.166666665%;
+	margin-left:-4.166666666666665%;
 }
 img {
 	cursor: pointer;
@@ -110,26 +110,20 @@ img {
 								
 								##参数类型
 								#set( $type = $cfg.propertyType.get($table.name).get($field.name) )
-									
+								
+								##手动识别
 								#if($type == 'img' || ${field.propertyName.contains('img')})
 								<div class="columns pull-left col-sm-1 col-sm-offset-1 nopadding">${field.comment}</div>
 								<div class="columns pull-left col-sm-4 nopadding">
 									<input type="file" name="${field.propertyName}" id="${field.propertyName}" class="form-control" style="display:none;">
 									<img style='width: 80px;height: 80px;' id="${field.propertyName}Img" :src='data.#tolowercase($entity).${field.propertyName}' 
 									onclick="selectFile('${field.propertyName}','${field.propertyName}Img')"  
-									 onerror="this.src='/common/img/tip.png';this.οnerrοr=null">
+									 onerror="this.src='/common/img/tip.jpg';this.οnerrοr=null">
 								</div>
 								#elseif($type == 'file')
 								<div class="columns pull-left col-sm-1 col-sm-offset-1 nopadding">${field.comment}</div>
 								<div class="columns pull-left col-sm-4 nopadding">
 									<input type="file" name="${field.propertyName}" class="form-control">
-								</div>
-								#elseif($type == 'date' || ${field.propertyName.contains('date')})
-								<div class="columns pull-left col-sm-1 col-sm-offset-1 nopadding">${field.comment}</div>
-								<div class="columns pull-left col-sm-4 nopadding">
-									<input type="text" id="birthday" name="birthday" class=" form-control laydate-icon layer-date form-control" 
-										:value="data.#tolowercase($entity).${field.propertyName}" placeholder="请选择时间"
-                                        onclick="laydate({istime: true, format: 'YYYY-MM-DD'})" style="background-color: #fff;" readonly="readonly"/>
 								</div>
 								#elseif($type == 'sex' || ${field.propertyName.contains('sex')})
 								<div class="columns pull-left col-sm-1 col-sm-offset-1 nopadding">${field.comment}</div>
@@ -140,13 +134,6 @@ img {
 										<option value="1" :selected="data.#tolowercase($entity).${field.propertyName} == 1">男</option>
 										<option value="0" :selected="data.#tolowercase($entity).${field.propertyName} == 0">女</option>
 									</select>
-								</div>
-								#elseif($type == 'datetime' || ${field.propertyName.contains('time')})
-								<div class="columns pull-left col-sm-1 col-sm-offset-1 nopadding">${field.comment}</div>
-								<div class="columns pull-left col-sm-4 nopadding">
-									<input type="text" id="birthday" name="birthday" class=" form-control laydate-icon layer-date form-control" 
-										:value="data.#tolowercase($entity).${field.propertyName}" placeholder="请选择时间"
-                                        onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" style="background-color: #fff;" readonly="readonly"/>
 								</div>
 								#elseif($type.contains('{'))
 								<div class="columns pull-left col-sm-1 col-sm-offset-1 nopadding">${field.comment}</div>
@@ -166,6 +153,49 @@ img {
 										<option value="">--选择${field.comment}--</option>
 										<option v-for="value,key in data.${tableMapping.get(0)}Map" :value="key" :selected="data.#tolowercase($entity).${field.propertyName} == key">{{value}}</option>
 									</select>
+								</div>
+								#elseif($type.contains('date'))
+								<div class="columns pull-left col-sm-1 col-sm-offset-1 nopadding">${field.comment}</div>
+								<div class="columns pull-left col-sm-4 nopadding">
+									<input type="text" id="birthday" name="birthday" class=" form-control laydate-icon layer-date form-control" 
+										:value="data.#tolowercase($entity).${field.propertyName}" placeholder="请选择时间"
+                                        onclick="laydate({istime: true, format: 'YYYY-MM-DD'})" style="background-color: #fff;" readonly="readonly"/>
+								</div>
+								#elseif($type.contains('datetime'))
+								<div class="columns pull-left col-sm-1 col-sm-offset-1 nopadding">${field.comment}</div>
+								<div class="columns pull-left col-sm-4 nopadding">
+									<input type="text" id="birthday" name="birthday" class=" form-control laydate-icon layer-date form-control" 
+										:value="data.#tolowercase($entity).${field.propertyName}" placeholder="请选择时间"
+                                        onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" style="background-color: #fff;" readonly="readonly"/>
+								</div>
+								#elseif($type.contains('time'))
+								<div class="columns pull-left col-sm-1 col-sm-offset-1 nopadding">${field.comment}</div>
+								<div class="columns pull-left col-sm-4 nopadding">
+									<input type="text" id="birthday" name="birthday" class=" form-control laydate-icon layer-date form-control" 
+										:value="data.#tolowercase($entity).${field.propertyName}" placeholder="请选择时间"
+                                        onclick="laydate({istime: true, format: 'hh:mm:ss'})" style="background-color: #fff;" readonly="readonly"/>
+								</div>
+								##自动识别
+								#elseif($field.type == 'date')
+								<div class="columns pull-left col-sm-1 col-sm-offset-1 nopadding">${field.comment}</div>
+								<div class="columns pull-left col-sm-4 nopadding">
+									<input type="text" id="birthday" name="birthday" class=" form-control laydate-icon layer-date form-control" 
+										:value="data.#tolowercase($entity).${field.propertyName}" placeholder="请选择时间"
+                                        onclick="laydate({istime: true, format: 'YYYY-MM-DD'})" style="background-color: #fff;" readonly="readonly"/>
+								</div>
+								#elseif($field.type == 'datetime')
+								<div class="columns pull-left col-sm-1 col-sm-offset-1 nopadding">${field.comment}</div>
+								<div class="columns pull-left col-sm-4 nopadding">
+									<input type="text" id="birthday" name="birthday" class=" form-control laydate-icon layer-date form-control" 
+										:value="data.#tolowercase($entity).${field.propertyName}" placeholder="请选择时间"
+                                        onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" style="background-color: #fff;" readonly="readonly"/>
+								</div>
+								#elseif($field.type == 'time')
+								<div class="columns pull-left col-sm-1 col-sm-offset-1 nopadding">${field.comment}</div>
+								<div class="columns pull-left col-sm-4 nopadding">
+									<input type="text" id="birthday" name="birthday" class=" form-control laydate-icon layer-date form-control" 
+										:value="data.#tolowercase($entity).${field.propertyName}" placeholder="请选择时间"
+                                        onclick="laydate({istime: true, format: 'hh:mm:ss'})" style="background-color: #fff;" readonly="readonly"/>
 								</div>
 								#else
 								<div class="columns pull-left col-sm-1 col-sm-offset-1 nopadding">${field.comment}</div>

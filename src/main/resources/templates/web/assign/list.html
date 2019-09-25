@@ -31,7 +31,7 @@ var columns = [
 					+ value + "' alt=''>";
 		}
 	},
-	#elseif($type == 'date' || ${field.propertyName.contains('date')})
+	#elseif($field.type == 'date' || $field.type == 'datetime' || field.type == 'time')
 	{
 		field : '${field.propertyName}',
 		title : '${field.comment}',
@@ -46,12 +46,6 @@ var columns = [
 			let map = {"0":"女","1":"男"};
 			return map[value] || "";
 		}
-	},
-	#elseif($type == 'datetime' || ${field.propertyName.contains('time')})
-	{
-		field : '${field.propertyName}',
-		title : '${field.comment}',
-		align : 'center'
 	},
 	#elseif($type.contains('{'))
 	{
