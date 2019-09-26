@@ -37,7 +37,7 @@ $(function(){
 #if(!$type.contains('{') && $type.contains(':'))
 #set($tableMapping = $type.split(':'))
 		{
-			url:"${tableMapping.get(0)}/findList"
+			url:"${cfg.suffixUri}${tableMapping.get(0)}/findList"
 			success:function(data){
 				globalData['${tableMapping.get(0)}Map'] = objArrToMap(data.${tableMapping.get(0)}s,${tableMapping.get(1)},${tableMapping.get(2)});
 			}
@@ -54,7 +54,7 @@ $(function(){
 
 function saveOrUpdate(form){
 	return request({
-		url: "#tolowercase($entity)/saveOrUpdate.html",
+		url: "${cfg.suffixUri}#tolowercase($entity)/saveOrUpdate.html",
 		form: form,
 		success: function(data){
 			parent.layer.msg("操作成功");

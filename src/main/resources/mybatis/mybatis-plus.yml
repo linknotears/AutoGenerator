@@ -13,7 +13,7 @@ author: linking
 #controller uri前缀
 suffix.uri: /
 #html访问 uri前缀
-base.uri: /
+base.uri: /base/admin/
 #基础包名  
 basePackage: com.linkey
 #登录表名

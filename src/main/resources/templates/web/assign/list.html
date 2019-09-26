@@ -5,7 +5,8 @@
 ## 首字母小写
 #macro(tolowercase $str)$str.substring(0,1).toLowerCase()$str.substring(1)#end
 <script type="text/javascript">
-var prefix = "${cfg.baseUri}#tolowercase(${entity})/";
+var prefix = "${cfg.suffixUri}#tolowercase(${entity})/";
+var htmlPrefix = "${cfg.baseUri}#tolowercase(${entity})/";
 var idName =#foreach($field in ${table.fields})#if(${field.keyFlag})'${field.propertyName}'#break#end#end;
 var columns = [
 	{

@@ -32,7 +32,7 @@ $(function(){
 	//加载data
 	loadUrls =[
 		{
-			url:"${cfg.baseUri}#tolowercase($entity)/findById",
+			url:"${cfg.suffixUri}#tolowercase($entity)/findById",
 			data:{
 				'id':getParameter("id")
 			},
@@ -46,7 +46,7 @@ $(function(){
 #set($tableMapping = $type.split(':'))
 		,
 		{
-			url:"${cfg.baseUri}${tableMapping.get(0)}/findList"
+			url:"${cfg.suffixUri}${tableMapping.get(0)}/findList"
 			success:function(data){
 				globalData['${tableMapping.get(0)}Map'] = objArrToMap(data.${tableMapping.get(0)}s,${tableMapping.get(1)},${tableMapping.get(2)});
 			}
@@ -63,7 +63,7 @@ $(function(){
 
 function saveOrUpdate(form){
 	return request({
-		url: "${cfg.baseUri}#tolowercase($entity)/saveOrUpdate.html",
+		url: "${cfg.suffixUri}#tolowercase($entity)/saveOrUpdate",
 		form: form,
 		success: function(data){
 			parent.layer.msg("操作成功");

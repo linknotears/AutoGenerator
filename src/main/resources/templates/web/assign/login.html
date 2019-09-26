@@ -15,17 +15,17 @@
 <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 <meta http-equiv="description" content="This is my page">
 
-<link href="${cfg.baseUri}css/bootstrap.min.css" rel="stylesheet" />
-<link rel="stylesheet" href="${cfg.baseUri}css/font-awesome.min.css" />
-<script type="text/javascript" src="${cfg.baseUri}common/util/request-tool-1.1.js"></script>
+<link href="/css/bootstrap.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="/css/font-awesome.min.css" />
+<script type="text/javascript" src="/common/util/request-tool-1.1.js"></script>
 
 <script type="text/javascript">
 	function loginForm(form){
 		return request({
-			url: "#tolowercase($entity)/login.html",
+			url: "${cfg.suffixUri}#tolowercase($entity)/login.html",
 			form: form,
 			success:function(data){
-				window.location.href = "#tolowercase($entity)/index.html";
+				window.location.href = "${cfg.baseUri}#tolowercase($entity)/index";
 			},
 			multipart: false,
 			check: function(){return true;}
@@ -174,11 +174,11 @@
 									<script type="text/javascript">
 										function register(){
 											return request({
-												url: "#tolowercase($entity)/regist.html",
+												url: "${cfg.suffixUri}#tolowercase($entity)/regist",
 												form: "registId",
 												success: function(data){
 													alert('注册成功！');
-													window.location.href = "#tolowercase($entity)/index.html";
+													window.location.href = "${cfg.baseUri}#tolowercase($entity)/index";
 												},
 												isMultipart:false,
 												check: function(){return true;}
