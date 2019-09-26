@@ -2,7 +2,6 @@ package ${package.Service};
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Param;
 
 import ${package.Entity}.vo.PageData;
 

@@ -267,7 +267,7 @@ public class GeneratorCode {
 	        //拷贝解析的web
         	if(!"false".equals((String)yamlMap.get("createAnalyze"))){
 	        	String templateDir = "web/analyze";
-	        	String outPath = (String)yamlMap.get("OutputDirStatic");
+	        	String outPath = (String)yamlMap.get("OutputDirTemplates");
 	        	templatesTo(focList,templateDir,outPath);
 	        }
         }

@@ -25,8 +25,8 @@ tables:
 #是否初始化（生成拷贝文件）只生成baseclass、xml、和各层的文件
 createWebtemplates: !!str true
 createConfig: !!str false
-createNotAnalyze: !!str true
-createAnalyze: !!str false
+createNotAnalyze: !!str false
+createAnalyze: !!str true
 
 #是否覆盖文件（（xml）和entity、mapper或其他拷贝文件除外）
 isOverFile: !!str false
@@ -124,13 +124,23 @@ webtemplates:
     outpath: admin/${entity}/edit.html
     exclude: all.bz1,all.bz2
   - 
+    tables: [goods,user,banner,category,category_second]
+    template: edit_vertical.html
+    outpath: admin/${entity}/edit_vertical.html
+    exclude: all.bz1,all.bz2
+  - 
+    tables: [goods,user,banner,category,category_second]
+    template: add_vertical.html
+    outpath: admin/${entity}/add_vertical.html
+    exclude: all.bz1,all.bz2
+  - 
     tables: [user]
     template: login.html
     outpath: admin/login.html
   - 
     tables: [user]
     template: include.html
-    outpath: admin/include.html
+    outpath: include.html
 #指定文件类型（表名重复时不识别,加时间下划线自动创建）:{0:女,1:男}、img、sex、file、date、datetime、uuid、no
 propertyType: 
 #  img_url: 

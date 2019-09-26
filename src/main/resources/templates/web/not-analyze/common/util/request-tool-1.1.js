@@ -136,6 +136,7 @@
 					alert("访问服务器时出现异常！");
 				}
 			},
+			traditional: true,
 			error:function(){
 				alert("请求服务器失败!");
  			}

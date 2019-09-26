@@ -24,7 +24,7 @@ public class UploadFileSpringMVC {
 				String suffix = imagename.substring(imagename.lastIndexOf("."));
 				String uuid = UUID.randomUUID().toString().replace("-", "");
 				String webPath = servletContext.getRealPath("/");
-				sqlPath = "upload/" + outDir + "/" + uuid+"_" + (new Date().getTime()) + suffix;
+				sqlPath = "/upload/" + outDir + "/" + uuid + "_" + (new Date().getTime()) + suffix;
 				File newfile = new File(webPath+"/"+sqlPath);
 				//如果父目录不存在就创建
 				File parentFile = newfile.getParentFile();

@@ -1,0 +1,28 @@
+#默认使用配置
+spring:
+  profiles:
+    active: dev
+
+#公共配置与profiles选择无关
+mybatis:
+  typeAliasesPackage: com.linkey.entity
+  mapperLocations: classpath:mapper/*.xml
+  log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+---
+logging: 
+  level: 
+    com.atguigu.dao: debug
+#开发配置
+spring:
+  profiles: dev
+
+  datasource:
+   # url: jdbc:mysql://39.106.156.239:3306/test_db
+    #url: jdbc:mysql://39.97.180.53:3306/test_db
+    url: jdbc:mysql://134.175.208.127:3306/test
+    username: root
+    password: wwwj66ccom
+    driver-class-name: com.mysql.jdbc.Driver
+    # 使用druid数据源
+    type: com.alibaba.druid.pool.DruidDataSource

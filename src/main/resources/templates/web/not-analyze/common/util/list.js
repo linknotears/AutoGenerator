@@ -55,7 +55,7 @@ function add() {
 		maxmin : true,
 		shadeClose : false, // 点击遮罩关闭层
 		area : [ '800px', '520px' ],
-		content : prefix + '/add' // iframe的url
+		content : htmlPrefix + '/add' // iframe的url
 	});
 }
 function edit(id) {
@@ -65,25 +65,26 @@ function edit(id) {
 		maxmin : true,
 		shadeClose : false, // 点击遮罩关闭层
 		area : [ '800px', '520px' ],
-		content : prefix + '/edit?id=' + id // iframe的url
+		content : htmlPrefix + '/edit?id=' + id // iframe的url
 	});
 }
 function remove(id) {
 	layer.confirm('确定要删除选中的记录？', {
 		btn : [ '确定', '取消' ]
 	}, function() {
-		$.ajax({
+		request({
 			url : prefix + "/remove",
 			type : "post",
 			data : {
 				'id' : id
 			},
-			success : function(r) {
-				if (r.code == 0) {
-					layer.msg(r.msg);
+			success : function(data) {
+				if(data.count > 0){
+					layer.msg("删除成功！");
 					reLoad();
-				} else {
-					layer.msg(r.msg);
+				}else{
+					layer.msg("所选数据已被删除！");
+					reLoad();
 				}
 			}
 		});
@@ -105,18 +106,18 @@ function batchRemove() {
 		$.each(rows, function(i, row) {
 			ids[i] = row[idName];
 		});
-		$.ajax({
-			type : 'POST',
+		request({
 			data : {
-				"ids" : ids
+				"ids": ids
 			},
 			url : prefix + '/batchRemove',
-			success : function(r) {
-				if (r.code == 0) {
-					layer.msg(r.msg);
+			success : function(data) {
+				if(data.count > 0){
+					layer.msg("删除成功！");
 					reLoad();
-				} else {
-					layer.msg(r.msg);
+				}else{
+					layer.msg("所选数据已被删除！");
+					reLoad();
 				}
 			}
 		});
