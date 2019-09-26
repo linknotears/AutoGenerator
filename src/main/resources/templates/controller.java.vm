@@ -77,8 +77,9 @@ public class ${table.controllerName} extends BaseController{
 	@RequestMapping("/saveOrUpdate")//更新不置空
 	public @ResponseBody ResultData saveOrUpdate(@RequestParam(value="id",required=false) #touppercase(${columnType}) id,${entity} #tolowercase($entity)#if($cfg.loginTable==$table.name),HttpSession session#end
 	#foreach($field in ${table.fields})
-	#if($cfg.propertyType.get($table.name).get($field.name) == 'file' ||  ${field.propertyName.contains('image')})
-	,@RequestParam(value="${field.propertyName}File",required=false) MultipartFile ${field.propertyName}file
+	#set( $type = $cfg.propertyType.get($table.name).get($field.name))
+	#if( $type == 'file' || $type == 'img' || (!$type && ${field.propertyName.contains('img')}) )
+	,@RequestParam(value="${field.propertyName}File",required=false) MultipartFile ${field.propertyName}File
 	#end
 	#end
 	) { 
@@ -87,11 +88,11 @@ public class ${table.controllerName} extends BaseController{
 		try {
 			#foreach($field in ${table.fields})
 			#set( $type = $cfg.propertyType.get($table.name).get($field.name))
-			#if( $type == 'file' || $type == 'img')
-			if(${field.propertyName}file != null){
-				if(!${field.propertyName}file.isEmpty()){
+			#if( $type == 'file' || $type == 'img' || (!$type && ${field.propertyName.contains('img')}))
+			if(${field.propertyName}File != null){
+				if(!${field.propertyName}File.isEmpty()){
 					#tab([1..5])#tolowercase($entity).set#toheaduppercase(${field.propertyName})(
-						UploadFileSpringMVC.getUploadPath(${field.propertyName}file,"image",#tolowercase($entity).get#toheaduppercase(${field.propertyName})(),servletContext)
+						UploadFileSpringMVC.getUploadPath(${field.propertyName}File,"image",#tolowercase($entity).get#toheaduppercase(${field.propertyName})(),servletContext)
 					);
 				}
 			}
@@ -226,7 +227,7 @@ public class ${table.controllerName} extends BaseController{
 					.setCode(-1)
 					.setData("message","用户已存在！");
 		}
-		ResultData resultData = saveOrUpdate(null, #tolowercase($entity),null#foreach($field in ${table.fields})#if($cfg.propertyType.get($table.name).get($field.name) == 'file'),null#end#end);
+		ResultData resultData = saveOrUpdate(null, #tolowercase($entity),null#foreach($field in ${table.fields})#set($type = $cfg.propertyType.get($table.name).get($field.name))#if( $type == 'file' || $type == 'img' || (!$type && ${field.propertyName.contains('img')})),null#end#end);
 		if(resultData.getCode()==0){
 			request.getSession().setAttribute("existUser", #tolowercase($entity));
 			resultData.setData("existUser", #tolowercase($entity));

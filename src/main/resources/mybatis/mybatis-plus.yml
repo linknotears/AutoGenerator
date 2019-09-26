@@ -111,7 +111,7 @@ webtemplates:
   - 
     tables: [goods,user,banner,category,category_second]
     template: list.html
-    outpath: admin/user/${entity}/list.html
+    outpath: admin/${entity}/list.html
     exclude: all.bz1,all.bz2
   - 
     tables: [goods,user,banner,category,category_second]
@@ -123,10 +123,6 @@ webtemplates:
     template: edit.html
     outpath: admin/${entity}/edit.html
     exclude: all.bz1,all.bz2
-  - 
-    tables: [user]
-    template: index.html
-    outpath: admin/index.html
   - 
     tables: [user]
     template: login.html

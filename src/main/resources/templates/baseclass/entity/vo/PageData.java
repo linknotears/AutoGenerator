@@ -70,7 +70,7 @@ public class PageData<T> {
 	public List<T> getRows() {
 		return rows;
 	}
-	public void setList(List<T> rows) {
+	public void setRows(List<T> rows) {
 		this.rows = rows;
 	}
 	

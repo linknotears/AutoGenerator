@@ -113,7 +113,7 @@ img {
 #if($type == 'img' || ${field.propertyName.contains('img')})
 								<div class="columns pull-left col-sm-1 col-sm-offset-1 nopadding">${field.comment}</div>
 								<div class="columns pull-left col-sm-4 nopadding">
-									<input type="file" name="${field.propertyName}" id="${field.propertyName}" class="form-control" style="display:none;">
+									<input type="file" name="${field.propertyName}File" id="${field.propertyName}" class="form-control" style="display:none;">
 									<img style='width: 80px;height: 80px;' id="${field.propertyName}Img" :src='data.#tolowercase($entity).${field.propertyName}' 
 									onclick="selectFile('${field.propertyName}','${field.propertyName}Img')"  
 									 onerror="this.src='/common/img/tip.jpg';this.οnerrοr=null">
@@ -121,7 +121,7 @@ img {
 #elseif($type == 'file')
 								<div class="columns pull-left col-sm-1 col-sm-offset-1 nopadding">${field.comment}</div>
 								<div class="columns pull-left col-sm-4 nopadding">
-									<input type="file" name="${field.propertyName}" class="form-control">
+									<input type="file" name="${field.propertyName}File" class="form-control">
 								</div>
 #elseif($type == 'sex' || ${field.propertyName.contains('sex')})
 								<div class="columns pull-left col-sm-1 col-sm-offset-1 nopadding">${field.comment}</div>

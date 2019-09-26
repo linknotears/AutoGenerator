@@ -186,7 +186,7 @@ public class GeneratorCode {
     	        		//记录排除输出字段
     	        		String excludeStr = (String) tempInfo.get("exclude");
     	        		if(excludeStr != null) { 
-    	        			List<String> excludes = Arrays.asList(excludeStr.split(","));
+    	        			List<String> excludes = new ArrayList<>(Arrays.asList(excludeStr.split(",")));
     	        			//判断排除所有表
     	        			for(int i = 0; i < excludes.size(); i++) {
     	        				if(excludes.get(i).matches("^all\\..+")) {
