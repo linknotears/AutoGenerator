@@ -3,7 +3,7 @@
 #-- 俩id挂了、generator之前做个备份、saveOrUpdateByCheck方法bug:检测没有记录无法插入id、增加一个条件更新
 OutputDir: D:/Project/GoodsRental/src/main/java
 #配置文件路径
-OutputDirConfig: D:/Project/GoodsRental/src/main/resources
+OutputDirConfig: D:/Project/GoodsRental/src/main/resources/
 #静态资源路径
 OutputDirStatic: D:/Project/GoodsRental/src/main/resources/static
 #templatesDir D:/Project/guyueconsole-master/src/main/webapp/WEB-INF/views
@@ -11,8 +11,8 @@ OutputDirTemplates: D:/Project/GoodsRental/src/main/resources/views
 #作者名
 author: linking
 #controller uri前缀
-suffix.uri: /extra
-#html uri前缀
+suffix.uri: /
+#html访问 uri前缀
 base.uri: /
 #基础包名  
 basePackage: com.linkey
@@ -111,15 +111,30 @@ webtemplates:
   - 
     tables: [goods,user,banner,category,category_second]
     template: list.html
-    outpath: user/${entity}/list.html
+    outpath: admin/user/${entity}/list.html
+    exclude: all.bz1,all.bz2
   - 
     tables: [goods,user,banner,category,category_second]
     template: add.html
-    outpath: user/${entity}/add.html
+    outpath: admin/${entity}/add.html
+    exclude: all.bz1,all.bz2
   - 
     tables: [goods,user,banner,category,category_second]
     template: edit.html
-    outpath: user/${entity}/edit.htmll
+    outpath: admin/${entity}/edit.html
+    exclude: all.bz1,all.bz2
+  - 
+    tables: [user]
+    template: index.html
+    outpath: admin/index.html
+  - 
+    tables: [user]
+    template: login.html
+    outpath: admin/login.html
+  - 
+    tables: [user]
+    template: include.html
+    outpath: admin/include.html
 #指定文件类型（表名重复时不识别,加时间下划线自动创建）:{0:女,1:男}、img、sex、file、date、datetime、uuid、no
 propertyType: 
 #  img_url: 
@@ -129,5 +144,17 @@ propertyType:
 #    void_url: file
 #  user:
 #    avatar: file
-  user_icons:
-    icon_url: file
+  banner:
+    pic: img
+  category: 
+    pic: img
+  category_second: 
+    cate_id: !!str category:cateId:name
+  goods: 
+    goods_id: !!str true
+    pic: img
+    cate_id: category:cateId:name
+    cate_second_id: |-
+      {"0":"女","1":"男"}
+  user: 
+    icon: img

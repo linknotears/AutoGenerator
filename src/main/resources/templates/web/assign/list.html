@@ -6,22 +6,20 @@
 ## 首字母小写
 #macro(tolowercase $str)$str.substring(0,1).toLowerCase()$str.substring(1)#end
 <script type="text/javascript">
-var prefix = "${baseUri}#tolowercase(${entity})/";
-var idName = #foreach($field in ${table.fields})#if(${field.keyFlag})'${field.propertyName}'#break#end#end;
+var prefix = "${cfg.baseUri}#tolowercase(${entity})/";
+var idName =#foreach($field in ${table.fields})#if(${field.keyFlag})'${field.propertyName}'#break#end#end;
 var columns = [
 	{
 		checkbox : true
 	},
-	#foreach($field in ${table.fields})
-	##判断排除字段
-	#if(!$cfg.colExclude.get($table.name).get($field.name))
-	##判断
-	#if(!${field.keyFlag} || $cfg.propertyType.get($table.name).get($field.name))
-	
-	##参数类型
-	#set( $type = $cfg.propertyType.get($table.name).get($field.name) )
-		
-	#if($type == 'img' || ${field.propertyName.contains('img')})
+#foreach($field in ${table.fields})
+##判断排除字段
+#if(!$cfg.colExclude.get($table.name).get($field.name))
+##判断
+#if(!${field.keyFlag} || $cfg.propertyType.get($table.name).get($field.name))
+##参数类型
+#set( $type = $cfg.propertyType.get($table.name).get($field.name) )
+#if($type == 'img' || ${field.propertyName.contains('img')})
 	{
 		field : '${field.propertyName}',
 		title : '${field.comment}',
@@ -31,13 +29,13 @@ var columns = [
 					+ value + "' alt=''>";
 		}
 	},
-	#elseif($field.type == 'date' || $field.type == 'datetime' || field.type == 'time')
+#elseif($field.type == 'date' || $field.type == 'datetime' || $field.type == 'time')
 	{
 		field : '${field.propertyName}',
 		title : '${field.comment}',
 		align : 'center'
 	},
-	#elseif($type == 'sex' || ${field.propertyName.contains('sex')})
+#elseif($type == 'sex' || ${field.propertyName.contains('sex')})
 	{
 		field : '${field.propertyName}',
 		title : '${field.comment}',
@@ -47,7 +45,7 @@ var columns = [
 			return map[value] || "";
 		}
 	},
-	#elseif($type.contains('{'))
+#elseif($type.contains('{'))
 	{
 		field : '${field.propertyName}',
 		title : '${field.comment}',
@@ -57,16 +55,16 @@ var columns = [
 			return map[value] || "";
 		}
 	},
-	#else
+#else
 	{
 		field : '${field.propertyName}',
 		title : '${field.comment}',
 		align : 'center'
 	},
-	#end
-	#end
-	#end
-	#end
+#end
+#end
+#end
+#end
 	{
 		title : '操作',
 		field : 'idx',
@@ -94,11 +92,11 @@ var columns = [
 					<div class="fixed-table-toolbar">
 						<div class="columns pull-left">
 
-							<button shiro:hasPermission="gift:gift:add" type="button"
+							<button type="button"
 								class="btn  btn-primary" onclick="add()">
 								<i class="fa fa-plus" aria-hidden="true"></i> 添加
 							</button>
-							<button shiro:hasPermission="gift:gift:batchRemove" type="button"
+							<button type="button"
 								class="btn  btn-danger" onclick="batchRemove()">
 								<i class="fa fa-trash" aria-hidden="true"></i> 删除
 							</button>

@@ -2,9 +2,6 @@
 <html>
 <meta charset="utf-8">
 <head th:include="include :: header"></head>
-<link href="/css/bootstrap.min.css" rel="stylesheet">
-<link href="/css/fileinput.css" media="all" rel="stylesheet"
-	type="text/css" />
 ## 首字母小写
 #macro(tolowercase $str)$str.substring(0,1).toLowerCase()$str.substring(1)#end
 ## 后部分转换为小写
@@ -18,16 +15,16 @@
 }
 </style>
 <script type="text/javascript">
-var idName = #foreach($field in ${table.fields})#if(${field.keyFlag})'${field.propertyName}'#break#end#end;
+var idName =#foreach($field in ${table.fields})#if(${field.keyFlag})'${field.propertyName}'#break#end#end;
 define({
-	##判断select引用类型
-	#foreach($field in ${table.fields})
-	##参数类型
-	#set( $type = $cfg.propertyType.get($table.name).get($field.name) )
-	#if($type.contains('{'))
+##判断select引用类型
+#foreach($field in ${table.fields})
+##参数类型
+#set( $type = $cfg.propertyType.get($table.name).get($field.name) )
+#if($type.contains('{'))
 	"${field.name}_map":$type,
-	#end
-	#end
+#end
+#end
 	"idName":idName
 });
 $(function(){
@@ -91,18 +88,18 @@ img {
 				<div class="ibox float-e-margins">
 					<div class="ibox-content">
 						<form class="form-horizontal m-t" onsubmit="return saveOrUpdate(this)" id="mainData">
-							#set($temp = 1)
+#set($temp = 1)
 							<div class="row"  style="display: flex;align-items:center;">
-				                #foreach($field in ${table.fields})
-								##判断排除字段
-								#if(!$cfg.colExclude.get($table.name).get($field.name))
-								##判断
-								#if(!${field.keyFlag} || $cfg.propertyType.get($table.name).get($field.name))
+#foreach($field in ${table.fields})
+##判断排除字段
+#if(!$cfg.colExclude.get($table.name).get($field.name))
+##判断
+#if(!${field.keyFlag} || $cfg.propertyType.get($table.name).get($field.name))
 								
-								##参数类型
-								#set( $type = $cfg.propertyType.get($table.name).get($field.name) )
+##参数类型
+#set( $type = $cfg.propertyType.get($table.name).get($field.name) )
 									
-								#if($type == 'img' || ${field.propertyName.contains('img')})
+#if($type == 'img' || ${field.propertyName.contains('img')})
 								<div class="columns pull-left col-sm-1 col-sm-offset-1 nopadding">${field.comment}</div>
 								<div class="columns pull-left col-sm-4 nopadding">
 									<input type="file" name="${field.propertyName}" id="${field.propertyName}" class="form-control" style="display:none;">
@@ -110,12 +107,12 @@ img {
 									onclick="selectFile('${field.propertyName}','${field.propertyName}Img')"  
 									 onerror="this.src='/common/img/tip.jpg';this.οnerrοr=null">
 								</div>
-								#elseif($type == 'file')
+#elseif($type == 'file')
 								<div class="columns pull-left col-sm-1 col-sm-offset-1 nopadding">${field.comment}</div>
 								<div class="columns pull-left col-sm-4 nopadding">
 									<input type="file" name="${field.propertyName}" class="form-control">
 								</div>
-								#elseif($type == 'sex' || ${field.propertyName.contains('sex')})
+#elseif($type == 'sex' || ${field.propertyName.contains('sex')})
 								<div class="columns pull-left col-sm-1 col-sm-offset-1 nopadding">${field.comment}</div>
 								<div class="columns pull-left col-sm-4 nopadding">
 									<select data-placeholder="--选择性别--" name="${field.propertyName}" id="${field.propertyName}"
@@ -125,7 +122,7 @@ img {
 										<option value="0">女</option>
 									</select>
 								</div>
-								#elseif($type.contains('{'))
+#elseif($type.contains('{'))
 								<div class="columns pull-left col-sm-1 col-sm-offset-1 nopadding">${field.comment}</div>
 								<div class="columns pull-left col-sm-4 nopadding">
 									<select data-placeholder="--选择${field.comment}--" name="${field.propertyName}" id="${field.propertyName}"
@@ -134,8 +131,8 @@ img {
 										<option v-for="value,key in ${field.name}_map" :value="key">{{value}}</option>
 									</select>
 								</div>
-								#elseif($type.contains(':'))
-								#set($tableMapping = $type.split(':'))
+#elseif($type.contains(':'))
+#set($tableMapping = $type.split(':'))
 								<div class="columns pull-left col-sm-1 col-sm-offset-1 nopadding">${field.comment}</div>
 								<div class="columns pull-left col-sm-4 nopadding">
 									<select data-placeholder="--选择${field.comment}--" name="${field.propertyName}" id="${field.propertyName}"
@@ -144,66 +141,64 @@ img {
 										<option v-for="value,key in data.${tableMapping.get(0)}Map" :value="key">{{value}}</option>
 									</select>
 								</div>
-								#elseif($type.contains('date'))
+#elseif($type.contains('date'))
 								<div class="columns pull-left col-sm-1 col-sm-offset-1 nopadding">${field.comment}</div>
 								<div class="columns pull-left col-sm-4 nopadding">
 									<input type="text" id="birthday" name="birthday" class=" form-control laydate-icon layer-date form-control" 
 										placeholder="请选择时间"
-                                        onclick="laydate({istime: true, format: 'YYYY-MM-DD'})" style="background-color: #fff;" readonly="readonly"/>
+                                        onclick="laydate({istime: true, format: 'YYYY-MM-DD'})" style="background-color:#fff;" readonly="readonly"/>
 								</div>
-								#elseif($type.contains('datetime'))
+#elseif($type.contains('datetime'))
 								<div class="columns pull-left col-sm-1 col-sm-offset-1 nopadding">${field.comment}</div>
 								<div class="columns pull-left col-sm-4 nopadding">
 									<input type="text" id="birthday" name="birthday" class=" form-control laydate-icon layer-date form-control" 
 										placeholder="请选择时间"
-                                        onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" style="background-color: #fff;" readonly="readonly"/>
+                                        onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" style="background-color:#fff;" readonly="readonly"/>
 								</div>
-								#elseif($type.contains('time'))
+#elseif($type.contains('time'))
 								<div class="columns pull-left col-sm-1 col-sm-offset-1 nopadding">${field.comment}</div>
 								<div class="columns pull-left col-sm-4 nopadding">
 									<input type="text" id="birthday" name="birthday" class=" form-control laydate-icon layer-date form-control" 
 										placeholder="请选择时间"
-                                        onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" style="background-color: #fff;" readonly="readonly"/>
+                                        onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" style="background-color:#fff;" readonly="readonly"/>
 								</div>
-								##自动识别
-								#elseif($field.type == 'date')
+##自动识别
+#elseif($field.type == 'date')
 								<div class="columns pull-left col-sm-1 col-sm-offset-1 nopadding">${field.comment}</div>
 								<div class="columns pull-left col-sm-4 nopadding">
 									<input type="text" id="birthday" name="birthday" class=" form-control laydate-icon layer-date form-control" 
 										placeholder="请选择时间"
-                                        onclick="laydate({istime: true, format: 'YYYY-MM-DD'})" style="background-color: #fff;" readonly="readonly"/>
+                                        onclick="laydate({istime: true, format: 'YYYY-MM-DD'})" style="background-color:#fff;" readonly="readonly"/>
 								</div>
-								#elseif($field.type == 'datetime')
+#elseif($field.type == 'datetime')
 								<div class="columns pull-left col-sm-1 col-sm-offset-1 nopadding">${field.comment}</div>
 								<div class="columns pull-left col-sm-4 nopadding">
 									<input type="text" id="birthday" name="birthday" class=" form-control laydate-icon layer-date form-control" 
 										placeholder="请选择时间"
-                                        onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" style="background-color: #fff;" readonly="readonly"/>
+                                        onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" style="background-color:#fff;" readonly="readonly"/>
 								</div>
-								#elseif($field.type == 'time')
+#elseif($field.type == 'time')
 								<div class="columns pull-left col-sm-1 col-sm-offset-1 nopadding">${field.comment}</div>
 								<div class="columns pull-left col-sm-4 nopadding">
 									<input type="text" id="birthday" name="birthday" class=" form-control laydate-icon layer-date form-control" 
 										placeholder="请选择时间"
-                                        onclick="laydate({istime: true, format: 'hh:mm:ss'})" style="background-color: #fff;" readonly="readonly"/>
+                                        onclick="laydate({istime: true, format: 'hh:mm:ss'})" style="background-color:#fff;" readonly="readonly"/>
 								</div>
-								#else
+#else
 								<div class="columns pull-left col-sm-1 col-sm-offset-1 nopadding">${field.comment}</div>
 								<div class="columns pull-left col-sm-4 nopadding">
 									<input type="text" class="form-control" placeholder="请输入${field.comment}'">
 								</div>
-								#end
-								#if(($temp % 2) == 0)
+#end
+#if(($temp % 2) == 0)
 							</div>
 	                    	<div class="row" style="display: flex;align-items:center;">
-								#end
-								##自增
-								#set($temp = $temp + 1)
-								#end
-								#end
-								#end
-	                    	
-	                    	
+#end
+##自增
+#set($temp = $temp + 1)
+#end
+#end
+#end
 	                    	</div>
 							<div class="form-group">
 								<div class="col-sm-2 col-sm-offset-5" style="text-align:center;">

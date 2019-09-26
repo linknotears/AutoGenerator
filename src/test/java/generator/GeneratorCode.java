@@ -187,6 +187,31 @@ public class GeneratorCode {
     	        		String excludeStr = (String) tempInfo.get("exclude");
     	        		if(excludeStr != null) { 
     	        			List<String> excludes = Arrays.asList(excludeStr.split(","));
+    	        			//判断排除所有表
+    	        			for(int i = 0; i < excludes.size(); i++) {
+    	        				if(excludes.get(i).matches("^all\\..+")) {
+    	        					String excludeCol = excludes.get(i).replace("all.", "");
+    	        					excludes.remove(i);
+    	        					i--;
+    	        					for( String table : (List<String>)tempInfo.get("tables")) {
+    	        						String tableAndCol = table + "." + excludeCol;
+    	        						if(!excludes.contains(tableAndCol)) {
+        	        						excludes.add(tableAndCol);
+    	        						}
+    	        					}
+    	        				}
+    	        			}
+    	        			//判断include
+    	        			String includeStr = (String) tempInfo.get("include");
+    	        			if(includeStr != null) { 
+    	        				List<String> includes = Arrays.asList(excludeStr.split(","));
+    	        				for(int i = 0; i < includes.size(); i++) {
+    	        					String tableAndCol = includes.get(i);
+    	        					if(excludes.contains(tableAndCol)) {
+    	        						excludes.remove(i);
+    	        					}
+    	        				}
+    	        			}
     	        			String templateStr = (String) tempInfo.get("template");
     	        			//截掉后缀
     	        			int index = templateStr.lastIndexOf(".");
