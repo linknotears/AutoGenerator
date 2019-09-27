@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <meta charset="utf-8">
 <head th:include="include :: header"></head>
 ## 首字母小写
@@ -39,7 +39,7 @@ $(function(){
 		{
 			url:"${cfg.suffixUri}${tableMapping.get(0)}/findList",
 			success:function(data){
-				globalData['${tableMapping.get(0)}Map'] = objArrToMap(data.${tableMapping.get(0)}s,"${tableMapping.get(1)}","${tableMapping.get(2)}");
+				globalData.data.${tableMapping.get(0)}Map = objArrToMap(data.${tableMapping.get(0)}s,"${tableMapping.get(1)}","${tableMapping.get(2)}");
 			}
 		},
 #end

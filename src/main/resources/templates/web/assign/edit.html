@@ -1,8 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <meta charset="utf-8">
 <head th:include="include :: header"></head>
-	type="text/css" />
 ## 首字母小写
 #macro(tolowercase $str)$str.substring(0,1).toLowerCase()$str.substring(1)#end
 ## 后部分转换为小写
@@ -13,6 +12,13 @@
 .form-horizontal .form-group {
 	margin-left: 0;
 	margin-right: 0;
+}
+[class*="row"] {
+	margin-left:-4.16666666666666665%;
+	padding:10px;
+}
+img {
+	cursor: pointer;
 }
 </style>
 <script type="text/javascript">
@@ -48,7 +54,7 @@ $(function(){
 		{
 			url:"${cfg.suffixUri}${tableMapping.get(0)}/findList",
 			success:function(data){
-				globalData['${tableMapping.get(0)}Map'] = objArrToMap(data.${tableMapping.get(0)}s,"${tableMapping.get(1)}","${tableMapping.get(2)}");
+				globalData.data.${tableMapping.get(0)}Map = objArrToMap(data.${tableMapping.get(0)}s,"${tableMapping.get(1)}","${tableMapping.get(2)}");
 			}
 		}
 #end
@@ -82,15 +88,6 @@ function selectFile(inputId,imgId){
 	});
 }
 </script>
-<style>
-[class*="row"] {
-	margin-left:-4.16666666666666665%;
-	padding:10px;
-}
-img {
-	cursor: pointer;
-}
-</style>
 <body class="gray-bg">
 	<div class="wrapper wrapper-content ">
 		<div class="row">
