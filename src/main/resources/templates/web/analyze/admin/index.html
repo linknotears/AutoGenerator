@@ -6,7 +6,7 @@
 <meta name="renderer" content="webkit">
 <title>后台管理系统</title>
 <meta name="keywords" content="后台管理系统">
-<meta name="description" content="古后台管理系统">
+<meta name="description" content="后台管理系统">
 #set($uri = '')
 ## 首字母小写
 #macro(tolowercase $str)$str.substring(0,1).toLowerCase()$str.substring(1)#end
@@ -40,7 +40,9 @@
 						<div>
 							<span>
 								<!-- 头像 -->
-								<img alt="image" class="img-circle" height="60" width="60" th:src="${session.picUrl}" /> 
+								<img alt="image" class="img-circle" height="60" width="60" 
+								th:src="${session.picUrl}" 
+								onerror="this.src='/common/img/avatar.jpg';this.οnerrοr=null;"/> 
 								<!-- 用户名 -->
 								<strong class="font-bold" th:text="${username}">${session.existUser.name}</strong>
 							</span>
@@ -80,7 +82,7 @@
 					<li>
 						<a href="#"> 
 							<!-- 图标 -->
-							<i class="fa fa-home"></i>
+							<i class="${webtemplate.icons.get($foreach.count - 1)}"></i>
 							<!-- 标签 -->
 							<span class="nav-label">${comment}管理</span>
 							<!-- 箭头 -->
@@ -94,6 +96,10 @@
 							</li>
 						</ul>
 					</li>
+##判断第一个
+#if($foreach.count == 1)
+#set($mainUri = '/base/' + $uri)
+#end
 #end
 #end
 #end
@@ -185,7 +191,7 @@
 			</div>
 			<div class="row J_mainContent" id="content-main">
 				<iframe class="J_iframe" name="iframe0" width="100%" height="100%"
-					src="" th:src="@{/main}" frameborder="0" data-id="index_v1.html"
+					src="" th:src="@{$mainUri}" frameborder="0"
 					seamless></iframe>
 			</div>
 			<div class="footer">

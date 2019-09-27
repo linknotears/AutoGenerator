@@ -25,7 +25,7 @@
 			url: "${cfg.suffixUri}#tolowercase($entity)/login",
 			form: form,
 			success:function(data){
-				window.location.href = "${cfg.baseUri}#tolowercase($entity)/index";
+				window.reload();
 			},
 			multipart: false,
 			check: function(){return true;}
@@ -168,7 +168,7 @@
 												form: "registId",
 												success: function(data){
 													alert('注册成功！');
-													window.location.href = "${cfg.baseUri}#tolowercase($entity)/index";
+													window.reload();
 												},
 												isMultipart:false,
 												check: function(){return true;}

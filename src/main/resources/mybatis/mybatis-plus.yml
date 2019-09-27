@@ -110,6 +110,7 @@ webtemplates:
   - 
     tables: [goods,user,banner,category,category_second]
     template: list.html
+    icons: ["fa fa-calendar-plus-o","fa fa-user","fa fa-bandcamp","",""]
     outpath: admin/${entity}/list.html
     exclude: all.bz1,all.bz2
   - 

@@ -112,9 +112,11 @@ function selectFile(inputId,imgId){
 								<div class="columns pull-left col-sm-2 col-sm-offset-2 nopadding">${field.comment}</div>
 								<div class="columns pull-left col-sm-6 nopadding">
 									<input type="file" name="${field.propertyName}File" id="${field.propertyName}" class="form-control" style="display:none;">
-									<img style='width: 80px;height: 80px;' id="${field.propertyName}Img" :src='data.#tolowercase($entity).${field.propertyName}' 
-									onclick="selectFile('${field.propertyName}','${field.propertyName}Img')"  
-									 onerror="this.src='/common/img/tip.jpg';this.οnerrοr=null">
+									<div style='width: 80px;height: 80px;border: 1px;position: relative;'>
+										<span style='position: absolute;'>请选择图片</span>
+										<img style='width: 100%;height: 100%; position: absolute;' id="${field.propertyName}Img" :src='data.#tolowercase($entity).${field.propertyName}'  alt=""
+										onclick="selectFile('${field.propertyName}','${field.propertyName}Img')"/>
+									</div>
 								</div>
 							</div>
 #elseif($type == 'file')
