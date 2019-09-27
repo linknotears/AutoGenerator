@@ -1,6 +1,5 @@
 package ${package.Controller};
 
-
 import java.util.List;
 #if($cfg.loginTable==$table.name)
 import javax.servlet.http.HttpServletRequest;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 #if($type == 'file' || $type == 'img')
 #set($isHaveFile = true)
 #end
-
 ##判断手动设置类型
 #if($type == '_date' || $type == '_datetime' || $type == '_time')
 #set($isHaveDate = true)
@@ -24,23 +22,24 @@ import org.springframework.web.bind.annotation.ResponseBody;
 #if($type == 'uuid')
 #set($isHaveUUID = true)
 #end
-
 ##自动识别
 #if(${field.propertyName} == 'createTime')
 #set($isHaveDate = true)
 #end
-
 #end
-
 #if($isHaveUUID)
 import java.util.UUID;
 #end
-
+##文件工具类
 #if($isHaveFile)
 import ${cfg.basePackage}.util.UploadFileSpringMVC;
 import org.springframework.web.multipart.MultipartFile;
 #end
-
+##requestMethod包
+#if($cfg.loginTable==$table.name)
+import org.springframework.web.bind.annotation.RequestMethod;
+#end
+##日期包
 #if($isHaveDate)
 import java.util.Date;
 #end
@@ -129,7 +128,7 @@ public class ${table.controllerName} extends BaseController{
 		if(id != null){
 			if(resultData.getCode()!=-1){
 				if(session.getAttribute("existUser")!=null){
-					#tolowercase($entity) = #tolowercase($entity)Service.#query()ById(id);
+					#tab([1..5])#tolowercase($entity) = #tolowercase($entity)Service.#query()ById(id);
 					session.setAttribute("existUser",#tolowercase($entity));
 				}
 			}
@@ -229,7 +228,7 @@ public class ${table.controllerName} extends BaseController{
 		if (exist$entity!=null) {
 			return "admin/index";
 		}
-		return "login";
+		return "admin/login";
 	}
 	
 	@RequestMapping("/regist")
@@ -240,8 +239,8 @@ public class ${table.controllerName} extends BaseController{
 		List<$entity> #tolowercase($entity)s = #tolowercase($entity)Service.#query()List(condition);
 		if(#tolowercase($entity)s.size()!=0){
 			return new ResultData()
-					.setCode(-1)
-					.setData("message","用户已存在！");
+					.setCode(-2)
+					.setMessage("用户已存在！");
 		}
 		ResultData resultData = saveOrUpdate(null, #tolowercase($entity),null#foreach($field in ${table.fields})#set($type = $cfg.propertyType.get($table.name).get($field.name))#if( $type == 'file' || $type == 'img' || (!$type && ${field.propertyName.contains('img')})),null#end#end);
 		if(resultData.getCode()==0){
@@ -251,7 +250,7 @@ public class ${table.controllerName} extends BaseController{
 		return resultData;
 	}
 	
-	@RequestMapping("/login")
+	@RequestMapping(value = "/login",method = {RequestMethod.POST})
 	public @ResponseBody ResultData login($entity #tolowercase($entity),HttpServletRequest request){
 		if(#tolowercase($entity)!=null){
 			if (#tolowercase($entity).get#toheaduppercase($cfg.loginPwdcolumn)()!=null&&#tolowercase($entity).get#toheaduppercase($cfg.loginUsercolumn)()!=null) {				
@@ -263,8 +262,8 @@ public class ${table.controllerName} extends BaseController{
 			}
 		}
 		return new ResultData()
-				.setCode(-1)
-				.setData("message", "用户名或密码错误！");
+				.setCode(-2)
+				.setMessage("用户名或密码错误！");
 	}
 	#end
 }

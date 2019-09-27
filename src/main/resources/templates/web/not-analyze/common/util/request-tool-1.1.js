@@ -67,6 +67,7 @@
 		this.success = config.success;
 		this.multipart = config.multipart;
 		this.check = config.check;
+		this.type = config.type;
 		//模板
 		/* 
 		for (var index = 0; index < form.length; index++) {
@@ -121,7 +122,7 @@
 		$.ajax({
 			url: url,
 			data: data,
-			type: 'post', 
+			type: type || 'post', 
 			async: false,
 			//FormData上传时要加这两个配置项，不然会报错
 	        processData: processData,

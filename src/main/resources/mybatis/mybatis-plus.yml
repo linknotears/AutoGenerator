@@ -79,7 +79,7 @@ conj.infor:
         table: category_second
         condition: category.cate_id = category_second.cate_id
         relation: many
-        conjtype: inner
+        conjtype: left
 #一个表可能有多个模板，所以这里面有多少个就要建多少个FileOutput
 webtemplates: 
 #  - 

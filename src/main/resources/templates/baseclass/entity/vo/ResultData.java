@@ -18,8 +18,9 @@ public class ResultData {
 		return message;
 	}
 
-	public void setMessage(String message) {
+	public ResultData setMessage(String message) {
 		this.message = message;
+		return this;
 	}
 	
 	public int getCode() {
