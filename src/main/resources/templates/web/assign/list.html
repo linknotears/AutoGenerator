@@ -16,7 +16,7 @@ loadUrls =[
 	{
 		url:"${cfg.suffixUri}${tableMapping.get(0)}/findList",
 		success:function(data){
-			window.${tableMapping.get(0)}Map = objArrToMap(data.${tableMapping.get(0)}s,"${tableMapping.get(1)}","${tableMapping.get(2)}");
+			window.${tableMapping.get(1)}Map = objArrToMap(data.${tableMapping.get(0)}s,"${tableMapping.get(1)}","${tableMapping.get(2)}");
 		}
 	},
 #end
@@ -82,7 +82,7 @@ var columns = [
 		title : '${field.comment}',
 		align : 'center',
 		formatter : function(value, row, index) {
-			return ${tableMapping.get(0)}Map[value] || "";
+			return ${tableMapping.get(1)}Map[value] || "";
 		}
 	},
 #else

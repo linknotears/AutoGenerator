@@ -40,10 +40,10 @@ public class ${table.serviceImplName} extends BaseServiceImpl<${entity}> impleme
 		pageData.setCondition(condition);
 		//设置数据
 		List<${entity}> list = #tolowercase(${entity})Mapper.conjQueryPage(pageData);
-		pageData.setList(list);
+		pageData.setRows(list);
 		//设置记录
-		int totalCount = #tolowercase(${entity})Mapper.conjQueryCount(pageData.getCondition());
-		pageData.setTotalCount(totalCount);
+		int total = #tolowercase(${entity})Mapper.conjQueryCount(pageData.getCondition());
+		pageData.setTotal(total);
 		return pageData;
 	}
 

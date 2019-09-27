@@ -39,7 +39,7 @@ $(function(){
 		{
 			url:"${cfg.suffixUri}${tableMapping.get(0)}/findList",
 			success:function(data){
-				globalData.data.${tableMapping.get(0)}Map = objArrToMap(data.${tableMapping.get(0)}s,"${tableMapping.get(1)}","${tableMapping.get(2)}");
+				globalData.data.${tableMapping.get(1)}Map = objArrToMap(data.${tableMapping.get(0)}s,"${tableMapping.get(1)}","${tableMapping.get(2)}");
 			}
 		},
 #end
@@ -139,7 +139,7 @@ img {
 									<select data-placeholder="--选择${field.comment}--" name="${field.propertyName}" id="${field.propertyName}"
 										class="form-control" tabindex="2">
 										<option value="">--选择${field.comment}--</option>
-										<option v-for="value,key in data.${tableMapping.get(0)}Map" :value="key">{{value}}</option>
+										<option v-for="value,key in data.${tableMapping.get(1)}Map" :value="key">{{value}}</option>
 									</select>
 								</div>
 #elseif($type.contains('date'))

@@ -884,7 +884,7 @@ public class GeneratorCode {
 							.append("}\n")
 							.append("\t\t\t\t</if>");
 						}
-						whereBuilder.append("\t\t\t</if>");
+						whereBuilder.append("\n\t\t\t</if>");
 						
 						//用来连接四个查询的字符串（conjQueryList）
 						StringBuilder conjBuilder = new StringBuilder();
@@ -897,15 +897,15 @@ public class GeneratorCode {
 						.append("\t\tselect \n\t\t<include refid=\"Conj_Column_List\" />\n\t\tfrom ")
 						.append(conjTablesBuilder.toString());
 						//添加连接条件
-						String[] conditionArr = condition.split(" and ");
+						String[] conditionArr = new String[0];
+						if(condition != null) {
+							conditionArr = condition.split(" and ");
+						}
 						conjBuilder
-						.append("\t\t<where>\n\t\t\t");
+						.append("\t\t<where>\n");
 						for(int i = 0; i < conditionArr.length; i++) {
-							if( i > 0 ) {
-								conjBuilder
-								.append("\t\t\t");
-							}
 							conjBuilder
+							.append("\t\t\t")
 							.append("and ")
 							.append(conditionArr[i])
 							.append("\n");
@@ -931,13 +931,10 @@ public class GeneratorCode {
 						.append(conjTablesBuilder.toString());
 						//添加连接条件
 						conjBuilder
-						.append("\t\t<where>\n\t\t\t");
+						.append("\t\t<where>\n");
 						for(int i = 0; i < conditionArr.length; i++) {
-							if( i > 0 ) {
-								conjBuilder
-								.append("\t\t\t");
-							}
 							conjBuilder
+							.append("\t\t\t")
 							.append("and ")
 							.append(conditionArr[i])
 							.append("\n");
@@ -963,13 +960,10 @@ public class GeneratorCode {
 						.append(conjTablesBuilder.toString());
 						//添加连接条件
 						conjBuilder
-						.append("\t\t<where>\n\t\t\t");
+						.append("\t\t<where>\n");
 						for(int i = 0; i < conditionArr.length; i++) {
-							if( i > 0 ) {
-								conjBuilder
-								.append("\t\t\t");
-							}
 							conjBuilder
+							.append("\t\t\t")
 							.append("and ")
 							.append(conditionArr[i])
 							.append("\n");
@@ -982,7 +976,7 @@ public class GeneratorCode {
 						.append("\n\t\t\t${condition.customCondition}\n")
 						.append("\t\t</where>\n")
 						.append("\t\t${orderby}")
-						.append("\t\tlimit #{offset },#{limit }")
+						.append("\nlimit #{offset },#{limit }")
 						.append("\n\t</select>");
 						
 						//conjQueryById
@@ -996,13 +990,10 @@ public class GeneratorCode {
 						.append(conjTablesBuilder.toString());
 						//添加连接条件
 						conjBuilder
-						.append("\t\t<where>\n\t\t\t");
+						.append("\t\t<where>\n");
 						for(int i = 0; i < conditionArr.length; i++) {
-							if( i > 0 ) {
-								conjBuilder
-								.append("\t\t\t");
-							}
 							conjBuilder
+							.append("\t\t\t")
 							.append("and ")
 							.append(conditionArr[i])
 							.append("\n");
