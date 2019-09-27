@@ -39,7 +39,7 @@ $(function(){
 		{
 			url:"${cfg.suffixUri}${tableMapping.get(0)}/findList",
 			success:function(data){
-				globalData['${tableMapping.get(0)}Map'] = objArrToMap(data.${tableMapping.get(0)}s,${tableMapping.get(1)},${tableMapping.get(2)});
+				globalData['${tableMapping.get(0)}Map'] = objArrToMap(data.${tableMapping.get(0)}s,"${tableMapping.get(1)}","${tableMapping.get(2)}");
 			}
 		},
 #end
