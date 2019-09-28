@@ -20,7 +20,7 @@
 <script type="text/javascript" src="/common/util/request-tool-1.1.js"></script>
 
 <script type="text/javascript">
-	function loginForm(form){
+	function login(form){
 		return request({
 			url: "${cfg.suffixUri}#tolowercase($entity)/login",
 			form: form,
@@ -36,8 +36,8 @@
 
 
 
-<!-- <link rel="stylesheet" href="assets/css/ace.min.css" />
-<link rel="stylesheet" href="assets/css/ace-rtl.min.css" /> -->
+<link rel="stylesheet" href="/css/ace.min.css" />
+<link rel="stylesheet" href="/css/ace-rtl.min.css" />
 </head>
 
 <body class="login-layout">
@@ -67,7 +67,7 @@
 										<div class="space-6"></div>
 
 										<form
-											onsubmit="return loginForm(this)">
+											onsubmit="return login(this)">
 											<fieldset>
 												<label class="block clearfix"> <span
 													class="block input-icon input-icon-right"> <input
@@ -88,11 +88,11 @@
 												<div class="space"></div>
 
 												<div class="clearfix">
-													<label class="inline"> <input type="checkbox"
-														class="ace" /> <span class="lbl"> 记住用户名</span>
-													</label> <input type="submit"
+													<center>
+														<input type="submit"
 														class="width-35 pull-right btn btn-sm btn-primary"
 														value="登录">
+													</center>
 												</div>
 
 												<div class="space-4"></div>
@@ -106,7 +106,7 @@
 										<div>
 											<a href="#" onclick="show_box('forgot-box'); return false;"
 												class="forgot-password-link"> <i class="icon-arrow-left"></i>
-												注册
+												
 											</a>
 										</div>
 
@@ -126,10 +126,10 @@
 										<div class="space-6"></div>
 										
 										<center><span id="message"><font style="color:green;">&nbsp;</font></span></center>
-										<p>输入账号</p>
-
+										
 										<form id="registId">
 											<fieldset>
+												<p>输入账号</p>
 												<label class="block clearfix"> <span
 													class="block input-icon input-icon-right"> <input
 														type="text" class="form-control" name="${cfg.loginUsercolumn}" placeholder="用户名" />

@@ -44,7 +44,7 @@
 								th:src="${session.picUrl}" 
 								onerror="this.src='/common/img/avatar.jpg';this.οnerrοr=null;"/> 
 								<!-- 用户名 -->
-								<strong class="font-bold" th:text="${username}">${session.existUser.name}</strong>
+								<strong class="font-bold" th:text="${session.existUser.name}"></strong>
 							</span>
 							<!-- 系统标题 -->
 							<h3 class="" style="color:#ffffff">
@@ -52,24 +52,22 @@
 							</h3>
 						</div>
 						
-						<!-- <div class="dropdown profile-element hidden">
+						<div class="dropdown profile-element">
 
 							<a data-toggle="dropdown" class="dropdown-toggle" href="#"> <span
 								class="clear"> <span class="block m-t-xs"><strong
-										class="font-bold" th:text="${username}">admin</strong></span> <span
+										class="font-bold" th:text="${session.existUser.name}">admin</strong></span> <span
 									class="text-muted text-xs block">超级管理员<b class="caret"></b></span>
 							</span>
 							</a>
 							<ul class="dropdown-menu animated fadeInRight m-t-xs">
-								<li><a @click="personal" href="#">修改头像</a></li>
 								<li><a @click="personal" href="#">个人资料</a></li>
 								<li><a @click="personal" href="#">密码修改</a></li>
-								<li><a @click="personal" href="#">信箱</a></li>
 								<li class="divider"></li>
 								<li><a href="/logout">安全退出</a></li>
 							</ul>
 							<div class="logo-element"></div>
-						</div> -->
+						</div>
 					</li>
 #foreach($webtemplate in $cfg.webtemplates)
 #set($temp = ($webtemplate.template == 'list.html'))
@@ -82,9 +80,7 @@
 					<li>
 						<a href="#"> 
 							<!-- 图标 -->
-							<span style="width:">
-								<i class="${webtemplate.icons.get($foreach.count - 1)}"></i>
-							</span>
+							<i class="${webtemplate.icons.get($foreach.count - 1)}"></i>
 							<!-- 标签 -->
 							<span class="nav-label">${comment}管理</span>
 							<!-- 箭头 -->
@@ -193,7 +189,7 @@
 			</div>
 			<div class="row J_mainContent" id="content-main">
 				<iframe class="J_iframe" name="iframe0" width="100%" height="100%"
-					src="" th:src="@{$mainUri}" frameborder="0"
+					src="" th:src="@{$mainUri}" frameborder="0" data-id="1"
 					seamless></iframe>
 			</div>
 			<div class="footer">
