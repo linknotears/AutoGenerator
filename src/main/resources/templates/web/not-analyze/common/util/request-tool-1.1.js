@@ -1,4 +1,4 @@
-	//模板：<script type="text/javascript" src="common/util/netutil.js"></script>
+	//模板：<script type="text/javascript" src="common/util/request-tool-1.1.js"></script>
 	addScript("/common/util/jquery-1.10.2.min.js");
 	addScript("/common/util/vue.min.js");
 	function addScript(url){
@@ -68,6 +68,7 @@
 		this.multipart = config.multipart;
 		this.check = config.check;
 		this.type = config.type;
+		this.prep = config.prep || true;//preprocess是否预处理
 		//模板
 		/* 
 		for (var index = 0; index < form.length; index++) {
@@ -129,7 +130,10 @@
 	        contentType: contentType,
 	        dataType:'json',
 			success:function(result){
-				if(result.code==0){
+				//判断预处理
+				if(prep==false){
+					_this.success(result);
+				}else if(result.code==0){
 					_this.success(result.data);
 				}else if(result.message != null && result.message != undefined){
 					alert(result.message);
@@ -143,9 +147,12 @@
  			}
 		});
 		//删除刚提交使用的临时input标签
-		for(var x in els){
-			els[x].remove();
+		if(els.length>0){
+			for(var x in els){
+				els[x].remove();
+			}
 		}
+		
 		
 		return false;
 	}
@@ -274,18 +281,13 @@
 			request({
 				url: loadUrls[i].url,
 				data: loadUrls[i].data==undefined? {} : loadUrls[i].data,
+				prep: loadUrls[i].prep,
 				success: function(data){
 					window.loadIndex = i;
 					window.next = next;
 					if(loadUrls[i].refNames){
 						for(var j = 0; j < loadUrls[i].refNames.length; j++){
-							if(loadUrls[i].refNames[j] != 'pageData'){
-								globalData.data[loadUrls[i].refNames[j]] = data[loadUrls[i].refNames[j]];
-							}else{
-								globalData.page = data[loadUrls[i].refNames[j]];
-								var url = window.location.href.split("?")[0];
-								globalData.page["pageUri"] = url;
-							}
+							globalData.data[loadUrls[i].refNames[j]] = data[loadUrls[i].refNames[j]];
 						}
 					}
 					if(loadUrls[i].success != undefined){
@@ -296,6 +298,12 @@
 				}
 			});
 		}
+	}
+	
+	function pageWrap(data){
+		globalData.page = data;
+		var url = window.location.href.split("?")[0];
+		globalData.page["url"] = url;
 	}
 	
 	//加载参数
