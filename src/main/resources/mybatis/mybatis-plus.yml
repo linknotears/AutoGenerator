@@ -1,13 +1,15 @@
 #AutoGenerator 
 #普通配置 
+#项目名
+project.name: test
 #-- 俩id挂了、generator之前做个备份、saveOrUpdateByCheck方法bug:检测没有记录无法插入id、增加一个条件更新
-OutputDir: D:/Project/GoodsRental/src/main/java
+OutputDir: D:/Project/*{project.name}/src/main/java
 #配置文件路径
-OutputDirConfig: D:/Project/GoodsRental/src/main/resources/
+OutputDirConfig: D:/Project/*{project.name}/src/main/resources/
 #静态资源路径
-OutputDirStatic: D:/Project/GoodsRental/src/main/resources/static
+OutputDirStatic: D:/Project/*{project.name}/src/main/resources/static
 #templatesDir D:/Project/guyueconsole-master/src/main/webapp/WEB-INF/views
-OutputDirTemplates: D:/Project/GoodsRental/src/main/resources/views
+OutputDirTemplates: D:/Project/*{project.name}/src/main/resources/views
 #作者名
 author: linking
 #controller uri前缀
@@ -36,8 +38,8 @@ jdbc.driver: com.mysql.cj.jdbc.Driver
 jdbc.url: jdbc:mysql://wx.j66c.com:3306/test?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=CONVERT_TO_NULL
 jdbc.user: root
 jdbc.pwd: wwwj66ccom
-
-mysql.version: !!str 8.0
+#5.0的时候会更改配置
+mysql.version: !!str 5.0
 #各层包名配置
 package.suffix.mapper: dao
 package.suffix.entity: entity

@@ -5,8 +5,8 @@ spring:
 
 #公共配置与profiles选择无关
 mybatis:
-  typeAliasesPackage: com.linkey.entity
-  mapperLocations: classpath:mapper/*.xml
+  typeAliasesPackage: ${package.Entity}
+  mapperLocations: classpath:${cfg.packageSuffixXml.replace(".","/")}/*.xml
   log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 ---
@@ -20,9 +20,9 @@ spring:
   datasource:
    # url: jdbc:mysql://39.106.156.239:3306/test_db
     #url: jdbc:mysql://39.97.180.53:3306/test_db
-    url: jdbc:mysql://134.175.208.127:3306/test
-    username: root
-    password: wwwj66ccom
-    driver-class-name: com.mysql.jdbc.Driver
+    url: ${cfg.jdbcUrl}
+    username: ${cfg.jdbcUser}
+    password: ${cfg.jdbcPwd}
+    driver-class-name: ${cfg.jdbcDriver}
     # 使用druid数据源
     type: com.alibaba.druid.pool.DruidDataSource

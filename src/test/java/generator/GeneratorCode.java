@@ -12,8 +12,11 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.function.BiConsumer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.config.YamlMapFactoryBean;
 import org.springframework.core.io.ClassPathResource;
@@ -52,7 +55,21 @@ public class GeneratorCode {
         YamlMapFactoryBean yaml = new YamlMapFactoryBean();
         yaml.setResources(new ClassPathResource("mybatis/mybatis-plus.yml"));
         Map<String,Object> yamlMap = yaml.getObject();
-        
+        for(Entry<String, Object> entry : yamlMap.entrySet()) {
+        	Object value = entry.getValue();
+			if(value instanceof String) {
+        		String val = value.toString();
+        		Pattern pattern = Pattern.compile("\\*\\{.+\\}");
+        		Matcher matcher = pattern.matcher(val);
+        		while(matcher.find()) {
+        			String group = matcher.group();
+        			String searchStr =  group.replace("*", "").replace("{", "").replace("}", "").trim();
+        			String replaceStr = yamlMap.get(searchStr).toString();
+        			val = val.replace(group, replaceStr);
+        		}
+        		entry.setValue(val);
+        	}
+        }
         
         AutoGenerator mpg = new AutoGenerator();
     	String basePath = "/"+((String)yamlMap.get("basePackage")).replace(".", "/");
@@ -358,7 +375,7 @@ public class GeneratorCode {
                 //判断mysql版本
                 String url = (String)yamlMap.get("jdbc.url");
                 String driver = (String)yamlMap.get("jdbc.driver");
-                if("5.0".equals((String)yamlMap.get("mysql.version"))){
+                if(!"8.0".equals((String)yamlMap.get("mysql.version"))){
                 	String[] urltemp = url.split("\\?");
                 	url = urltemp[0] + "?useUnicode=true&allowMultiQueries=true&characterEncoding=UTF-8";
                 	driver = "com.mysql.jdbc.Driver";
