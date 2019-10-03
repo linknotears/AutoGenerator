@@ -1,5 +1,7 @@
 package com.linkey.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -30,5 +32,11 @@ public class RootController {
     @RequestMapping(value = "/admin/login",method = {RequestMethod.GET})
     public String adminLogin(String param) throws Exception{
         return "admin/login";
+    }
+    
+    @RequestMapping("/logout")
+    public String logout(HttpSession session) throws Exception{
+    	session.invalidate();
+        return "redirect:/${cfg.loginTable}/index";
     }
 }

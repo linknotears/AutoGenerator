@@ -944,7 +944,10 @@ public class GeneratorCode {
 						.append(".")
 						.append(tableInfo.getEntityName())
 						.append("\" resultType=\"java.lang.Integer\">\n")
-						.append("\t\tselect \n\t\tcount(1)\n\t\tfrom ")
+						.append("\t\tselect \n\t\tcount(")
+						.append("distinct ")
+						.append(idFieldName)
+						.append(")\n\t\tfrom ")
 						.append(conjTablesBuilder.toString());
 						//添加连接条件
 						conjBuilder
@@ -974,6 +977,11 @@ public class GeneratorCode {
 						.append("vo.PageData")
 						.append("\">\n")
 						.append("\t\tselect \n\t\t<include refid=\"Conj_Column_List\" />\n\t\tfrom ")
+						.append("(select *\n\t\t\tfrom ")
+						.append("`")
+						.append(tableInfo.getName())
+						.append("`")
+						.append("\n\t\t\tlimit #{offset },#{limit }) ")
 						.append(conjTablesBuilder.toString());
 						//添加连接条件
 						conjBuilder

@@ -12,7 +12,7 @@ mybatis:
 ---
 logging: 
   level: 
-    com.atguigu.dao: debug
+    ${package.Mapper}: debug
 #开发配置
 spring:
   profiles: dev

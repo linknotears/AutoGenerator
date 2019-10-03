@@ -41,7 +41,7 @@
 							<span>
 								<!-- 头像 -->
 								<img alt="image" class="img-circle" height="60" width="60" 
-								th:src="${session.picUrl}" 
+								th:src="${session.existUser.icon}" 
 								onerror="this.src='/common/img/avatar.jpg';this.οnerrοr=null;"/> 
 								<!-- 用户名 -->
 								<strong class="font-bold" th:text="${session.existUser.name}"></strong>

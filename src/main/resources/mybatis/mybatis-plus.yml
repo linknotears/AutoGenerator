@@ -26,8 +26,8 @@ login.pwdcolumn: password
 tables: 
 #是否初始化（生成拷贝文件）只生成baseclass、xml、和各层的文件
 createWebtemplates: !!str true
-createConfig: !!str false
-createNotAnalyze: !!str false
+createConfig: !!str true
+createNotAnalyze: !!str true
 createAnalyze: !!str true
 
 #是否覆盖文件（（xml）和entity、mapper或其他拷贝文件除外）
@@ -143,27 +143,24 @@ webtemplates:
     tables: [user]
     template: include.html
     outpath: include.html
+  - 
+    tables: [user]
+    template: index.html
+    outpath: index.html
 #指定文件类型（表名重复时不识别,加时间下划线自动创建）:{0:女,1:男}、img、sex、file、date、datetime、uuid、no
 propertyType: 
-#  img_url: 
-#    url: file
-#  video: 
-#    cover_img: file
-#    void_url: file
-#  user:
-#    avatar: file
+#  uriPrefix:key:name:firstId(用于判断是否使用函数):secondId(用于判断初始化和change触发名)
   banner:
     pic: img
   category: 
     pic: img
   category_second: 
-    cate_id: !!str category:cateId:name
-  goods: 
-    goods_id: !!str true
-    pic: img
     cate_id: category:cateId:name
-    cate_second_id: |-
-      {"1":"男","0":"女"}
+  goods: 
+    goods_id: true
+    pic: img
+    cate_id: category:cateId:name::cateSecondId
+    cate_second_id: categorySecond:cateSecondId:name:cateId
   user: 
     username: true
     icon: img

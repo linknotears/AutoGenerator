@@ -23,6 +23,9 @@ define({
 #set( $type = $cfg.propertyType.get($table.name).get($field.name) )
 #if($type.contains('{'))
 	"${field.name}_map":$type,
+#elseif($type.contains(':'))
+#set($tableMapping = $type.split(':'))
+	"${tableMapping.get(1)}Map": {},
 #end
 #end
 	"idName":idName
@@ -36,12 +39,14 @@ $(function(){
 #set( $type = $cfg.propertyType.get($table.name).get($field.name) )
 #if(!$type.contains('{') && $type.contains(':'))
 #set($tableMapping = $type.split(':'))
+#if($tableMapping.size() < 4 || !$tableMapping.get(3) || $tableMapping.get(3)=='')
 		{
 			url:"${cfg.suffixUri}${tableMapping.get(0)}/findList",
 			success:function(data){
-				globalData.data.${tableMapping.get(1)}Map = objArrToMap(data.${tableMapping.get(0)}s,"${tableMapping.get(1)}","${tableMapping.get(2)}");
+				globalData.${tableMapping.get(1)}Map = objArrToMap(data.${tableMapping.get(0)}s,"${tableMapping.get(1)}","${tableMapping.get(2)}");
 			}
 		},
+#end
 #end
 #end
 	];
@@ -72,6 +77,30 @@ function selectFile(inputId,imgId){
 	    $("#"+imgId).attr("src",URL.createObjectURL($(this)[0].files[0]));
 	});
 }
+
+##判断selectChange方法
+#foreach($field in ${table.fields})
+##参数类型
+#set( $type = $cfg.propertyType.get($table.name).get($field.name) )
+#if(!$type.contains('{') && $type.contains(':'))
+#set($tableMapping = $type.split(':'))
+#if($tableMapping.size() > 3 && $tableMapping.get(3)!='')
+function change#toheaduppercase(${tableMapping.get(1)})Map($tableMapping.get(3)){
+	//清空数据
+	globalData.${tableMapping.get(1)}Map = {};
+	if($tableMapping.get(3)){
+		request({
+			url: "/${tableMapping.get(0)}/findList",
+			data:{$tableMapping.get(3): $tableMapping.get(3)},
+			success:function(data){
+				globalData.${tableMapping.get(1)}Map = objArrToMap(data.${tableMapping.get(0)}s,"${tableMapping.get(1)}","${tableMapping.get(2)}");
+			}
+		});
+	}
+}
+#end
+#end
+#end
 </script>
 <style>
 [class*="row"] {
@@ -138,10 +167,10 @@ img {
 #set($tableMapping = $type.split(':'))
 								<div class="columns pull-left col-sm-1 col-sm-offset-1 nopadding">${field.comment}</div>
 								<div class="columns pull-left col-sm-4 nopadding">
-									<select data-placeholder="--选择${field.comment}--" name="${field.propertyName}" id="${field.propertyName}"
+									<select #if($tableMapping.size() > 4&&$tableMapping.get(4)&&$tableMapping.get(4)!='')onchange="change#toheaduppercase(${tableMapping.get(4)})Map(this.value)"#end data-placeholder="--选择${field.comment}--" name="${field.propertyName}" id="${field.propertyName}"
 										class="form-control" tabindex="2">
 										<option value="">--选择${field.comment}--</option>
-										<option v-for="value,key in data.${tableMapping.get(1)}Map" :value="key">{{value}}</option>
+										<option v-for="value,key in ${tableMapping.get(1)}Map" :value="key">{{value}}</option>
 									</select>
 								</div>
 #elseif($type.contains('date'))

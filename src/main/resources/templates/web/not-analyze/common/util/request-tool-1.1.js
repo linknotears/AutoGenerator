@@ -10,6 +10,7 @@
 	//通过索引复制的时候需用用Vue.set(target,i,target[i])通知vue
 	//全局变量
 	globalData = {'items':[],'item':{},'page':{},'data':{},params:{}};
+	vueMap = {};
 	loadUrls = [];
 	loadEls = [];
 	loadParameters = [];
@@ -67,8 +68,7 @@
 		this.success = config.success;
 		this.multipart = config.multipart;
 		this.check = config.check;
-		this.type = config.type;
-		this.prep = config.prep || true;//preprocess是否预处理
+		this.prep = config.prep==undefined? true : config.prep;//preprocess是否预处理
 		//模板
 		/* 
 		for (var index = 0; index < form.length; index++) {
@@ -123,7 +123,7 @@
 		$.ajax({
 			url: url,
 			data: data,
-			type: type || 'post', 
+			type: 'post', 
 			async: false,
 			//FormData上传时要加这两个配置项，不然会报错
 	        processData: processData,
@@ -131,6 +131,7 @@
 	        dataType:'json',
 			success:function(result){
 				//判断预处理
+				console.log("prep="+prep);
 				if(prep==false){
 					_this.success(result);
 				}else if(result.code==0){
@@ -163,102 +164,105 @@
 		if(loadEls.length != 0){
 			for(var i = 0; i < loadEls.length; i++){
 				//绑定vue(同一个id只有首次渲染起作用)
-				new Vue({
-					el: loadEls[i],
-					data: globalData,
-					methods:{
-						dateFormat: function(date, fmt) {
-							//如果等于空，则使用现在的时间
-							if(!date){// "",null,undefined,NaN
-								date = new Date();
-							}else if(!(date instanceof Date)){
-								date = new Date(date);
-							}
-							if(!fmt){
-								fmt = "yyyy-MM-ddThh:mm";
-							}
-							if (/(y+)/.test(fmt)) {
-							  fmt = fmt.replace(RegExp.$1, (date.getFullYear() + '').substr(4 - RegExp.$1.length))
-						  	}
-						  	let o = {
-						  			'M+': date.getMonth() + 1,
-						  			'd+': date.getDate(),
-						  			'h+': date.getHours(),
-						  			'm+': date.getMinutes(),
-						  			's+': date.getSeconds()
-						  	}
-							  for (let k in o) {
-								  if (new RegExp(`(${k})`).test(fmt)) {
-									  let str = o[k] + ''
-									  fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? str : this.padLeftZero(str))
+				Object.assign(vueMap,
+				{
+					[loadEls[i]]: new Vue({
+						el: loadEls[i],
+						data: globalData,
+						methods:{
+							dateFormat: function(date, fmt) {
+								//如果等于空，则使用现在的时间
+								if(!date){// "",null,undefined,NaN
+									date = new Date();
+								}else if(!(date instanceof Date)){
+									date = new Date(date);
+								}
+								if(!fmt){
+									fmt = "yyyy-MM-ddThh:mm";
+								}
+								if (/(y+)/.test(fmt)) {
+								  fmt = fmt.replace(RegExp.$1, (date.getFullYear() + '').substr(4 - RegExp.$1.length))
+							  	}
+							  	let o = {
+							  			'M+': date.getMonth() + 1,
+							  			'd+': date.getDate(),
+							  			'h+': date.getHours(),
+							  			'm+': date.getMinutes(),
+							  			's+': date.getSeconds()
+							  	}
+								  for (let k in o) {
+									  if (new RegExp(`(${k})`).test(fmt)) {
+										  let str = o[k] + ''
+										  fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? str : this.padLeftZero(str))
+									  }
 								  }
-							  }
-							  return fmt
-						},
-						
-						formatDateTime: function(time,isShowSecond){
-							var formatStr = "yyyy-MM-dd hh:mm";
-							if(isShowSecond){
-								formatStr = "yyyy-MM-dd hh:mm:ss";
-							}
-							return this.dateFormat(time, formatStr)
-						},
-						
-						formatDate: function(time) {
-							return this.dateFormat(time, "yyyy-MM-dd")
-						},
-						
-						padLeftZero: function(str) {
-						  return ('00' + str).substr(str.length)
-						},
-						//数组搜索对象
-						findObj: function(arr,condition,refName){
-							var conditionCount = Object.getOwnPropertyNames(condition).length;
-							for(var x in arr){
-								var arrObjCount = 0;
-								var arrObj = arr[x];
-								for(var key in condition){
-									var arrValue = arrObj[key];
-									var value = condition[key];
-									if(value == arrValue){
-										arrObjCount++;
-									}
+								  return fmt
+							},
+							
+							formatDateTime: function(time,isShowSecond){
+								var formatStr = "yyyy-MM-dd hh:mm";
+								if(isShowSecond){
+									formatStr = "yyyy-MM-dd hh:mm:ss";
 								}
-								//如果条件都符合则返回对象
-								if(arrObjCount == conditionCount){
-									//添加vue参照
-									if(!refName){
-										//清空对象属性
-										for(let x in this['item']){
-											delete this['item'][x];
+								return this.dateFormat(time, formatStr)
+							},
+							
+							formatDate: function(time) {
+								return this.dateFormat(time, "yyyy-MM-dd")
+							},
+							
+							padLeftZero: function(str) {
+							  return ('00' + str).substr(str.length)
+							},
+							//数组搜索对象
+							findObj: function(arr,condition,refName){
+								var conditionCount = Object.getOwnPropertyNames(condition).length;
+								for(var x in arr){
+									var arrObjCount = 0;
+									var arrObj = arr[x];
+									for(var key in condition){
+										var arrValue = arrObj[key];
+										var value = condition[key];
+										if(value == arrValue){
+											arrObjCount++;
 										}
-										//item的值被改变了，重新渲染视图导致无限循环
-										Object.assign(this.item,arrObj);
-									}else{
-										//初始化变量
-										if(!this[refName]){
-											this[refName] = {};
-										}else{
+									}
+									//如果条件都符合则返回对象
+									if(arrObjCount == conditionCount){
+										//添加vue参照
+										if(!refName){
 											//清空对象属性
-											for(let x in this[refName]){
-												delete this[refName][x];
+											for(let x in this['item']){
+												delete this['item'][x];
 											}
+											//item的值被改变了，重新渲染视图导致无限循环
+											Object.assign(this.item,arrObj);
+										}else{
+											//初始化变量
+											if(!this[refName]){
+												this[refName] = {};
+											}else{
+												//清空对象属性
+												for(let x in this[refName]){
+													delete this[refName][x];
+												}
+											}
+											Object.assign(this[refName], arrObj);
 										}
-										Object.assign(this[refName], arrObj);
+										return arrObj;
 									}
-									return arrObj;
 								}
-							}
-							//如果没找这则返回null
-							return null;
-						},
-						invert: function(event,invertName) {
-							var checked = event.currentTarget.checked;
-							if(checked){
-								globalData[invertName] = [];
+								//如果没找这则返回null
+								return null;
+							},
+							invert: function(event,invertName) {
+								var checked = event.currentTarget.checked;
+								if(checked){
+									globalData[invertName] = [];
+								}
 							}
 						}
-					}
+					})
 				});
 			}
 		}
