@@ -303,9 +303,40 @@
 			});
 		}
 	}
-	
-	function pageWrap(data){
+	/**页分页模板
+	 * <ul> 
+        <li v-if="page.page>1"><a href="javascript:void(0);" onclick="getGoods(undefined,undefined,1)"> 首页 </a></li> 
+        <li v-if="page.page>1"><a href="javascript:void(0);" @click="getGoods(undefined,undefined,page.page-1)"> 上一页 </a></li> 
+        <li v-if="page.currentIndex>0"><a href="javascript:void(0);" @click="getGoods(undefined,undefined,page.startPage - 1)"> <<< </a></li> 
+        <li v-for="p,i in page.pages" v-if="i <= (page.showPage-1)">
+			<a href="javascript:void(0);" @click="getGoods(undefined,undefined,index)">
+				<strong :style="page.page==p? 'color:red;' : ''">{{p}}</strong>
+			</a>
+		</li>
+        <li v-if="page.currentIndex<page.maxIndex"><a href="javascript:void(0);" @click="getGoods(undefined,undefined,page.startPage + page.showPage)"> >>> </a></li> 
+        <li v-if="page.page<page.totalPage"><a href="javascript:void(0);" @click="getGoods(undefined,undefined,page.page+1)"> 下一页 </a></li> 
+        <li v-if="page.page<page.totalPage"><a href="javascript:void(0);" @click="getGoods(undefined,undefined,page.totalPage)"> 最后页 </a></li> 
+       </ul>
+	 */
+	function pageWrap(data,showPage = 8){
 		globalData.page = data;
+		
+		var currentIndex = Math.floor(((data.page-1)*1.0)/showPage);
+		var maxIndex = Math.floor((data.totalPage*1.0)/showPage);
+		var startPage = showPage*currentIndex + 1;
+		//页数组
+		var pages = [];
+		for(var i = startPage; i<=data.totalPage; i++){
+			pages.push(i);
+		}
+		console.log(`maxIndex=${maxIndex},currentIndex=${currentIndex},startPage=${startPage}`)
+		//页分页数据
+		data["currentIndex"] = currentIndex;//当前页分页索引
+		data["maxIndex"] = maxIndex; //最大页分页索引
+		data["showPage"] = showPage; //显示页数
+		data["startPage"] = startPage; //当前页开始页数
+		data["pages"] = pages;//页数组
+		
 		var url = window.location.href.split("?")[0];
 		globalData.page["url"] = url;
 	}
