@@ -1,6 +1,8 @@
-package generator;
+package cn.linkey.generator;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,6 +22,7 @@ import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.config.YamlMapFactoryBean;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.InputStreamResource;
 
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.generator.AutoGenerator;
@@ -52,8 +55,17 @@ public class GeneratorCode {
 		//AutoGenerator.analyzeData(ConfigBuilder config)中有模板可用的一些内置属性
 		//用来获取mybatis-plus.properties文件的配置信息
         //配置文件改为yaml
+		//获取jar包所在路径
+		String jarPath = System.getProperty("user.dir");
         YamlMapFactoryBean yaml = new YamlMapFactoryBean();
-        yaml.setResources(new ClassPathResource("mybatis/mybatis-plus.yml"));
+        InputStreamResource resource = null;
+        try {
+			resource = new InputStreamResource(new FileInputStream(jarPath+"/config/generator.yml"));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+        yaml.setResources(resource,new ClassPathResource("config/generator.yml"));
+        
         Map<String,Object> yamlMap = yaml.getObject();
         for(Entry<String, Object> entry : yamlMap.entrySet()) {
         	Object value = entry.getValue();

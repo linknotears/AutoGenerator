@@ -1,6 +1,0 @@
-eclipse.preferences.version=1
-encoding//src/main/resources/mybatis/mybatis-plus-template.yml=UTF-8
-encoding//src/main/resources/templates/web/assign/v1/add${entity}.html=UTF-8
-encoding//src/main/resources/templates/web/assign/v1/edit${entity}.html=UTF-8
-encoding//src/test/java=UTF-8
-encoding//src/test/java/generator/GeneratorCode.java=UTF-8
