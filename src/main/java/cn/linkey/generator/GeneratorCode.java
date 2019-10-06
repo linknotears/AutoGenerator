@@ -1,12 +1,16 @@
 package cn.linkey.generator;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,6 +27,8 @@ import java.util.regex.Pattern;
 import org.springframework.beans.factory.config.YamlMapFactoryBean;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.util.ResourceUtils;
 
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.generator.AutoGenerator;
@@ -50,23 +56,44 @@ public class GeneratorCode {
 	public static String serviceImplSuffix;
 	public static String controllerSuffix;
 	public static String xmlSuffix;
-	
+	public static String templatesPath;
 	public static void main(String[] args) throws InterruptedException {
 		//AutoGenerator.analyzeData(ConfigBuilder config)中有模板可用的一些内置属性
 		//用来获取mybatis-plus.properties文件的配置信息
         //配置文件改为yaml
-		//获取jar包所在路径
+		//获取jar包所在路径(不打jar包情况下显示的是项目路径)
 		String jarPath = System.getProperty("user.dir");
         YamlMapFactoryBean yaml = new YamlMapFactoryBean();
-        InputStreamResource resource = null;
+        Resource resource = null;
+        boolean isOutside = false;
+        //获取总配置文件路径
+        String yamlPath = null;
         try {
-			resource = new InputStreamResource(new FileInputStream(jarPath+"/config/generator.yml"));
+        	yamlPath = jarPath+"/config/generator.yml";
+			resource = new InputStreamResource(new FileInputStream(yamlPath));
+			isOutside = true;
+			System.out.println("================使用jar外配置==============");
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+        	System.out.println("================使用jar内配置==============");
+			resource = new ClassPathResource("config/generator.yml");
+			try {
+				yamlPath = resource.getFile().getAbsolutePath();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 		}
-        yaml.setResources(resource,new ClassPathResource("config/generator.yml"));
-        
+		System.out.println( "yamlPath=" + yamlPath );
+		
+        yaml.setResources(resource);
         Map<String,Object> yamlMap = yaml.getObject();
+        
+        if( yamlMap.get("templatesPath") != null && isOutside ) {
+        	templatesPath = jarPath + "/" + yamlMap.get("templatesPath").toString();
+        }else {
+        	templatesPath = GeneratorCode.class.getResource("/templates").getPath();
+        }
+        System.out.println("templatesPath=" + templatesPath );
+        
         for(Entry<String, Object> entry : yamlMap.entrySet()) {
         	Object value = entry.getValue();
 			if(value instanceof String) {
@@ -125,11 +152,11 @@ public class GeneratorCode {
             //3.1版本用
         	@Override
             public IColumnType processTypeConvert(GlobalConfig globalConfig, String fieldType) {
-            	System.out.println("转换前类型：" + fieldType);
+            	String outFieldType = fieldType;
                 if(fieldType.contains("decimal")){
                 	fieldType = "double";
                 }
-                System.out.println("转换后类型：" + fieldType);
+                System.out.println("type:" + fieldType + "->" + fieldType);
             	return super.processTypeConvert(globalConfig, fieldType);
             }
         });
@@ -285,8 +312,46 @@ public class GeneratorCode {
 	        	String outPath = (String)yamlMap.get("OutputDirConfig");
 	        	templatesTo(focList,templateDir,outPath);
         	}
+        	//创建generator配置文件
+        	if(!"false".equals((String)yamlMap.get("createGeneratorConfig"))){
+        		BufferedWriter out = null;
+        		 BufferedReader resourceIn = null;
+        		InputStream yamlIn = null;
+	        	try {
+					String outPath = (String)yamlMap.get("OutputDirConfig")+"/config/generator.yml";
+					File file = new File(outPath);
+					if(!file.exists()) {
+						file.getParentFile().mkdirs();
+					}
+					
+			        yamlIn = new FileInputStream(yamlPath);
+			        resourceIn = new BufferedReader(new InputStreamReader(yamlIn));
+					out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file)));
+					String buf = null;
+					while(null != (buf = resourceIn.readLine())) {
+						out.append(buf);
+						out.newLine();
+					}
+					out.flush();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}finally {
+					try {
+						if(resourceIn!=null) {
+							resourceIn.close();
+						}
+						if(null != out) {							
+							out.close();
+						}
+						if(yamlIn!=null) {
+							yamlIn.close();
+						}
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+        	}
         	
-	        
 	        //复制不需要解析的文件
 	        //复制web文件
         	if(!"false".equals((String)yamlMap.get("createNotAnalyze"))){
@@ -366,7 +431,6 @@ public class GeneratorCode {
 				});
                 
                 //循环读取配置信息
-                System.out.println("===========configParameters=========");
                 for(String key : yamlMap.keySet()){
                 	//循环替换.有的字母转换成大写
                 	if(yamlMap.get(key) instanceof String){
@@ -378,8 +442,6 @@ public class GeneratorCode {
                     		String end = newkey.substring(index+2);
                     		newkey = head + center + end;
                     	}
-                    	System.out.println("newkey="+newkey);
-                    	
                     	map.put(newkey, (String)yamlMap.get(key));
                 	}
                 }
@@ -469,10 +531,17 @@ public class GeneratorCode {
 
 	private static void templatesToNotAnalyze(String templateDir,String outDir){
 		System.out.println("-----------------templateDir = " + templateDir + "-----------------");
-		//遍历配置模板
+		//遍历配置模板（类路径模板）
         URL url = GeneratorCode.class.getClass().getResource("/templates/"+templateDir);
-		String path = url.getPath();		//要遍历的路径
-		File file = new File(path);		//获取其file对象
+        String path = url.getPath();
+		File file = new File(path);
+		System.out.println("file="+path);
+		System.out.println("file.exists="+file.exists());
+		//templates配置目录
+		if(!file.exists()) {
+			file = new File( templatesPath + "/" + templateDir );
+		}
+		
 		List<String> shortPaths = getShortPath(file,new ArrayList<String>(),templateDir);
         //添加配置模板
 		for(String shortPath : shortPaths){
@@ -522,8 +591,18 @@ public class GeneratorCode {
 		System.out.println("-----------------templateDir = " + templateDir + "-----------------");
 		//遍历配置模板
         URL url = GeneratorCode.class.getClass().getResource("/templates/"+templateDir);
-		String path = url.getPath();		//要遍历的路径
-		File file = new File(path);		//获取其file对象
+        if(url==null) {
+        	return ;
+        }
+        String path = url.getPath();
+		File file = new File(path);
+		System.out.println("file="+path);
+		System.out.println("file.exists="+file.exists());
+		//templates配置目录
+		if(!file.exists()) {
+			file = new File( templatesPath + "/" + templateDir );
+		}
+		
 		List<String> shortPaths = getShortPath(file,new ArrayList<String>(),templateDir);
         //添加配置模板
 		for(String shortPath : shortPaths){

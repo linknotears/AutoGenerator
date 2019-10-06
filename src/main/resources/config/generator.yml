@@ -10,6 +10,8 @@ OutputDirConfig: D:/Project/*{project.name}/src/main/resources/
 OutputDirStatic: D:/Project/*{project.name}/src/main/resources/static
 #templatesDir D:/Project/guyueconsole-master/src/main/webapp/WEB-INF/views
 OutputDirTemplates: D:/Project/*{project.name}/src/main/resources/views
+#templatesPath
+templatesPath: classes/templates
 #作者名
 author: linking
 #controller uri前缀
@@ -29,7 +31,7 @@ createWebtemplates: !!str true
 createConfig: !!str true
 createNotAnalyze: !!str true
 createAnalyze: !!str true
-
+createGeneratorConfig: !!str true
 #是否覆盖文件（（xml）和entity、mapper或其他拷贝文件除外）
 isOverFile: !!str false
 
@@ -47,6 +49,7 @@ package.suffix.service: service
 package.suffix.serviceImpl: service.impl
 package.suffix.controller: controller
 package.suffix.xml: mapper
+
 #数组默认生成的是ArrayList
 #使用说明
 # 使用方法一开始为一个数组，第一层为所需要连接的表（为主表），第二层是要连接的表，可以是多个，第三层是第二层要连接的表

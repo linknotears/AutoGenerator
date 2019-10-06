@@ -29,7 +29,7 @@ createWebtemplates: !!str true
 createConfig: !!str true
 createNotAnalyze: !!str true
 createAnalyze: !!str true
-
+createGeneratorConfig: !!str true
 #是否覆盖文件（（xml）和entity、mapper或其他拷贝文件除外）
 isOverFile: !!str false
 
@@ -143,6 +143,10 @@ webtemplates:
     tables: [user]
     template: include.html
     outpath: include.html
+  - 
+    tables: [user]
+    template: index.html
+    outpath: index.html
 #指定文件类型（表名重复时不识别,加时间下划线自动创建）:{0:女,1:男}、img、sex、file、date、datetime、uuid、no
 propertyType: 
 #  uriPrefix:key:name:firstId(用于判断是否使用函数):secondId(用于判断初始化和change触发名)
