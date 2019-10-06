@@ -314,8 +314,7 @@ public class GeneratorCode {
         	}
         	//创建generator配置文件
         	if(!"false".equals((String)yamlMap.get("createGeneratorConfig"))){
-        		BufferedWriter out = null;
-        		 BufferedReader resourceIn = null;
+        		OutputStream out = null;
         		InputStream yamlIn = null;
 	        	try {
 					String outPath = (String)yamlMap.get("OutputDirConfig")+"/config/generator.yml";
@@ -323,23 +322,20 @@ public class GeneratorCode {
 					if(!file.exists()) {
 						file.getParentFile().mkdirs();
 					}
-					
 			        yamlIn = new FileInputStream(yamlPath);
-			        resourceIn = new BufferedReader(new InputStreamReader(yamlIn));
-					out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file)));
-					String buf = null;
-					while(null != (buf = resourceIn.readLine())) {
-						out.append(buf);
-						out.newLine();
+					out = new FileOutputStream(file);
+					
+					//用字符流打jar包后执行会出现乱码
+					byte[] buf = new byte[1024*1024];
+					int len = 0;
+					while(-1 != (len = yamlIn.read(buf))) {
+						out.write(buf, 0, len);
 					}
 					out.flush();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}finally {
 					try {
-						if(resourceIn!=null) {
-							resourceIn.close();
-						}
 						if(null != out) {							
 							out.close();
 						}
