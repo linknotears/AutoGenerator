@@ -1,7 +1,7 @@
 #AutoGenerator 
 #普通配置 
 #项目名
-project.name: test
+project.name: online-order-web
 #-- 俩id挂了、generator之前做个备份、saveOrUpdateByCheck方法bug:检测没有记录无法插入id、增加一个条件更新
 OutputDir: D:/Project/*{project.name}/src/main/java
 #配置文件路径
@@ -19,7 +19,7 @@ suffix.uri: /
 #html访问 uri前缀
 base.uri: /base/admin/
 #基础包名  
-basePackage: com.linkey
+basePackage: com.huihaha.onlineorder
 #登录表名
 login.table: user
 login.usercolumn: username

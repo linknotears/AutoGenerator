@@ -28,8 +28,8 @@ login.pwdcolumn: password
 tables: 
 #是否初始化（生成拷贝文件）只生成baseclass、xml、和各层的文件
 createWebtemplates: !!str true
-createConfig: !!str true
-createNotAnalyze: !!str true
+createConfig: !!str false
+createNotAnalyze: !!str false
 createAnalyze: !!str true
 createGeneratorConfig: !!str true
 #是否覆盖文件（（xml）和entity、mapper或其他拷贝文件除外）
@@ -112,32 +112,36 @@ webtemplates:
 #    outpath: admin/select${entity}CategoryList.jsp
 #    exclude: img_url.link
 
+#  - 
+#    tables: [agreement,authority,call_service,charge_record,club,coupon,coupon_card,coupon_record,dining_table,goods,goods_type,goods_unit,member,member_card,merch_application,order,order_item,pay_setting,print_setup,queue_up,user,ware_house,wh_change_recored,wh_goods]
+#    template: list.html
+#    icons: ["fa fa-calendar-plus-o","fa fa-user","fa fa-bandcamp","",""]
+#    outpath: ${entity}/list.html
+#    exclude: all.bz1,all.bz2
+#  - 
+#    tables: [agreement,authority,call_service,charge_record,club,coupon,coupon_card,coupon_record,dining_table,goods,goods_type,goods_unit,member,member_card,merch_application,order,order_item,pay_setting,print_setup,queue_up,user,ware_house,wh_change_recored,wh_goods]
+#    template: add.html
+#    outpath: ${entity}/add.html
+#    exclude: all.bz1,all.bz2
+#  - 
+#    tables: [agreement,authority,call_service,charge_record,club,coupon,coupon_card,coupon_record,dining_table,goods,goods_type,goods_unit,member,member_card,merch_application,order,order_item,pay_setting,print_setup,queue_up,user,ware_house,wh_change_recored,wh_goods]
+#    template: edit.html
+#    outpath: ${entity}/edit.html
+#    exclude: all.bz1,all.bz2
+#  - 
+#    tables: [agreement,authority,call_service,charge_record,club,coupon,coupon_card,coupon_record,dining_table,goods,goods_type,goods_unit,member,member_card,merch_application,order,order_item,pay_setting,print_setup,queue_up,user,ware_house,wh_change_recored,wh_goods]
+#    template: edit_vertical.html
+#    outpath: ${entity}/edit_vertical.html
+#    exclude: all.bz1,all.bz2
+#  - 
+#    tables: [agreement,authority,call_service,charge_record,club,coupon,coupon_card,coupon_record,dining_table,goods,goods_type,goods_unit,member,member_card,merch_application,order,order_item,pay_setting,print_setup,queue_up,user,ware_house,wh_change_recored,wh_goods]
+#    template: add_vertical.html
+#    outpath: ${entity}/add_vertical.html
+#    exclude: all.bz1,all.bz2
   - 
-    tables: [agreement,authority,call_service,charge_record,club,coupon,coupon_card,coupon_record,dining_table,goods,goods_type,goods_unit,member,member_card,merch_application,order,order_item,pay_setting,print_setup,queue_up,user,ware_house,wh_change_recored,wh_goods]
-    template: list.html
-    icons: ["fa fa-calendar-plus-o","fa fa-user","fa fa-bandcamp","",""]
-    outpath: ${entity}/list.html
-    exclude: all.bz1,all.bz2
-  - 
-    tables: [agreement,authority,call_service,charge_record,club,coupon,coupon_card,coupon_record,dining_table,goods,goods_type,goods_unit,member,member_card,merch_application,order,order_item,pay_setting,print_setup,queue_up,user,ware_house,wh_change_recored,wh_goods]
-    template: add.html
-    outpath: ${entity}/add.html
-    exclude: all.bz1,all.bz2
-  - 
-    tables: [agreement,authority,call_service,charge_record,club,coupon,coupon_card,coupon_record,dining_table,goods,goods_type,goods_unit,member,member_card,merch_application,order,order_item,pay_setting,print_setup,queue_up,user,ware_house,wh_change_recored,wh_goods]
-    template: edit.html
-    outpath: ${entity}/edit.html
-    exclude: all.bz1,all.bz2
-  - 
-    tables: [agreement,authority,call_service,charge_record,club,coupon,coupon_card,coupon_record,dining_table,goods,goods_type,goods_unit,member,member_card,merch_application,order,order_item,pay_setting,print_setup,queue_up,user,ware_house,wh_change_recored,wh_goods]
-    template: edit_vertical.html
-    outpath: ${entity}/edit_vertical.html
-    exclude: all.bz1,all.bz2
-  - 
-    tables: [agreement,authority,call_service,charge_record,club,coupon,coupon_card,coupon_record,dining_table,goods,goods_type,goods_unit,member,member_card,merch_application,order,order_item,pay_setting,print_setup,queue_up,user,ware_house,wh_change_recored,wh_goods]
-    template: add_vertical.html
-    outpath: ${entity}/add_vertical.html
-    exclude: all.bz1,all.bz2
+    tables: [club]
+    template: huihaha/add.html
+    outpath: ${entity}/add1.html
   - 
     tables: [user]
     template: include.html
@@ -145,8 +149,13 @@ webtemplates:
 #指定文件类型（表名重复时不识别,加时间下划线自动创建）:{0:女,1:男}、img、sex、file、date、datetime、uuid、no
 propertyType: 
 #  uriPrefix:key:name:firstId(用于判断是否使用函数):secondId(用于判断初始化和change触发名)
-  banner:
-    pic: img
+  club:
+    name: img
+    state: switch
+    wh_id: |-
+     {"1":"建辰","2":"陈建"}
+    user_id: |-
+     {"1":"建辰","2":"陈建"}
   category: 
     pic: img
   category_second: 
