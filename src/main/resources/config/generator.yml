@@ -1,7 +1,7 @@
 #AutoGenerator 
 #普通配置 
 #项目名
-project.name: test
+project.name: online-order-web
 #-- 俩id挂了、generator之前做个备份、saveOrUpdateByCheck方法bug:检测没有记录无法插入id、增加一个条件更新
 OutputDir: D:/Project/*{project.name}/src/main/java
 #配置文件路径
@@ -17,9 +17,9 @@ author: linking
 #controller uri前缀
 suffix.uri: /
 #html访问 uri前缀
-base.uri: /base/admin/
+base.uri: /base/
 #基础包名  
-basePackage: com.linkey
+basePackage: com.huihaha.onlineorder
 #登录表名
 login.table: user
 login.usercolumn: username
@@ -37,7 +37,7 @@ isOverFile: !!str false
 
 #jdbc配置
 jdbc.driver: com.mysql.cj.jdbc.Driver
-jdbc.url: jdbc:mysql://wx.j66c.com:3306/test?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=CONVERT_TO_NULL
+jdbc.url: jdbc:mysql://wx.j66c.com:3306/huihaha?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=CONVERT_TO_NULL
 jdbc.user: root
 jdbc.pwd: wwwj66ccom
 #5.0的时候会更改配置
@@ -113,43 +113,35 @@ webtemplates:
 #    exclude: img_url.link
 
   - 
-    tables: [goods,user,banner,category,category_second]
+    tables: [agreement,authority,call_service,charge_record,club,coupon,coupon_card,coupon_record,dining_table,goods,goods_type,goods_unit,member,member_card,merch_application,order,order_item,pay_setting,print_setup,queue_up,user,ware_house,wh_change_recored,wh_goods]
     template: list.html
     icons: ["fa fa-calendar-plus-o","fa fa-user","fa fa-bandcamp","",""]
-    outpath: admin/${entity}/list.html
+    outpath: ${entity}/list.html
     exclude: all.bz1,all.bz2
   - 
-    tables: [goods,user,banner,category,category_second]
+    tables: [agreement,authority,call_service,charge_record,club,coupon,coupon_card,coupon_record,dining_table,goods,goods_type,goods_unit,member,member_card,merch_application,order,order_item,pay_setting,print_setup,queue_up,user,ware_house,wh_change_recored,wh_goods]
     template: add.html
-    outpath: admin/${entity}/add.html
+    outpath: ${entity}/add.html
     exclude: all.bz1,all.bz2
   - 
-    tables: [goods,user,banner,category,category_second]
+    tables: [agreement,authority,call_service,charge_record,club,coupon,coupon_card,coupon_record,dining_table,goods,goods_type,goods_unit,member,member_card,merch_application,order,order_item,pay_setting,print_setup,queue_up,user,ware_house,wh_change_recored,wh_goods]
     template: edit.html
-    outpath: admin/${entity}/edit.html
+    outpath: ${entity}/edit.html
     exclude: all.bz1,all.bz2
   - 
-    tables: [goods,user,banner,category,category_second]
+    tables: [agreement,authority,call_service,charge_record,club,coupon,coupon_card,coupon_record,dining_table,goods,goods_type,goods_unit,member,member_card,merch_application,order,order_item,pay_setting,print_setup,queue_up,user,ware_house,wh_change_recored,wh_goods]
     template: edit_vertical.html
-    outpath: admin/${entity}/edit_vertical.html
+    outpath: ${entity}/edit_vertical.html
     exclude: all.bz1,all.bz2
   - 
-    tables: [goods,user,banner,category,category_second]
+    tables: [agreement,authority,call_service,charge_record,club,coupon,coupon_card,coupon_record,dining_table,goods,goods_type,goods_unit,member,member_card,merch_application,order,order_item,pay_setting,print_setup,queue_up,user,ware_house,wh_change_recored,wh_goods]
     template: add_vertical.html
-    outpath: admin/${entity}/add_vertical.html
+    outpath: ${entity}/add_vertical.html
     exclude: all.bz1,all.bz2
-  - 
-    tables: [user]
-    template: login.html
-    outpath: admin/login.html
   - 
     tables: [user]
     template: include.html
     outpath: include.html
-  - 
-    tables: [user]
-    template: index.html
-    outpath: index.html
 #指定文件类型（表名重复时不识别,加时间下划线自动创建）:{0:女,1:男}、img、sex、file、date、datetime、uuid、no
 propertyType: 
 #  uriPrefix:key:name:firstId(用于判断是否使用函数):secondId(用于判断初始化和change触发名)

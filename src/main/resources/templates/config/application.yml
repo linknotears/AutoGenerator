@@ -16,10 +16,7 @@ logging:
 #开发配置
 spring:
   profiles: dev
-
   datasource:
-   # url: jdbc:mysql://39.106.156.239:3306/test_db
-    #url: jdbc:mysql://39.97.180.53:3306/test_db
     url: ${cfg.jdbcUrl}
     username: ${cfg.jdbcUser}
     password: ${cfg.jdbcPwd}
