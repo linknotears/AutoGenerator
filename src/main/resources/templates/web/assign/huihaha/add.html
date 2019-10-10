@@ -68,7 +68,7 @@ function saveOrUpdate(form){
 		form: form,
 		success: function(data){
 			parent.layer.msg("操作成功");
-			parent.reLoad();
+			parent.getPage();
 			var index = window.parent.layer.getFrameIndex(window.name); // 获取窗口索引
 			window.parent.layer.close(index);
 		},
@@ -149,6 +149,9 @@ body{
 	border-radius: 15px;
 	outline: none;width:400px;padding-left:15px;
 }
+img {
+	cursor: pointer;
+}
 </style>
 <div class="content">
 	<div class="cLineB cLine-top" style="overflow: visible;">
@@ -207,9 +210,8 @@ body{
 							<tr> 
 								<th><span class="red">*</span>${field.comment}:</th> 
 								<td>
-									<select data-placeholder="--选择性别--" name="${field.propertyName}" id="${field.propertyName}"
+									<select name="${field.propertyName}" id="${field.propertyName}"
 										 class="frm_input" style="width:20%;" tabindex="2">
-										<option value="">-- 选择性别 --</option>
 										<option value="1">男</option>
 										<option value="0">女</option>
 									</select>
@@ -221,9 +223,8 @@ body{
 							<tr> 
 								<th><span class="red">*</span>${field.comment}:</th> 
 								<td>
-									<select data-placeholder="--选择性别--" name="${field.propertyName}" id="${field.propertyName}"
+									<select name="${field.propertyName}" id="${field.propertyName}"
 										 class="frm_input" style="width:20%;" tabindex="2">
-										<option value="">-- 选择性别 --</option>
 										<option value="1">男</option>
 										<option value="0">女</option>
 									</select>
@@ -235,9 +236,8 @@ body{
 							<tr> 
 								<th><span class="red">*</span>${field.comment}:</th> 
 								<td>
-									<select data-placeholder="--选择${field.comment}--" name="${field.propertyName}" id="${field.propertyName}"
+									<select name="${field.propertyName}" id="${field.propertyName}"
 										 class="frm_input" style="width:20%;" tabindex="2">
-										<option value="">--请选择${field.comment}--</option>
 										<option v-for="value,key in ${field.name}_map" :value="key">{{value}}</option>
 									</select>
 									&nbsp;&nbsp;&nbsp;
@@ -249,9 +249,8 @@ body{
 							<tr> 
 								<th><span class="red">*</span>${field.comment}:</th> 
 								<td>
-									<select  class="frm_input" style="width:20%;" #if($tableMapping.size() > 4&&$tableMapping.get(4)&&$tableMapping.get(4)!='')onchange="change#toheaduppercase(${tableMapping.get(4)})Map(this.value)"#end data-placeholder="--选择${field.comment}--" name="${field.propertyName}" id="${field.propertyName}"
+									<select  class="frm_input" style="width:20%;" #if($tableMapping.size() > 4&&$tableMapping.get(4)&&$tableMapping.get(4)!='')onchange="change#toheaduppercase(${tableMapping.get(4)})Map(this.value)"#end name="${field.propertyName}" id="${field.propertyName}"
 										 class="frm_input" style="width:20%;" tabindex="2">
-										<option value="">--选择${field.comment}--</option>
 										<option v-for="value,key in ${tableMapping.get(1)}Map" :value="key">{{value}}</option>
 									</select>
 									&nbsp;&nbsp;&nbsp;
@@ -277,7 +276,7 @@ body{
 							<tr> 
 								<th><span class="red">*</span>${field.comment}:</th> 
 								<td>
-									<input type="input" class="px sjxz" style="width:90px;height:25px;" name="${field.propertyName}" id="startdate" value="" onclick="WdatePicker()"/>
+									<input type="input" readonly class="px sjxz" style="width:90px;height:25px;" name="${field.propertyName}" id="startdate" value="" onclick="WdatePicker()"/>
 									&nbsp;&nbsp;&nbsp;
 									<span style="color: #999999;"></span>
 								</td> 
@@ -286,7 +285,7 @@ body{
 							<tr> 
 								<th><span class="red">*</span>${field.comment}:</th> 
 								<td>
-									<input type="input" class="px sjxz" style="width:90px;height:25px;" name="${field.propertyName}" id="startdate" value="" onclick="WdatePicker()"/>
+									<input type="input" readonly class="px sjxz" style="width:90px;height:25px;" name="${field.propertyName}" id="startdate" value="" onclick="WdatePicker()"/>
 									&nbsp;&nbsp;&nbsp;
 									<span style="color: #999999;"></span>
 								</td> 

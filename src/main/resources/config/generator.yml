@@ -141,7 +141,15 @@ webtemplates:
   - 
     tables: [club]
     template: huihaha/add.html
-    outpath: ${entity}/add1.html
+    outpath: ${entity}/add.html
+  - 
+    tables: [club]
+    template: huihaha/edit.html
+    outpath: ${entity}/edit.html
+  - 
+    tables: [club]
+    template: huihaha/list.html
+    outpath: ${entity}/list1.html
   - 
     tables: [user]
     template: include.html
