@@ -17,7 +17,7 @@ author: linking
 #controller uri前缀
 suffix.uri: /
 #html访问 uri前缀
-base.uri: /base/
+base.uri: /view/
 #基础包名  
 basePackage: com.huihaha.onlineorder
 #登录表名
@@ -88,68 +88,46 @@ conj.infor:
 #一个表可能有多个模板，所以这里面有多少个就要建多少个FileOutput
 webtemplates: 
 #  - 
-#    tables: [video]
-#    template: select${entity}List.jsp
-#    outpath: admin/select${entity}List.jsp
-#    exclude: video.play_num,video.comment_num,video.void_url
-#  - 
-#    tables: [video]
-#    template: viewAdd${entity}.jsp
-#    outpath: admin/viewAdd${entity}.jsp
-#    exclude: video.play_num,video.comment_num
-#  - 
-#    tables: [video]
-#    template: viewUpdate${entity}.jsp
-#    outpath: admin/viewUpdate${entity}.jsp
-#    exclude: video.play_num,video.comment_num
-#  - 
-#    tables: [user]
-#    template: login.jsp
-#    outpath: login.jsp
-#  - 
-#    tables: [category,categorysecond,img_url]
-#    template: select${entity}CategoryList.jsp
-#    outpath: admin/select${entity}CategoryList.jsp
-#    exclude: img_url.link
-
-#  - 
-#    tables: [agreement,authority,call_service,charge_record,club,coupon,coupon_card,coupon_record,dining_table,goods,goods_type,goods_unit,member,member_card,merch_application,order,order_item,pay_setting,print_setup,queue_up,user,ware_house,wh_change_recored,wh_goods]
+#    tables: [agreement]
 #    template: list.html
 #    icons: ["fa fa-calendar-plus-o","fa fa-user","fa fa-bandcamp","",""]
 #    outpath: ${entity}/list.html
 #    exclude: all.bz1,all.bz2
 #  - 
-#    tables: [agreement,authority,call_service,charge_record,club,coupon,coupon_card,coupon_record,dining_table,goods,goods_type,goods_unit,member,member_card,merch_application,order,order_item,pay_setting,print_setup,queue_up,user,ware_house,wh_change_recored,wh_goods]
+#    tables: [agreement,wh_goods]
 #    template: add.html
 #    outpath: ${entity}/add.html
 #    exclude: all.bz1,all.bz2
 #  - 
-#    tables: [agreement,authority,call_service,charge_record,club,coupon,coupon_card,coupon_record,dining_table,goods,goods_type,goods_unit,member,member_card,merch_application,order,order_item,pay_setting,print_setup,queue_up,user,ware_house,wh_change_recored,wh_goods]
+#    tables: [agreement,,wh_goods]
 #    template: edit.html
 #    outpath: ${entity}/edit.html
 #    exclude: all.bz1,all.bz2
 #  - 
-#    tables: [agreement,authority,call_service,charge_record,club,coupon,coupon_card,coupon_record,dining_table,goods,goods_type,goods_unit,member,member_card,merch_application,order,order_item,pay_setting,print_setup,queue_up,user,ware_house,wh_change_recored,wh_goods]
+#    tables: [agreement,wh_goods]
 #    template: edit_vertical.html
 #    outpath: ${entity}/edit_vertical.html
 #    exclude: all.bz1,all.bz2
 #  - 
-#    tables: [agreement,authority,call_service,charge_record,club,coupon,coupon_card,coupon_record,dining_table,goods,goods_type,goods_unit,member,member_card,merch_application,order,order_item,pay_setting,print_setup,queue_up,user,ware_house,wh_change_recored,wh_goods]
+#    tables: [agreement,wh_goods]
 #    template: add_vertical.html
 #    outpath: ${entity}/add_vertical.html
 #    exclude: all.bz1,all.bz2
   - 
-    tables: [club]
+    tables: [agreement,authority,call_service,charge_record,club,coupon,coupon_card,coupon_record,dining_table,goods,goods_type,goods_unit,member,member_card,merch_application,order,order_item,pay_setting,print_setup,queue_up,user,ware_house,wh_change_recored,wh_goods]
     template: huihaha/add.html
     outpath: ${entity}/add.html
+    exclude: all.bz1,all.bz2,all.user_id,all.add_time,all.create_time
   - 
-    tables: [club]
+    tables: [agreement,authority,call_service,charge_record,club,coupon,coupon_card,coupon_record,dining_table,goods,goods_type,goods_unit,member,member_card,merch_application,order,order_item,pay_setting,print_setup,queue_up,user,ware_house,wh_change_recored,wh_goods]
     template: huihaha/edit.html
     outpath: ${entity}/edit.html
+    exclude: all.bz1,all.bz2,all.user_id,all.add_time,all.create_time
   - 
-    tables: [club]
+    tables: [agreement,authority,call_service,charge_record,club,coupon,coupon_card,coupon_record,dining_table,goods,goods_type,goods_unit,member,member_card,merch_application,order,order_item,pay_setting,print_setup,queue_up,user,ware_house,wh_change_recored,wh_goods]
     template: huihaha/list.html
-    outpath: ${entity}/list1.html
+    outpath: ${entity}/list.html
+    exclude: all.bz1,all.bz2,all.user_id,all.add_time,all.create_time,club.logo_url,club.des,club.lo,club.la
   - 
     tables: [user]
     template: include.html

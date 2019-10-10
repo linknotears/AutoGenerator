@@ -70,7 +70,6 @@ $(function(){
 	loadEls = ['#mainData'];
 	//初始化数据
 	init();
-
 });
 
 function saveOrUpdate(form){
@@ -80,8 +79,8 @@ function saveOrUpdate(form){
 		success: function(data){
 			parent.layer.msg("操作成功");
 			parent.getPage();
-			var index = window.parent.layer.getFrameIndex(window.name); // 获取窗口索引
-			window.parent.layer.close(index);
+			var index = window.parent.parent.layer.getFrameIndex(window.name); // 获取窗口索引
+			window.parent.parent.layer.close(index);
 		},
 		multipart: true,
 		check: function(){return true;}
@@ -117,6 +116,11 @@ function change#toheaduppercase(${tableMapping.get(1)})Map($tableMapping.get(3))
 #end
 #end
 #end
+
+function iframeClose(){
+	var index = window.parent.parent.layer.getFrameIndex(window.name); // 获取窗口索引
+	window.parent.parent.layer.close(index);
+}
 </script>
 <style>
 body{
@@ -182,7 +186,7 @@ img {
                 </span> -->
             </a>
         </h4>
-        <a href="/" title="" class="top-a"><img src="/images/fanhui.png" class="">
+        <a href="javascript:iframeClose()" title="" class="top-a"><img src="/images/fanhui.png" class="">
             <text>返回</text>
         </a>
 		<div class="clr"></div>

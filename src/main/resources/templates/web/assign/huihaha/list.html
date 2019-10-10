@@ -28,13 +28,17 @@ define({
 	"${tableMapping.get(1)}Map": {},
 #end
 #end
-	"idName":idName
+	"idName":idName,
+	"keyword": ''
 });
 
 function getPage(page){
 	request({
 		url:"${cfg.suffixUri}#tolowercase($entity)/findPage",
-		data:{page: page || globalData.page.page || 1},
+		data:{
+			page: page || globalData.page.page || 1/* ,
+			customCondition: "name like %" + globalData.keyword + "%" */
+		},
 		prep: false,
 		success:function(data){
 			pageWrap(data);
@@ -69,7 +73,7 @@ $(function(){
 function add() {
 	layer.open({
 		type : 2,
-		title : '增加',
+		title : '添加',
 		maxmin : true,
 		shadeClose : false, // 点击遮罩关闭层
 		area : [ '800px', '520px' ],
@@ -137,7 +141,7 @@ body{
 
 <div class="content">
     <div class="cLineB cLine-top" style="overflow: visible;">
-        <h4 class="left top-name" style="font-size:20px;">${table.comment}门店管理
+        <h4 class="left top-name" style="font-size:20px;">${table.comment}管理
             <a target="999" class="tooltips">
                 <!-- <img src="/images/bangzhu.png" style="margin-top:-5px;margin-right:5px;height:15px;width:15px;" align="absmiddle">
                 <span>
@@ -164,10 +168,10 @@ body{
 			</a>
 		</div>
 		<span class="find">
-			<input type="text" class="px" name="keyword" value=""
+			<input type="text" class="px" v-model="keyword" value=""
 				   style="height:25px;width:150px;background: #f5f5f5;margin-left: 15px;outline:none; border:none;"
 				   placeholder="请输入关键词">
-			<input type="submit" class="btnGrayS btnGrayS1" value="">
+			<input type="submit" onclick="getPage(1)" class="btnGrayS btnGrayS1" value="">
 		</span>
 	</div>
 	
