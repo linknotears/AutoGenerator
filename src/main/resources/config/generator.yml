@@ -78,11 +78,11 @@ package.suffix.xml: mapper
 ## 使用方法一开始为一个数组，第一层为所需要连接的表（为主表），第二层是要连接的表，可以是多个，第三层是第二层要连接的表
 conj.infor: 
   - 
-    table: category
+    table: order
     innertables: #mybatis结果集是有顺序的，一对一的必须要写在前边
       - 
-        table: category_second
-        condition: category.cate_id = category_second.cate_id
+        table: order_item
+        condition: order.oid = order_item.oid
         relation: many
         conjtype: left
 #一个表可能有多个模板，所以这里面有多少个就要建多少个FileOutput
@@ -117,40 +117,68 @@ webtemplates:
     tables: [agreement,authority,call_service,charge_record,club,coupon,coupon_card,coupon_record,dining_table,goods,goods_type,goods_unit,member,member_card,merch_application,order,order_item,pay_setting,print_setup,queue_up,user,ware_house,wh_change_recored,wh_goods]
     template: huihaha/add.html
     outpath: ${entity}/add.html
-    exclude: all.bz1,all.bz2,all.user_id,all.add_time,all.create_time
+    exclude: all.bz1,all.bz2,all.user_id,all.add_time,all.create_time,wh_goods.whg_id
   - 
     tables: [agreement,authority,call_service,charge_record,club,coupon,coupon_card,coupon_record,dining_table,goods,goods_type,goods_unit,member,member_card,merch_application,order,order_item,pay_setting,print_setup,queue_up,user,ware_house,wh_change_recored,wh_goods]
     template: huihaha/edit.html
     outpath: ${entity}/edit.html
-    exclude: all.bz1,all.bz2,all.user_id,all.add_time,all.create_time
+    exclude: all.bz1,all.bz2,all.user_id,all.add_time,all.create_time,wh_goods.whg_id
   - 
     tables: [agreement,authority,call_service,charge_record,club,coupon,coupon_card,coupon_record,dining_table,goods,goods_type,goods_unit,member,member_card,merch_application,order,order_item,pay_setting,print_setup,queue_up,user,ware_house,wh_change_recored,wh_goods]
     template: huihaha/list.html
     outpath: ${entity}/list.html
-    exclude: all.bz1,all.bz2,all.user_id,all.add_time,all.create_time,club.logo_url,club.des,club.lo,club.la
+    exclude: all.bz1,all.bz2,all.user_id,all.add_time,all.create_time,club.logo_url,club.des,club.lo,club.la,goods.remark,goods.supplier,user.root,user.master,ware_house.addr_dtl,wh_goods.supplier,wh_goods.remark
   - 
     tables: [user]
     template: include.html
     outpath: include.html
-#指定文件类型（表名重复时不识别,加时间下划线自动创建）:{0:女,1:男}、img、sex、file、date、datetime、uuid、no
+#指定文件类型（表名重复时不识别,加时间下划线自动创建）:{0:女,1:男}、img、sex、file、date、datetime、uuid、dateNo、squNo
 propertyType: 
 #  uriPrefix:key:name:firstId(用于判断是否使用函数):secondId(用于判断初始化和change触发名)
   club:
-    name: img
+    club_id: dateNo
+    logo_url: img
     state: switch
-    wh_id: |-
-     {"1":"建辰","2":"陈建"}
-    user_id: |-
-     {"1":"建辰","2":"陈建"}
-  category: 
-    pic: img
-  category_second: 
-    cate_id: category:cateId:name
+    is_show: switch
+    wh_id: wareHouse:whId:name
   goods: 
-    goods_id: true
+    goods_id: dateNo
+    type_id: goodsType:typeId:name
     pic: img
-    cate_id: category:cateId:name::cateSecondId
-    cate_second_id: categorySecond:cateSecondId:name:cateId
+  merch_application:
+    sign_pic: img
+    bus_license_pic: img
+    card_type: |-
+      {"0":"身份证（限中国大陆居民）","1":"护照（限境外人士）"}
+    card_front: img
+    card_back: img
+    set_acc_type: |-
+      {"0":"对公账户","1":"法人账户"}
+  pay_setting: 
+    main_switch: switch
+    wxpay_switch: switch
+    alipay_switch: switch
+    integral_switch: switch
+    balance_switch: switch
   user: 
     username: true
-    icon: img
+    use_club_id: club:clubId:name
+  dining_table:
+    joint_no: diningTable:dtNo:dtNo
+    state: switch
+  queue_up:
+    qu_id: squNo
+  order: 
+    oid: dateNo
+    club_id: club:clubId:name
+    operate_time: _datetime
+  order_item:
+    item_id: uuid
+  wh_goods: 
+    whg_id: dateNo
+    wh_id: wareHouse:whId:name
+    type_id: goodsType:whId:name
+    pic: img
+  coupon_record: 
+    use_time: _datetime
+    
