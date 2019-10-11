@@ -127,7 +127,7 @@ webtemplates:
     tables: [agreement,authority,call_service,charge_record,club,coupon,coupon_card,coupon_record,dining_table,goods,goods_type,goods_unit,member,member_card,merch_application,order,order_item,pay_setting,print_setup,queue_up,user,ware_house,wh_change_recored,wh_goods]
     template: huihaha/list.html
     outpath: ${entity}/list.html
-    exclude: all.bz1,all.bz2,all.user_id,all.add_time,all.create_time,club.logo_url,club.des,club.lo,club.la,goods.remark,goods.supplier,user.root,user.master,ware_house.addr_dtl,wh_goods.supplier,wh_goods.remark
+    exclude: all.bz1,all.bz2,all.user_id,all.add_time,all.create_time,club.logo_url,club.des,club.lo,club.la,goods.remark,goods.supplier,user.root,user.master,ware_house.addr_dtl,wh_goods.supplier,wh_goods.remark,coupon.get_count,coupon.get_limit,coupon.start_date,coupon.end_date,coupon.direction,charge_record.mem_id
   - 
     tables: [user]
     template: include.html
@@ -179,6 +179,18 @@ propertyType:
     wh_id: wareHouse:whId:name
     type_id: goodsType:whId:name
     pic: img
+  coupon:
+    club_id: club:clubId:name
+    state: switch
+  coupon_card: 
+    card_id: dateNo
+    coupon_id: coupon:couponId:name
+    pay_type: |-
+      {"0":"APP核销","1":"后台核销"}
   coupon_record: 
+    cr_id: dateNo
     use_time: _datetime
-    
+    club_id: club:clubId:name
+    state: switch
+  charge_record: 
+    cr_id: dateNo
