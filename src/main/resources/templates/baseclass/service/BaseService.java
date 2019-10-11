@@ -34,5 +34,5 @@ List<T> findList(T condition);
 	
 	int updateByCondition(T entity, T condition);
 	
-	String selectMaxId();
+	String findMaxValue(String columnName);
 }

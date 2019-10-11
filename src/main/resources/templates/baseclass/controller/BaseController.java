@@ -33,6 +33,7 @@ public class BaseController {
         }
         return dateNo;
     }
+	
     public String getSquNo(String squNo,Integer preZeroCount){
         preZeroCount = preZeroCount != null? preZeroCount : 4;
         int squence = Integer.parseInt(squNo) + 1;
