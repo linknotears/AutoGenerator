@@ -74,7 +74,7 @@ public class ${table.controllerName} extends BaseController{
 	private ${table.serviceName} #tolowercase($entity)Service;
 
 	@RequestMapping("/saveOrUpdate")//更新不置空
-	public @ResponseBody ResultData saveOrUpdate(@RequestParam(value="id",required=false) #touppercase(${columnType}) id,${entity} #tolowercase($entity)#if($cfg.loginTable==$table.name),HttpSession session#end
+	public @ResponseBody synchronized ResultData saveOrUpdate(@RequestParam(value="id",required=false) #touppercase(${columnType}) id,${entity} #tolowercase($entity)#if($cfg.loginTable==$table.name),HttpSession session#end
 	#foreach($field in ${table.fields})
 	#set( $type = $cfg.propertyType.get($table.name).get($field.name))
 	#if( $type == 'file' || $type == 'img' || (!$type && ${field.propertyName.contains('img')}) )
@@ -114,7 +114,7 @@ public class ${table.controllerName} extends BaseController{
 				#tab([1..4])#tolowercase($entity).set#toheaduppercase(${field.propertyName})(this.getDateNo(maxValue,4));
 			#elseif( $type == 'squNo' )
 				String maxValue = #tolowercase($entity)Service.findMaxValue("${field.name}");
-				#tab([1..4])#tolowercase($entity).set#toheaduppercase(${field.propertyName})(this.squNo(maxValue,4));
+				#tab([1..4])#tolowercase($entity).set#toheaduppercase(${field.propertyName})(this.getSquNo(maxValue,4));
 			#end
 			#if(${field.propertyName} == 'createTime' || ${field.propertyName} == 'addTime')
 			if(id == null) {
