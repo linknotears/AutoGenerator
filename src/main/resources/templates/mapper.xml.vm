@@ -77,6 +77,12 @@ $cfg.conjInfoMap.get($table.name).get('conjQueryStr')
    	</where>
   </select>
   
+  <select id="selectMaxId" resultType="java.lang.String">
+  	select 
+   	Max(table.fields[0].name)
+   	from `${table.name}`
+  </select>
+  
   <select id="selectPage" resultMap="BaseResultMap" parameterType="${package.Entity}.vo.PageData">
   	select 
    	<include refid="Base_Column_List" />

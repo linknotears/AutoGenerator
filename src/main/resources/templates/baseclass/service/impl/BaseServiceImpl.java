@@ -37,6 +37,11 @@ public abstract class BaseServiceImpl<T> implements BaseService<T> {
 	}
 	
 	@Override
+	public int findMaxId() {
+		return baseMapper.selectMaxId();
+	}
+	
+	@Override
 	public T findById(Object id) {
 		return baseMapper.selectById(id);
 	}

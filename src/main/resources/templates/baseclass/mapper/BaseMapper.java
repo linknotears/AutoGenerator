@@ -35,4 +35,6 @@ public interface BaseMapper<T> {
 	int updateByPartId(@Param("id") Object id,@Param("entity") T entity);
 	
 	int updateByCondition(@Param("id") T entity, @Param("condition") T condition);
+	
+	String selectMaxId();
 }

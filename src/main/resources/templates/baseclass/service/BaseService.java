@@ -33,4 +33,6 @@ List<T> findList(T condition);
 	int saveOrUpdateByCheck(Object id,T entity);
 	
 	int updateByCondition(T entity, T condition);
+	
+	String selectMaxId();
 }
