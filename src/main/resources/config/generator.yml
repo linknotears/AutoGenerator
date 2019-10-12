@@ -14,7 +14,7 @@ OutputDirTemplates: D:/Project/*{project.name}/src/main/resources/views
 templatesPath: classes/templates
 #作者名
 author: linking
-#controller uri前缀
+#controller uri前缀 
 prefix.ctrl: /
 #html访问 uri前缀
 prefix.view: /view/
