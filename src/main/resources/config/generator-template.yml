@@ -132,17 +132,17 @@ webtemplates:
     tables: [user]
     template: include.html
     outpath: include.html
-#指定文件类型（表名重复时不识别,加时间下划线自动创建）:{0:女,1:男}、img、sex、file、date、datetime、uuid、dateNo、squNo
+#指定文件类型（表名重复时不识别,加时间下划线自动创建）:{0:女,1:男}、img、sex、file、(date、datetime-加_自动创建时间）、（_uuid、_dateNo、_squNo,包含双下滑先表示不可见不可加，一个下划线可见不可加）
 propertyType: 
 #  uriPrefix:key:name:firstId(用于判断是否使用函数):secondId(用于判断初始化和change触发名)
   club:
-    club_id: dateNo
+    club_id: _dateNo
     logo_url: img
     state: switch
     is_show: switch
     wh_id: wareHouse:whId:name
   goods: 
-    goods_id: dateNo
+    goods_id: _dateNo
     type_id: goodsType:typeId:name
     pic: img
   merch_application:
@@ -167,15 +167,15 @@ propertyType:
     joint_no: diningTable:dtNo:dtNo
     state: switch
   queue_up:
-    qu_id: squNo
+    qu_id: _squNo
   order: 
     oid: dateNo
     club_id: club:clubId:name
     operate_time: _datetime
   order_item:
-    item_id: uuid
+    item_id: __uuid
   wh_goods: 
-    whg_id: dateNo
+    whg_id: _dateNo
     wh_id: wareHouse:whId:name
     type_id: goodsType:whId:name
     pic: img
@@ -183,14 +183,14 @@ propertyType:
     club_id: club:clubId:name
     state: switch
   coupon_card: 
-    card_id: dateNo
+    card_id: _dateNo
     coupon_id: coupon:couponId:name
     pay_type: |-
       {"0":"APP核销","1":"后台核销"}
   coupon_record: 
-    cr_id: dateNo
+    cr_id: _dateNo
     use_time: _datetime
     club_id: club:clubId:name
     state: switch
   charge_record: 
-    cr_id: dateNo
+    cr_id: _dateNo
