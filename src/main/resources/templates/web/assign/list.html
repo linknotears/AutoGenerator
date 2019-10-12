@@ -49,7 +49,7 @@ var columns = [
 #if(!$cfg.colExclude.get($table.name).get($field.name))
 #set($type = $cfg.propertyType.get($table.name).get($field.name))
 ##判断
-#if(!${field.keyFlag} || ($type && !$type.contains('_')) )
+#if(!${field.keyFlag} || ($type && !$type.contains('__')) )
 ##参数类型
 #if($type == 'img' || ${field.propertyName.contains('img')})
 	{
