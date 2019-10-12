@@ -79,8 +79,8 @@ function saveOrUpdate(form){
 		success: function(data){
 			parent.layer.msg("操作成功");
 			parent.getPage();
-			var index = window.parent.parent.layer.getFrameIndex(window.name); // 获取窗口索引
-			window.parent.parent.layer.close(index);
+			var index = window.parent.layer.getFrameIndex(window.name); // 获取窗口索引
+			window.parent.layer.close(index);
 		},
 		multipart: true,
 		check: function(){return true;}
@@ -118,8 +118,8 @@ function change#toheaduppercase(${tableMapping.get(1)})Map($tableMapping.get(3))
 #end
 
 function iframeClose(){
-	var index = window.parent.parent.layer.getFrameIndex(window.name); // 获取窗口索引
-	window.parent.parent.layer.close(index);
+	var index = window.parent.layer.getFrameIndex(window.name); // 获取窗口索引
+	window.parent.layer.close(index);
 }
 </script>
 <style>
@@ -252,8 +252,8 @@ img {
 								<td>
 									<ul class="switch">
 										<li>
-											<input type="checkbox" id="radiohshhh" value="1" name="${field.propertyName}" onclick="onClickHander(this)" :checked="data.#tolowercase($entity).${field.propertyName} ==1"> 
-											<label for="radiohshhh"><em></em></label>
+											<input type="checkbox" id="${field.propertyName}" value="1" name="${field.propertyName}" onclick="onClickHander(this)" :checked="data.#tolowercase($entity).${field.propertyName} ==1"> 
+											<label for="${field.propertyName}"><em></em></label>
 										</li>
 									</ul>
 									&nbsp;&nbsp;&nbsp;

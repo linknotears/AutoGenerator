@@ -1,4 +1,4 @@
-package com.linkey.controller;
+package ${package.Controller};
 
 import javax.servlet.http.HttpSession;
 
