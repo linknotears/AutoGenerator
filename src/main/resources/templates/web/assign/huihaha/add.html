@@ -46,7 +46,7 @@ $(function(){
 #set($tableMapping = $type.split(':'))
 #if($tableMapping.size() < 4 || !$tableMapping.get(3) || $tableMapping.get(3)=='')
 		{
-			url:"${cfg.suffixUri}${tableMapping.get(0)}/findList",
+			url:"${cfg.prefixCtrl}${tableMapping.get(0)}/findList",
 			success:function(data){
 				globalData.${tableMapping.get(1)}Map = objArrToMap(data.${tableMapping.get(0)}s,"${tableMapping.get(1)}","${tableMapping.get(2)}");
 			}
@@ -64,7 +64,7 @@ $(function(){
 
 function saveOrUpdate(form){
 	return request({
-		url: "${cfg.suffixUri}#tolowercase($entity)/saveOrUpdate",
+		url: "${cfg.prefixCtrl}#tolowercase($entity)/saveOrUpdate",
 		form: form,
 		success: function(data){
 			parent.layer.msg("操作成功");

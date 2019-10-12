@@ -4,6 +4,18 @@
 <head th:include="include :: header"></head>
 ## 首字母小写
 #macro(tolowercase $str)$str.substring(0,1).toLowerCase()$str.substring(1)#end
+##找出第一个id
+#foreach($field in ${table.fields})
+#if(!${field.keyFlag})
+#set( $propId = $field.propertyName )
+#set( $colId = $field.name )
+#break
+#end
+#end
+#if(!$colId)
+#set( $propId = $table.fields[0].propertyName )
+#set( $colId = $table.fields[0].name )
+#end
 <script type="text/javascript">
 //加载url中的映射
 loadUrls =[
@@ -14,7 +26,7 @@ loadUrls =[
 #if(!$type.contains('{') && $type.contains(':'))
 #set($tableMapping = $type.split(':'))
 	{
-		url:"${cfg.suffixUri}${tableMapping.get(0)}/findList",
+		url:"${cfg.prefixCtrl}${tableMapping.get(0)}/findList",
 		success:function(data){
 			window.${tableMapping.get(1)}Map = objArrToMap(data.${tableMapping.get(0)}s,"${tableMapping.get(1)}","${tableMapping.get(2)}");
 		}
@@ -25,9 +37,9 @@ loadUrls =[
 //初始化数据
 init();
 
-var prefix = "${cfg.suffixUri}#tolowercase(${entity})/";
-var htmlPrefix = "${cfg.baseUri}#tolowercase(${entity})/";
-var idName =#foreach($field in ${table.fields})#if(${field.keyFlag})'${field.propertyName}'#break#end#end;
+var prefix = "${cfg.prefixCtrl}#tolowercase(${entity})/";
+var htmlPrefix = "${cfg.prefixView}#tolowercase(${entity})/";
+var idName = ${propId};
 var columns = [
 	{
 		checkbox : true
@@ -35,10 +47,10 @@ var columns = [
 #foreach($field in ${table.fields})
 ##判断排除字段
 #if(!$cfg.colExclude.get($table.name).get($field.name))
+#set($type = $cfg.propertyType.get($table.name).get($field.name))
 ##判断
-#if(!${field.keyFlag} || $cfg.propertyType.get($table.name).get($field.name))
+#if(!${field.keyFlag} || $type)
 ##参数类型
-#set( $type = $cfg.propertyType.get($table.name).get($field.name) )
 #if($type == 'img' || ${field.propertyName.contains('img')})
 	{
 		field : '${field.propertyName}',

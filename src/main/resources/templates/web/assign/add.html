@@ -8,6 +8,18 @@
 #macro(touppercase $str)$str.substring(0,1)$str.substring(1).toLowerCase()#end
 ## 首字母大写
 #macro(toheaduppercase $str)$str.substring(0,1).toUpperCase()$str.substring(1)#end
+##找出第一个id
+#foreach($field in ${table.fields})
+#if(!${field.keyFlag})
+#set( $propId = $field.propertyName )
+#set( $colId = $field.name )
+#break
+#end
+#end
+#if(!$colId)
+#set( $propId = $table.fields[0].propertyName )
+#set( $colId = $table.fields[0].name )
+#end
 <style>
 .form-horizontal .form-group {
 	margin-left: 0;
@@ -15,7 +27,7 @@
 }
 </style>
 <script type="text/javascript">
-var idName =#foreach($field in ${table.fields})#if(${field.keyFlag})'${field.propertyName}'#break#end#end;
+var idName = ${propId};
 define({
 ##判断select引用类型
 #foreach($field in ${table.fields})
@@ -41,7 +53,7 @@ $(function(){
 #set($tableMapping = $type.split(':'))
 #if($tableMapping.size() < 4 || !$tableMapping.get(3) || $tableMapping.get(3)=='')
 		{
-			url:"${cfg.suffixUri}${tableMapping.get(0)}/findList",
+			url:"${cfg.prefixCtrl}${tableMapping.get(0)}/findList",
 			success:function(data){
 				globalData.${tableMapping.get(1)}Map = objArrToMap(data.${tableMapping.get(0)}s,"${tableMapping.get(1)}","${tableMapping.get(2)}");
 			}
@@ -59,7 +71,7 @@ $(function(){
 
 function saveOrUpdate(form){
 	return request({
-		url: "${cfg.suffixUri}#tolowercase($entity)/saveOrUpdate",
+		url: "${cfg.prefixCtrl}#tolowercase($entity)/saveOrUpdate",
 		form: form,
 		success: function(data){
 			parent.layer.msg("操作成功");

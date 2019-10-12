@@ -13,8 +13,8 @@
 ## 首字母小写
 #macro(tolowercase $str)$str.substring(0,1).toLowerCase()$str.substring(1)#end
 <script type="text/javascript">
-var prefix = "${cfg.suffixUri}#tolowercase(${entity})/";
-var htmlPrefix = "${cfg.baseUri}#tolowercase(${entity})/";
+var prefix = "${cfg.prefixCtrl}#tolowercase(${entity})/";
+var htmlPrefix = "${cfg.prefixView}#tolowercase(${entity})/";
 var idName =#foreach($field in ${table.fields})#if(${field.keyFlag})'${field.propertyName}'#break#end#end;
 define({
 ##判断select引用类型
@@ -34,7 +34,7 @@ define({
 
 function getPage(page){
 	request({
-		url:"${cfg.suffixUri}#tolowercase($entity)/findPage",
+		url:"${cfg.prefixCtrl}#tolowercase($entity)/findPage",
 		data:{
 			page: page || globalData.page.page || 1/* ,
 			customCondition: "name like %" + globalData.keyword + "%" */
@@ -55,7 +55,7 @@ loadUrls =[
 #if(!$type.contains('{') && $type.contains(':'))
 #set($tableMapping = $type.split(':'))
 	{
-		url:"${cfg.suffixUri}${tableMapping.get(0)}/findList",
+		url:"${cfg.prefixCtrl}${tableMapping.get(0)}/findList",
 		success:function(data){
 			window.${tableMapping.get(1)}Map = objArrToMap(data.${tableMapping.get(0)}s,"${tableMapping.get(1)}","${tableMapping.get(2)}");
 		}

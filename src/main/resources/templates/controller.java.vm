@@ -61,6 +61,18 @@ import ${package.Service}.${table.serviceName};
 #macro(tab $countArr)#foreach($i in $countArr)	#end#end
 ## 宏的参数有数据类型区别
 #set( $columnType = ${table.fields[0].columnType.toString()})
+##找出第一个id
+#foreach($field in ${table.fields})
+#if(!${field.keyFlag})
+#set( $propId = $field.propertyName )
+#set( $colId = $field.name )
+#break
+#end
+#end
+#if(!$colId)
+#set( $propId = $table.fields[0].propertyName )
+#set( $colId = $table.fields[0].name )
+#end
 /**
  * $!{table.comment} 控制器
  *
@@ -68,7 +80,7 @@ import ${package.Service}.${table.serviceName};
  * @since ${date}
  */
 @Controller("${package.Controller}.${table.controllerName}")
-@RequestMapping("${cfg.suffixUri}#tolowercase($entity)")
+@RequestMapping("${cfg.prefixCtrl}#tolowercase($entity)")
 public class ${table.controllerName} extends BaseController{
 	@Autowired
 	private ${table.serviceName} #tolowercase($entity)Service;
@@ -140,7 +152,7 @@ public class ${table.controllerName} extends BaseController{
 		#end
 		resultData
 		.setData("count", i)
-		.setData("id",#tolowercase($entity).get#toheaduppercase(${table.fields[0].propertyName})());;
+		.setData("id",#tolowercase($entity).get#toheaduppercase(${colId})());;
 		return resultData;
 	}
 	

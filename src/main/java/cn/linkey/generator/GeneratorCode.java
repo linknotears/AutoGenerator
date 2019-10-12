@@ -402,6 +402,9 @@ public class GeneratorCode {
 							colExcludeMap.forEach(new BiConsumer<String,List<String>>(){
 								@Override
 								public void accept(String key, List<String> value) {
+									//处理模板文件名
+									String[] keys = key.split("/");
+									key = keys[keys.length - 1];
 									if(fileName.matches(key)){
 										Map<String,Map<String,Boolean>> colExcludeMap = new HashMap<String,Map<String,Boolean>>();
 										value.forEach(colStr ->{
@@ -413,7 +416,6 @@ public class GeneratorCode {
 												colMap = new HashMap<String,Boolean>();
 												colExcludeMap.put(tableAndCol[0], colMap);
 											}
-
 											colMap.put(tableAndCol[1], true);
 										});
 										//注入排除信息

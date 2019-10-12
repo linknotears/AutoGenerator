@@ -9,7 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Controller("${package.Controller}.BaseController")
-@RequestMapping("${cfg.suffixUri}base")
+@RequestMapping("/base")
 public class BaseController {
 	@Autowired
 	protected ServletContext servletContext;

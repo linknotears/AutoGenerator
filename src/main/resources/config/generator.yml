@@ -15,9 +15,9 @@ templatesPath: classes/templates
 #作者名
 author: linking
 #controller uri前缀
-suffix.uri: /
+prefix.ctrl: /
 #html访问 uri前缀
-base.uri: /view/
+prefix.view: /view/
 #基础包名  
 basePackage: com.huihaha.onlineorder
 #登录表名

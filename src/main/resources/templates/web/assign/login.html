@@ -22,7 +22,7 @@
 <script type="text/javascript">
 	function login(form){
 		return request({
-			url: "${cfg.suffixUri}#tolowercase($entity)/login",
+			url: "${cfg.prefixCtrl}#tolowercase($entity)/login",
 			form: form,
 			success:function(data){
 				window.reload();
@@ -162,7 +162,7 @@
 									<script type="text/javascript">
 										function register(){
 											return request({
-												url: "${cfg.suffixUri}#tolowercase($entity)/regist",
+												url: "${cfg.prefixCtrl}#tolowercase($entity)/regist",
 												form: "registId",
 												success: function(data){
 													alert('注册成功！');

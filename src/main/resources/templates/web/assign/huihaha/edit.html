@@ -39,7 +39,7 @@ $(function(){
 	//加载data
 	loadUrls =[
 		{
-			url:"${cfg.suffixUri}#tolowercase($entity)/findById",
+			url:"${cfg.prefixCtrl}#tolowercase($entity)/findById",
 			data:{
 				'id':getParameter("id")
 			},
@@ -54,7 +54,7 @@ $(function(){
 #if($tableMapping.size() < 4 || !$tableMapping.get(3) || $tableMapping.get(3)=='')
 		,
 		{
-			url:"${cfg.suffixUri}${tableMapping.get(0)}/findList",
+			url:"${cfg.prefixCtrl}${tableMapping.get(0)}/findList",
 			success:function(data){
 				globalData.${tableMapping.get(1)}Map = objArrToMap(data.${tableMapping.get(0)}s,"${tableMapping.get(1)}","${tableMapping.get(2)}");
 #if($tableMapping.size() > 4 && ${tableMapping.get(4)})
@@ -74,7 +74,7 @@ $(function(){
 
 function saveOrUpdate(form){
 	return request({
-		url: "${cfg.suffixUri}#tolowercase($entity)/saveOrUpdate",
+		url: "${cfg.prefixCtrl}#tolowercase($entity)/saveOrUpdate",
 		form: form,
 		success: function(data){
 			parent.layer.msg("操作成功");
@@ -170,7 +170,7 @@ img {
 </style>
 <div class="content">
 	<div class="cLineB cLine-top" style="overflow: visible;">
-		<h4 class="left top-name" style="font-size: 20px;">编辑添加${table.comment}
+		<h4 class="left top-name" style="font-size: 20px;">编辑${table.comment}
             <a target="999" class="tooltips">
                 <!-- <img src="/images/bangzhu.png" style="margin-top:-5px;margin-right:5px;height:15px;width:15px;" align="absmiddle">
                 <span>
