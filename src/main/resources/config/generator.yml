@@ -6,7 +6,7 @@ project.name: online-order-web
 OutputDir: D:/Project/*{project.name}/src/main/java
 #配置文件路径
 OutputDirConfig: D:/Project/*{project.name}/src/main/resources/
-#静态资源路径
+#静态资源路径 
 OutputDirStatic: D:/Project/*{project.name}/src/main/resources/static
 #templatesDir D:/Project/guyueconsole-master/src/main/webapp/WEB-INF/views
 OutputDirTemplates: D:/Project/*{project.name}/src/main/resources/views
