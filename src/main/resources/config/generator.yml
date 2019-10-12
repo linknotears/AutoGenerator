@@ -11,7 +11,7 @@ OutputDirStatic: D:/Project/*{project.name}/src/main/resources/static
 #templatesDir D:/Project/guyueconsole-master/src/main/webapp/WEB-INF/views
 OutputDirTemplates: D:/Project/*{project.name}/src/main/resources/views
 #templatesPath
-templatesPath: classes/templates
+templatesPath: classes/templates 
 #作者名
 author: linking
 #controller uri前缀 
