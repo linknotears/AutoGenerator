@@ -185,7 +185,7 @@ body{
 ##参数类型
 #set( $type = $cfg.propertyType.get($table.name).get($field.name) )
 ##判断
-#if(!${field.keyFlag} || $type)
+#if(!${field.keyFlag} || ($type && !$type.contains('_')) )
 				<th style="text-align:center">${field.comment}</th>				
 #end
 #end

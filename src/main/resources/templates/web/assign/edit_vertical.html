@@ -144,12 +144,10 @@ function change#toheaduppercase(${tableMapping.get(1)})Map($tableMapping.get(3))
 #foreach($field in ${table.fields})
 ##判断排除字段
 #if(!$cfg.colExclude.get($table.name).get($field.name))
-##判断
-#if(!${field.keyFlag} || $cfg.propertyType.get($table.name).get($field.name))
-								
 ##参数类型
 #set( $type = $cfg.propertyType.get($table.name).get($field.name) )
-								
+##判断
+#if( !${field.keyFlag} || ($type && !$type.contains('_')) )
 ##手动识别
 #if($type == 'img' || ${field.propertyName.contains('img')})
 							<div class="row"  style="display: flex;align-items:center;">

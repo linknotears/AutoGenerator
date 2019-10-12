@@ -15,9 +15,9 @@ templatesPath: classes/templates
 #作者名
 author: linking
 #controller uri前缀
-suffix.uri: /
+prefix.ctrl: /
 #html访问 uri前缀
-base.uri: /base/admin/
+prefix.view: /view/
 #基础包名  
 basePackage: com.huihaha.onlineorder
 #登录表名
@@ -28,8 +28,8 @@ login.pwdcolumn: password
 tables: 
 #是否初始化（生成拷贝文件）只生成baseclass、xml、和各层的文件
 createWebtemplates: !!str true
-createConfig: !!str true
-createNotAnalyze: !!str true
+createConfig: !!str false
+createNotAnalyze: !!str false
 createAnalyze: !!str true
 createGeneratorConfig: !!str true
 #是否覆盖文件（（xml）和entity、mapper或其他拷贝文件除外）
@@ -37,7 +37,7 @@ isOverFile: !!str false
 
 #jdbc配置
 jdbc.driver: com.mysql.cj.jdbc.Driver
-jdbc.url: jdbc:mysql://wx.j66c.com:3306/test?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=CONVERT_TO_NULL
+jdbc.url: jdbc:mysql://wx.j66c.com:3306/huihaha?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=CONVERT_TO_NULL
 jdbc.user: root
 jdbc.pwd: wwwj66ccom
 #5.0的时候会更改配置
@@ -49,6 +49,7 @@ package.suffix.service: service
 package.suffix.serviceImpl: service.impl
 package.suffix.controller: controller
 package.suffix.xml: mapper
+
 #数组默认生成的是ArrayList
 #使用说明
 # 使用方法一开始为一个数组，第一层为所需要连接的表（为主表），第二层是要连接的表，可以是多个，第三层是第二层要连接的表
@@ -77,92 +78,119 @@ package.suffix.xml: mapper
 ## 使用方法一开始为一个数组，第一层为所需要连接的表（为主表），第二层是要连接的表，可以是多个，第三层是第二层要连接的表
 conj.infor: 
   - 
-    table: category
+    table: order
     innertables: #mybatis结果集是有顺序的，一对一的必须要写在前边
       - 
-        table: category_second
-        condition: category.cate_id = category_second.cate_id
+        table: order_item
+        condition: order.oid = order_item.oid
         relation: many
         conjtype: left
 #一个表可能有多个模板，所以这里面有多少个就要建多少个FileOutput
 webtemplates: 
 #  - 
-#    tables: [video]
-#    template: select${entity}List.jsp
-#    outpath: admin/select${entity}List.jsp
-#    exclude: video.play_num,video.comment_num,video.void_url
+#    tables: [agreement]
+#    template: list.html
+#    icons: ["fa fa-calendar-plus-o","fa fa-user","fa fa-bandcamp","",""]
+#    outpath: ${entity}/list.html
+#    exclude: all.bz1,all.bz2
 #  - 
-#    tables: [video]
-#    template: viewAdd${entity}.jsp
-#    outpath: admin/viewAdd${entity}.jsp
-#    exclude: video.play_num,video.comment_num
+#    tables: [agreement,wh_goods]
+#    template: add.html
+#    outpath: ${entity}/add.html
+#    exclude: all.bz1,all.bz2
 #  - 
-#    tables: [video]
-#    template: viewUpdate${entity}.jsp
-#    outpath: admin/viewUpdate${entity}.jsp
-#    exclude: video.play_num,video.comment_num
+#    tables: [agreement,,wh_goods]
+#    template: edit.html
+#    outpath: ${entity}/edit.html
+#    exclude: all.bz1,all.bz2
 #  - 
-#    tables: [user]
-#    template: login.jsp
-#    outpath: login.jsp
+#    tables: [agreement,wh_goods]
+#    template: edit_vertical.html
+#    outpath: ${entity}/edit_vertical.html
+#    exclude: all.bz1,all.bz2
 #  - 
-#    tables: [category,categorysecond,img_url]
-#    template: select${entity}CategoryList.jsp
-#    outpath: admin/select${entity}CategoryList.jsp
-#    exclude: img_url.link
-
+#    tables: [agreement,wh_goods]
+#    template: add_vertical.html
+#    outpath: ${entity}/add_vertical.html
+#    exclude: all.bz1,all.bz2
   - 
-    tables: [goods,user,banner,category,category_second]
-    template: list.html
-    icons: ["fa fa-calendar-plus-o","fa fa-user","fa fa-bandcamp","",""]
-    outpath: admin/${entity}/list.html
-    exclude: all.bz1,all.bz2
+    tables: [agreement,authority,call_service,charge_record,club,coupon,coupon_card,coupon_record,dining_table,goods,goods_type,goods_unit,member,member_card,merch_application,order,order_item,pay_setting,print_setup,queue_up,user,ware_house,wh_change_recored,wh_goods]
+    template: huihaha/add.html
+    outpath: ${entity}/add.html
+    exclude: all.bz1,all.bz2,all.user_id,all.add_time,all.create_time,wh_goods.whg_id
   - 
-    tables: [goods,user,banner,category,category_second]
-    template: add.html
-    outpath: admin/${entity}/add.html
-    exclude: all.bz1,all.bz2
+    tables: [agreement,authority,call_service,charge_record,club,coupon,coupon_card,coupon_record,dining_table,goods,goods_type,goods_unit,member,member_card,merch_application,order,order_item,pay_setting,print_setup,queue_up,user,ware_house,wh_change_recored,wh_goods]
+    template: huihaha/edit.html
+    outpath: ${entity}/edit.html
+    exclude: all.bz1,all.bz2,all.user_id,all.add_time,all.create_time,wh_goods.whg_id
   - 
-    tables: [goods,user,banner,category,category_second]
-    template: edit.html
-    outpath: admin/${entity}/edit.html
-    exclude: all.bz1,all.bz2
-  - 
-    tables: [goods,user,banner,category,category_second]
-    template: edit_vertical.html
-    outpath: admin/${entity}/edit_vertical.html
-    exclude: all.bz1,all.bz2
-  - 
-    tables: [goods,user,banner,category,category_second]
-    template: add_vertical.html
-    outpath: admin/${entity}/add_vertical.html
-    exclude: all.bz1,all.bz2
-  - 
-    tables: [user]
-    template: login.html
-    outpath: admin/login.html
+    tables: [agreement,authority,call_service,charge_record,club,coupon,coupon_card,coupon_record,dining_table,goods,goods_type,goods_unit,member,member_card,merch_application,order,order_item,pay_setting,print_setup,queue_up,user,ware_house,wh_change_recored,wh_goods]
+    template: huihaha/list.html
+    outpath: ${entity}/list.html
+    exclude: all.bz1,all.bz2,all.user_id,all.add_time,all.create_time,club.logo_url,club.des,club.lo,club.la,goods.remark,goods.supplier,user.root,user.master,ware_house.addr_dtl,wh_goods.supplier,wh_goods.remark,coupon.get_count,coupon.get_limit,coupon.start_date,coupon.end_date,coupon.direction,charge_record.mem_id
   - 
     tables: [user]
     template: include.html
     outpath: include.html
-  - 
-    tables: [user]
-    template: index.html
-    outpath: index.html
-#指定文件类型（表名重复时不识别,加时间下划线自动创建）:{0:女,1:男}、img、sex、file、date、datetime、uuid、no
+#指定文件类型（表名重复时不识别,加时间下划线自动创建）:{0:女,1:男}、img、sex、file、date、datetime、uuid、dateNo、squNo
 propertyType: 
 #  uriPrefix:key:name:firstId(用于判断是否使用函数):secondId(用于判断初始化和change触发名)
-  banner:
-    pic: img
-  category: 
-    pic: img
-  category_second: 
-    cate_id: category:cateId:name
+  club:
+    club_id: dateNo
+    logo_url: img
+    state: switch
+    is_show: switch
+    wh_id: wareHouse:whId:name
   goods: 
-    goods_id: true
+    goods_id: dateNo
+    type_id: goodsType:typeId:name
     pic: img
-    cate_id: category:cateId:name::cateSecondId
-    cate_second_id: categorySecond:cateSecondId:name:cateId
+  merch_application:
+    sign_pic: img
+    bus_license_pic: img
+    card_type: |-
+      {"0":"身份证（限中国大陆居民）","1":"护照（限境外人士）"}
+    card_front: img
+    card_back: img
+    set_acc_type: |-
+      {"0":"对公账户","1":"法人账户"}
+  pay_setting: 
+    main_switch: switch
+    wxpay_switch: switch
+    alipay_switch: switch
+    integral_switch: switch
+    balance_switch: switch
   user: 
     username: true
-    icon: img
+    use_club_id: club:clubId:name
+  dining_table:
+    joint_no: diningTable:dtNo:dtNo
+    state: switch
+  queue_up:
+    qu_id: squNo
+  order: 
+    oid: dateNo
+    club_id: club:clubId:name
+    operate_time: _datetime
+  order_item:
+    item_id: uuid
+  wh_goods: 
+    whg_id: dateNo
+    wh_id: wareHouse:whId:name
+    type_id: goodsType:whId:name
+    pic: img
+  coupon:
+    club_id: club:clubId:name
+    state: switch
+  coupon_card: 
+    card_id: dateNo
+    coupon_id: coupon:couponId:name
+    pay_type: |-
+      {"0":"APP核销","1":"后台核销"}
+  coupon_record: 
+    cr_id: dateNo
+    use_time: _datetime
+    club_id: club:clubId:name
+    state: switch
+  charge_record: 
+    cr_id: dateNo

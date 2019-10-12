@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 #if($type == '_date' || $type == '_datetime' || $type == '_time')
 #set($isHaveDate = true)
 #end
-#if($type == 'uuid')
+#if($type == 'uuid' || $type == '_uuid')
 #set($isHaveUUID = true)
 #end
 ##自动识别
@@ -119,12 +119,12 @@ public class ${table.controllerName} extends BaseController{
 			if(id == null) {
 				#tab([1..4])#tolowercase($entity).set#toheaduppercase(${field.propertyName})(new Date());
 			}
-			#elseif( $type == 'uuid')
+			#elseif( $type == 'uuid' || $type == '_uuid' )
 				#tab([1..4])#tolowercase($entity).set#toheaduppercase(${field.propertyName})(UUID.randomUUID().toString().replace("-", ""));
-			#elseif( $type == 'dateNo' )
+			#elseif( $type == 'dateNo' || $type == '_dateNo' )
 				String maxValue = #tolowercase($entity)Service.findMaxValue("${field.name}");
 				#tab([1..4])#tolowercase($entity).set#toheaduppercase(${field.propertyName})(this.getDateNo(maxValue,4));
-			#elseif( $type == 'squNo' )
+			#elseif( $type == 'squNo' || $type == '_dateNo')
 				String maxValue = #tolowercase($entity)Service.findMaxValue("${field.name}");
 				#tab([1..4])#tolowercase($entity).set#toheaduppercase(${field.propertyName})(this.getSquNo(maxValue,4));
 			#end
