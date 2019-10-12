@@ -238,7 +238,7 @@ img {
 							<tr> 
 								<th><span class="red">*</span>${field.comment}:</th> 
 								<td>
-									<select  class="frm_input" style="width:20%;" #if($tableMapping.size() > 4&&$tableMapping.get(4)&&$tableMapping.get(4)!='')onchange="change#toheaduppercase(${tableMapping.get(4)})Map(this.value)"#end name="${field.propertyName}" id="${field.propertyName}"
+									<select #if($tableMapping.size() > 4&&$tableMapping.get(4)&&$tableMapping.get(4)!='')onchange="change#toheaduppercase(${tableMapping.get(4)})Map(this.value)"#end name="${field.propertyName}" id="${field.propertyName}"
 										 class="frm_input" style="width:20%;" tabindex="2">
 										<option v-for="value,key in ${tableMapping.get(1)}Map" :value="key" :selected="data.#tolowercase($entity).${field.propertyName} == key">{{value}}</option>
 									</select>
