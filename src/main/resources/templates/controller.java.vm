@@ -12,14 +12,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 #foreach($field in ${table.fields})
 #set($type = $cfg.propertyType.get($table.name).get($field.name))
+#set( $type = $type.replace("_","") )
 #if($type == 'file' || $type == 'img')
 #set($isHaveFile = true)
 #end
 ##判断手动设置类型
-#if($type == '_date' || $type == '_datetime' || $type == '_time')
+#if($type == 'date' || $type == 'datetime' || $type == 'time')
 #set($isHaveDate = true)
 #end
-#if($type == 'uuid' || $type == '_uuid')
+#if($type == 'uuid')
 #set($isHaveUUID = true)
 #end
 ##自动识别
@@ -89,6 +90,7 @@ public class ${table.controllerName} extends BaseController{
 	public @ResponseBody synchronized ResultData saveOrUpdate(@RequestParam(value="id",required=false) #touppercase(${columnType}) id,${entity} #tolowercase($entity)#if($cfg.loginTable==$table.name),HttpSession session#end
 	#foreach($field in ${table.fields})
 	#set( $type = $cfg.propertyType.get($table.name).get($field.name))
+	#set( $type = $type.replace("_","") )
 	#if( $type == 'file' || $type == 'img' || (!$type && ${field.propertyName.contains('img')}) )
 	,@RequestParam(value="${field.propertyName}File",required=false) MultipartFile ${field.propertyName}File
 	#end
@@ -115,18 +117,22 @@ public class ${table.controllerName} extends BaseController{
 					);
 				}
 			}
-			#elseif($type == '_date' || $type == '_datetime' || $type == '_time')
+			#elseif($type == 'date' || $type == 'datetime' || $type == 'time')
 			if(id == null) {
 				#tab([1..4])#tolowercase($entity).set#toheaduppercase(${field.propertyName})(new Date());
 			}
-			#elseif( $type == 'uuid' || $type == '_uuid' )
+			#elseif( $type == 'uuid')
 				#tab([1..4])#tolowercase($entity).set#toheaduppercase(${field.propertyName})(UUID.randomUUID().toString().replace("-", ""));
-			#elseif( $type == 'dateNo' || $type == '_dateNo' )
-				String maxValue = #tolowercase($entity)Service.findMaxValue("${field.name}");
-				#tab([1..4])#tolowercase($entity).set#toheaduppercase(${field.propertyName})(this.getDateNo(maxValue,4));
-			#elseif( $type == 'squNo' || $type == '_dateNo')
-				String maxValue = #tolowercase($entity)Service.findMaxValue("${field.name}");
-				#tab([1..4])#tolowercase($entity).set#toheaduppercase(${field.propertyName})(this.getSquNo(maxValue,4));
+			#elseif( $type == 'dateNo')
+			if(id==null){
+				String maxId = #tolowercase($entity)Service.findMaxValue("${field.name}");
+				#tab([1..4])#tolowercase($entity).set#toheaduppercase(${field.propertyName})(this.getDateNo(maxId,4));
+			}
+			#elseif( $type == 'squNo')
+			if(id==null){
+				String maxId = #tolowercase($entity)Service.findMaxValue("${field.name}");
+				#tab([1..4])#tolowercase($entity).set#toheaduppercase(${field.propertyName})(this.getSquNo(maxId,4));
+			}
 			#end
 			#if(${field.propertyName} == 'createTime' || ${field.propertyName} == 'addTime')
 			if(id == null) {
