@@ -169,7 +169,7 @@ propertyType:
   queue_up:
     qu_id: _squNo
   order: 
-    oid: dateNo
+    oid: _dateNo
     club_id: club:clubId:name
     operate_time: _datetime
   order_item:
@@ -177,7 +177,7 @@ propertyType:
   wh_goods: 
     whg_id: _dateNo
     wh_id: wareHouse:whId:name
-    type_id: goodsType:whId:name
+    type_id: goodsType:typeId:name
     pic: img
   coupon:
     club_id: club:clubId:name

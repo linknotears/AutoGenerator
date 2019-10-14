@@ -197,7 +197,7 @@ body{
 ##参数类型
 #set( $type = $cfg.propertyType.get($table.name).get($field.name) )
 ##判断
-#if(!${field.keyFlag} || !$type || !$type.contains('__') )
+#if( (!$type && !${field.keyFlag}) || ($type && !$type.contains('__')) )
 #set( $type = $type.replace("_","") )
 				<th style="text-align:center">${field.comment}</th>				
 #end

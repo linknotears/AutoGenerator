@@ -37,7 +37,10 @@ public class BaseController {
 	
     public String getSquNo(String squNo,Integer preZeroCount){
         preZeroCount = preZeroCount != null? preZeroCount : 4;
-        int squence = Integer.parseInt(squNo) + 1;
+        int squence = 1;
+        if(squNo!=null){
+            squence = Integer.parseInt(squNo) + 1;
+        }
         squNo = String.format("%0"+preZeroCount+"d",squence);
         return squNo;
     }
