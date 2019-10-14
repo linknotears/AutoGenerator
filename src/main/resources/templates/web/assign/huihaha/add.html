@@ -32,7 +32,7 @@
 </head>
 <body>
 <script type="text/javascript">
-var idName = ${propId};
+var idName = "${propId}";
 define({
 ##判断select引用类型
 #foreach($field in ${table.fields})
@@ -80,7 +80,7 @@ function saveOrUpdate(form){
 		form: form,
 		success: function(data){
 			parent.layer.msg("操作成功");
-			parent.getPage();
+			parent.frames["myframe"].getPage();
 			var index = window.parent.layer.getFrameIndex(window.name); // 获取窗口索引
 			window.parent.layer.close(index);
 		},

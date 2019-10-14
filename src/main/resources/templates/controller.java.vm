@@ -65,7 +65,7 @@ import ${package.Service}.${table.serviceName};
 #if(${field.keyFlag})
 #set( $propId = $field.propertyName )
 #set( $colId = $field.name )
-#set( $columnType = ${field.columnType.toString()})
+#set( $columnType = ${field.columnType.toString()} )
 #break
 #end
 #end

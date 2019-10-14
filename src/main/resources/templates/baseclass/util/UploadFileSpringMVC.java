@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import javax.servlet.ServletContext;
-
+import java.text.SimpleDateFormat;
 import org.springframework.web.multipart.MultipartFile;
 
 public class UploadFileSpringMVC {
@@ -24,7 +24,8 @@ public class UploadFileSpringMVC {
 				String suffix = imagename.substring(imagename.lastIndexOf("."));
 				String uuid = UUID.randomUUID().toString().replace("-", "");
 				String webPath = servletContext.getRealPath("/");
-				sqlPath = "/upload/" + outDir + "/" + uuid + "_" + (new Date().getTime()) + suffix;
+				SimpleDateFormat sf = new SimpleDateFormat("yyyyMMddHHmm");
+				sqlPath = "/upload/" + outDir + "/" + sf.format(new Date()) + uuid + suffix;
 				File newfile = new File(webPath+"/"+sqlPath);
 				//如果父目录不存在就创建
 				File parentFile = newfile.getParentFile();
