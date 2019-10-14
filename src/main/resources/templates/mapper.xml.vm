@@ -25,7 +25,7 @@
 #end
 ##找出第一个id
 #foreach($field in ${table.fields})
-#if(!${field.keyFlag})
+#if(${field.keyFlag})
 #set( $propId = $field.propertyName )
 #set( $colId = $field.name )
 #break
@@ -89,9 +89,9 @@ $cfg.conjInfoMap.get($table.name).get('conjQueryStr')
    	</where>
   </select>
   
-  <select id="selectMaxId" parameterType="java.lang.String" resultType="java.lang.String">
+  <select id="selectMaxValue" parameterType="java.lang.String" resultType="java.lang.String">
   	select 
-   	Max(#{columnName})
+   	Max(${columnName})
    	from `${table.name}`
   </select>
   

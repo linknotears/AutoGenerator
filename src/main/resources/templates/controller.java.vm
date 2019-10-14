@@ -60,17 +60,18 @@ import ${package.Service}.${table.serviceName};
 #macro(query)#if($cfg.conjInfoMap.get($table.name).get('resultStr'))conjQuery#else find#end#end
 ## 生成指定数目的制表符
 #macro(tab $countArr)#foreach($i in $countArr)	#end#end
-## 宏的参数有数据类型区别
-#set( $columnType = ${table.fields[0].columnType.toString()})
 ##找出第一个id
 #foreach($field in ${table.fields})
-#if(!${field.keyFlag})
+#if(${field.keyFlag})
 #set( $propId = $field.propertyName )
 #set( $colId = $field.name )
+#set( $columnType = ${field.columnType.toString()})
 #break
 #end
 #end
 #if(!$colId)
+## 宏的参数有数据类型区别
+#set( $columnType = ${table.fields[0].columnType.toString()})
 #set( $propId = $table.fields[0].propertyName )
 #set( $colId = $table.fields[0].name )
 #end
@@ -101,19 +102,22 @@ public class ${table.controllerName} extends BaseController{
 		try {
 			#foreach($field in ${table.fields})
 			#set( $type = $cfg.propertyType.get($table.name).get($field.name))
+			#set( $type = $type.replace("_","") )
 			#if( $type == 'img' || (!$type && ${field.propertyName.contains('img')}))
 			if(${field.propertyName}File != null){
 				if(!${field.propertyName}File.isEmpty()){
+					#tab([1..5])#touppercase(${columnType}) dirId = id != null? id : #tolowercase($entity).get#toheaduppercase(${propId})();
 					#tab([1..5])#tolowercase($entity).set#toheaduppercase(${field.propertyName})(
-						UploadFileSpringMVC.getUploadPath(${field.propertyName}File,"images/#tolowercase(${entity})/${field.propertyName}",#tolowercase($entity).get#toheaduppercase(${field.propertyName})(),servletContext)
+						UploadFileSpringMVC.getUploadPath(${field.propertyName}File,"images/#tolowercase(${entity})/${field.propertyName}/" + dirId,#tolowercase($entity).get#toheaduppercase(${field.propertyName})(),servletContext)
 					);
 				}
 			}
 			#elseif( $type == 'file' )
 			if(${field.propertyName}File != null){
 				if(!${field.propertyName}File.isEmpty()){
+					#tab([1..5])#touppercase(${columnType}) dirId = id != null? id : #tolowercase($entity).get#toheaduppercase(${propId})();
 					#tab([1..5])#tolowercase($entity).set#toheaduppercase(${field.propertyName})(
-						UploadFileSpringMVC.getUploadPath(${field.propertyName}File,"files/#tolowercase(${entity})/${field.propertyName}",#tolowercase($entity).get#toheaduppercase(${field.propertyName})(),servletContext)
+						UploadFileSpringMVC.getUploadPath(${field.propertyName}File,"files/#tolowercase(${entity})/${field.propertyName}/" + dirId,#tolowercase($entity).get#toheaduppercase(${field.propertyName})(),servletContext)
 					);
 				}
 			}
@@ -122,14 +126,16 @@ public class ${table.controllerName} extends BaseController{
 				#tab([1..4])#tolowercase($entity).set#toheaduppercase(${field.propertyName})(new Date());
 			}
 			#elseif( $type == 'uuid')
+			if(id == null){
 				#tab([1..4])#tolowercase($entity).set#toheaduppercase(${field.propertyName})(UUID.randomUUID().toString().replace("-", ""));
+			}
 			#elseif( $type == 'dateNo')
-			if(id==null){
+			if(id == null){
 				String maxId = #tolowercase($entity)Service.findMaxValue("${field.name}");
 				#tab([1..4])#tolowercase($entity).set#toheaduppercase(${field.propertyName})(this.getDateNo(maxId,4));
 			}
 			#elseif( $type == 'squNo')
-			if(id==null){
+			if(id == null){
 				String maxId = #tolowercase($entity)Service.findMaxValue("${field.name}");
 				#tab([1..4])#tolowercase($entity).set#toheaduppercase(${field.propertyName})(this.getSquNo(maxId,4));
 			}
@@ -158,7 +164,7 @@ public class ${table.controllerName} extends BaseController{
 		#end
 		resultData
 		.setData("count", i)
-		.setData("id",#tolowercase($entity).get#toheaduppercase(${colId})());;
+		.setData("id",#tolowercase($entity).get#toheaduppercase(${propId})());;
 		return resultData;
 	}
 	

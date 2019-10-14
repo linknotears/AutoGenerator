@@ -12,10 +12,22 @@
 <script src="/js/plugins/layer/layer.js"></script>
 ## 首字母小写
 #macro(tolowercase $str)$str.substring(0,1).toLowerCase()$str.substring(1)#end
+##找出第一个id
+#foreach($field in ${table.fields})
+#if(${field.keyFlag})
+#set( $propId = $field.propertyName )
+#set( $colId = $field.name )
+#break
+#end
+#end
+#if(!$colId)
+#set( $propId = $table.fields[0].propertyName )
+#set( $colId = $table.fields[0].name )
+#end
 <script type="text/javascript">
 var prefix = "${cfg.prefixCtrl}#tolowercase(${entity})/";
 var htmlPrefix = "${cfg.prefixView}#tolowercase(${entity})/";
-var idName =#foreach($field in ${table.fields})#if(${field.keyFlag})'${field.propertyName}'#break#end#end;
+var idName = ${propId};
 define({
 ##判断select引用类型
 #foreach($field in ${table.fields})
@@ -103,10 +115,10 @@ function remove(id) {
 			success : function(data) {
 				if(data.count > 0){
 					layer.msg("删除成功！");
-					reLoad();
+					getPage();
 				}else{
 					layer.msg("所选数据已被删除！");
-					reLoad();
+					getPage();
 				}
 			}
 		});
