@@ -25,7 +25,7 @@
 			url: "${cfg.prefixCtrl}#tolowercase($entity)/login",
 			form: form,
 			success:function(data){
-				window.reload();
+				window.location.href = '/';
 			},
 			multipart: false,
 			check: function(){return true;}

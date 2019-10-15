@@ -48,6 +48,11 @@ public class ViewController {
         return "login";
     }
 
+    @RequestMapping("/register")
+    public String register(String param) throws Exception{
+        return "register";
+    }
+    
     @RequestMapping("/admin")
     public String adminIndex(String param) throws Exception{
         return "redirect:/${cfg.loginTable}/index";
@@ -58,9 +63,14 @@ public class ViewController {
         return "admin/login";
     }
     
+    @RequestMapping("/admin/register")
+    public String adminRegister(String param) throws Exception{
+        return "admin/register";
+    }
+    
     @RequestMapping("/logout")
     public String logout(HttpSession session) throws Exception{
     	session.invalidate();
-        return "redirect:/${cfg.loginTable}/index";
+        return "redirect:/";
     }
 }

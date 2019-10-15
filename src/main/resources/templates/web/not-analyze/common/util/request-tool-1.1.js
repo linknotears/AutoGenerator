@@ -66,6 +66,7 @@
 		this.data = config.data;
 		this.form = config.form;
 		this.success = config.success;
+		this.error = config.error;
 		this.multipart = config.multipart;
 		this.check = config.check;
 		this.prep = config.prep==undefined? true : config.prep;//preprocess是否预处理
@@ -138,13 +139,22 @@
 					_this.success(result.data);
 				}else if(result.message != null && result.message != undefined){
 					alert(result.message);
+					if(_this.error){
+						_this.error(result);
+					}
 				}else{
 					alert("访问服务器时出现异常！");
+					if(_this.error){
+						_this.error(result);
+					}
 				}
 			},
 			traditional: true,
 			error:function(){
 				alert("请求服务器失败!");
+				if(_this.error){
+					_this.error(result);
+				}
  			}
 		});
 		//删除刚提交使用的临时input标签
