@@ -25,6 +25,13 @@
 #set( $colId = $table.fields[0].name )
 #end
 <script type="text/javascript">
+var url = window.location.href;
+var i = url.lastIndexOf("/");
+uri = url.substring(i,url.length);
+if(uri=="/login"){
+	parent.window.location.href = "/login"
+}
+
 var prefix = "${cfg.prefixCtrl}#tolowercase(${entity})/";
 var htmlPrefix = "${cfg.prefixView}#tolowercase(${entity})/";
 var idName = "${propId}";
