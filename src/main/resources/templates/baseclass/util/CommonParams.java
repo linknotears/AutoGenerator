@@ -5,9 +5,9 @@ public class CommonParams {
     static{
         String os = System.getProperty("os.name");
         if(os.toLowerCase().startsWith("win")){
-            IMG_PATH = "D:/WebUpload";
+            IMG_PATH = "D:/WebUpload/";
         }else{
-            IMG_PATH = "/root/web_upload";
+            IMG_PATH = "/root/web_upload/";
         }
 
     }

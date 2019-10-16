@@ -14,7 +14,7 @@ public class MvcConfig extends WebMvcConfigurationSupport {
                 .addResourceLocations("classpath:/resources/")
                 .addResourceLocations("classpath:/static/")
                 .addResourceLocations("classpath:/public/")
-                .addResourceLocations(CommonParams.IMG_PATH);
+                .addResourceLocations("file:" + CommonParams.IMG_PATH);
         super.addResourceHandlers(registry);
     }
 }
