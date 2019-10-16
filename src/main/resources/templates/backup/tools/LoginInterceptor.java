@@ -22,10 +22,10 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
         System.out.println( "uri=" + uri + ",user=" + user );
         log.info("<<<<<<<<开始拦截>>>>>>>>");
         if(user!=null) {
-            Object userId = session.getAttribute("username");
-            Object root = session.getAttribute("root");
-            Object useClubId = session.getAttribute("useClubId");
-            if("1".equals(root)){
+            Object userId = user.getUsername();
+            Object root = user.getRoot();
+            Object useClubId = user.getUseClubId();
+            if("1".equals(root+"")){
                 request.setAttribute("userId",userId);
             }else{
                 Object master = session.getAttribute("master");
@@ -33,7 +33,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
             }
             request.setAttribute("useClubId",useClubId);
         }else {
-            response.setStatus(response.SC_MOVED_PERMANENTLY);
+            response.setStatus(response.SC_MOVED_TEMPORARILY);
             response.setHeader("Location", "/login");
             flag = false;
         }
