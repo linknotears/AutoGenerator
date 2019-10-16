@@ -9,7 +9,7 @@ import org.springframework.core.convert.converter.Converter;
 public class DatetimeConverter  implements Converter<String, Date> {
 	@Override    
 	public Date convert(String source) {    
-	    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm");
+	    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm");
 	    dateFormat.setLenient(true);    
 	    try {    
 	        return dateFormat.parse(source);
