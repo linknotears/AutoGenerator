@@ -185,12 +185,12 @@ propertyType:
   coupon_card: 
     card_id: _dateNo
     coupon_id: coupon:couponId:name
-    pay_type: |-
-      {"0":"APP核销","1":"后台核销"}
   coupon_record: 
     cr_id: _dateNo
     use_time: _datetime
     club_id: club:clubId:name
     state: switch
+    pay_type: |-
+      {"0":"APP核销","1":"后台核销"}
   charge_record: 
     cr_id: _dateNo
