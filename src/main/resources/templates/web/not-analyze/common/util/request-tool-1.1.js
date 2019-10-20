@@ -48,6 +48,69 @@
 		init();
 	});
 	*/
+	var deferObj = {
+		squNo: 0,
+		deferreds: [],
+		current: null,
+		getCurrent: function(){
+			console.log("this.squNo="+ this.squNo);
+			this.current = this.deferreds[this.squNo] || null;
+			return this.current;
+		},
+		next: function(){
+			this.current = this.deferreds[this.squNo] || null;
+			let next = null;
+			if(this.current){
+				this.squNo++;
+				next = this.deferreds[this.squNo] || null;
+			}
+			return next;
+		},
+		previous: function(){
+			this.current = this.deferreds[this.squNo-1] || null;
+			if(this.current){
+				this.squNo--;
+			}
+			return this.current;
+		},
+		add: function(deferred){
+			this.deferreds.push(deferred);
+		},
+		/*getFirst: function(){
+			if(!this.first){
+				this.first = $.Deferred();
+			}
+			return this.first;
+		},*/
+		done: function(call){
+			let index = this.deferreds.length-1;
+			this.deferreds[index].call = call;
+		},
+		clear: function(){
+			this.deferreds = []
+			this.squNo = 0;
+			this.current = null;
+		},
+		start: function(){
+			console.log("this.deferreds.length="+this.deferreds.length);
+			if(this.deferreds.length != 0){
+				//把已经解析的删除掉
+				for(var x in this.deferreds){
+					//获取状态
+					var state = this.deferreds[x].state();
+					if(state=="resolved"){
+						console.log("删除deferred"+x);
+						this.deferreds.splice(x,1);
+					}
+				}
+				//链式解析
+				if(this.deferreds[0]){
+					this.deferreds[0].resolve();
+				}
+			}
+		}
+	};
+	
 	function request(config) {
 		//模板
 		/*
@@ -66,6 +129,7 @@
 		this.data = config.data;
 		this.form = config.form;
 		this.success = config.success;
+		this.async = config.async==undefined? true : config.async;
 		this.error = config.error;
 		this.multipart = config.multipart;
 		this.check = config.check;
@@ -121,42 +185,74 @@
 		if(!checkFlag){
 			return false;
 		}
-		$.ajax({
-			url: url,
-			data: data,
-			type: 'post', 
-			async: false,
-			//FormData上传时要加这两个配置项，不然会报错
-	        processData: processData,
-	        contentType: contentType,
-	        dataType:'json',
-			success:function(result){
-				//判断预处理
-				console.log("prep="+prep);
-				if(prep==false){
-					_this.success(result);
-				}else if(result.code==0){
-					_this.success(result.data);
-				}else if(result.message != null && result.message != undefined){
-					alert(result.message);
-					if(_this.error){
-						_this.error(result);
+		function ajaxSubmit(preRes){
+			$.ajax({
+				url: url,
+				data: data,
+				type: 'post', 
+				//async: false,//异步阻塞容易卡死
+				//FormData上传时要加这两个配置项，不然会报错
+		        processData: processData,
+		        contentType: contentType,
+		        dataType: 'json',
+				success: function(res){
+					//判断预处理
+					if(prep==false){
+						_this.success(res,preRes);
+					}else if(res.code==0){
+						_this.success(res.data,preRes);
+					}else if(res.message != null && res.message != undefined){
+						alert(res.message);
+						if(_this.error){
+							_this.error(res,preRes);
+						}
+					}else{
+						alert("访问服务器时出现异常！");
+						if(_this.error){
+							_this.error(res,preRes);
+						}
 					}
-				}else{
-					alert("访问服务器时出现异常！");
-					if(_this.error){
-						_this.error(result);
+					
+					//获取当前deferred
+					let current = deferObj.getCurrent();
+					console.log("current="+current);
+					//deferred.call回调
+					if(current){
+						if(current.call){
+							console.log("执行done方法回调");
+							current.call(res,preRes);
+						}
 					}
-				}
-			},
-			traditional: true,
-			error:function(){
-				alert("请求服务器失败!");
-				if(_this.error){
-					_this.error(result);
-				}
- 			}
-		});
+					//解析下一个deferred
+					let deferred = deferObj.next();
+					if(deferred){
+						deferred.resolve(res);
+						console.log("解析下一个deferred");
+					}else{
+						console.log("deferreds全部解析完成");
+					}
+				},
+				traditional: true,
+				error:function(res){
+					alert("请求服务器失败!");
+					if(_this.error){
+						_this.error(res);
+					}
+					deferred.resolve(res);
+	 			}
+			});
+		}
+		//判断是否加入提交序列
+		if(async == true){
+			ajaxSubmit();
+		}else{
+			let deferred = $.Deferred();
+			deferObj.add(deferred);
+			$.when(deferred).done( function(res){
+				ajaxSubmit(res);
+			});
+	    }
+		
 		//删除刚提交使用的临时input标签
 		if(els.length>0){
 			for(var x in els){
@@ -280,38 +376,38 @@
 	
 	//更新数据
 	function loadData(){
-		var next = function(data,layer){
-			if(!layer){
-				layer = 1;
-			}
-			var loadObj = loadUrls[loadIndex + layer];
-			if(!loadObj.data){
-				loadObj.data = {}
-			}
-			Object.assign(loadObj.data, data)
-			return loadObj;
-		}
+		//记录索引
+		loadIndex = 0;
 		for(var i = 0; i < loadUrls.length; i++){
 			request({
 				url: loadUrls[i].url,
 				data: loadUrls[i].data==undefined? {} : loadUrls[i].data,
 				prep: loadUrls[i].prep,
+				async: false,
 				success: function(data){
-					window.loadIndex = i;
-					window.next = next;
-					if(loadUrls[i].refNames){
-						for(var j = 0; j < loadUrls[i].refNames.length; j++){
-							globalData.data[loadUrls[i].refNames[j]] = data[loadUrls[i].refNames[j]];
+					console.log("loadIndex=" + loadIndex);
+					if(loadUrls[loadIndex].refNames){
+						for(var j = 0; j < loadUrls[loadIndex].refNames.length; j++){
+							globalData.data[loadUrls[loadIndex].refNames[j]] = data[loadUrls[loadIndex].refNames[j]];
 						}
 					}
-					if(loadUrls[i].success != undefined){
+					if(loadUrls[loadIndex].success != undefined){
 						//this是数组对象
-						var success = loadUrls[i].success;
+						var success = loadUrls[loadIndex].success;
 						success(data);
 					}
+					loadIndex++;
+					if(loadIndex==loadUrls.length){
+						applyEls();
+					}
+				},
+				error: function(){
+					loadIndex++;
 				}
 			});
 		}
+		//启动伪同步提交提交
+		deferObj.start();
 	}
 	/**页分页模板
 	 * <ul> 
@@ -368,14 +464,12 @@
 	}
 	
 	function init(){
-		//加载页功能数据，如果存在的话
-		
-		//加载参数
-		//loadParameter();
 		//加载数据
 		loadData();
-		//渲染标签
-		applyEls();
+		//渲染标签//还没得到数据就渲染了
+		if(loadUrls.length==0){
+			applyEls();
+		}
 	}
 	
 	
