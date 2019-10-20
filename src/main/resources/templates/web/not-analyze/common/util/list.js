@@ -1,5 +1,7 @@
 $(function() {
-	load();
+	deferObj.done(function(){
+		load();
+	});
 });
 
 function load() {

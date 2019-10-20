@@ -84,7 +84,11 @@
 		},*/
 		done: function(call){
 			let index = this.deferreds.length-1;
-			this.deferreds[index].call = call;
+			if(index>-1){
+				this.deferreds[index].call = call;
+			}else{
+				call();
+			}
 		},
 		clear: function(){
 			this.deferreds = []
@@ -147,16 +151,16 @@
 		*/
 		
 		//如果form为null这则不传参数
-		if(data == undefined){
-			data = {}
+		if(config.data == undefined){
+			config.data = {}
 		}
 		if(typeof(form)=="string"){
 			form = document.getElementById(form);
 		}
 		
-		var processData = true;
+		config.processData = true;
 		//解决乱码问题
-		var contentType = "application/x-www-form-urlencoded; charset=utf-8";
+		config.contentType = "application/x-www-form-urlencoded; charset=utf-8";
 		//标签数组
 		var els = [];
 		if(form != undefined){
@@ -169,11 +173,11 @@
 				}
 			}
 			//两种选择提交方式
-			data = $(form).serialize();
+			config.data = $(form).serialize();
 			if(multipart != undefined && multipart == true){
-				data = new FormData(form);
-				processData = false;
-				contentType = false;
+				config.data = new FormData(form);
+				config.processData = false;
+				config.contentType = false;
 			}
 		}
 		
@@ -187,29 +191,29 @@
 		}
 		function ajaxSubmit(preRes){
 			$.ajax({
-				url: url,
-				data: data,
+				url: config.url,
+				data: config.data,
 				type: 'post', 
 				//async: false,//异步阻塞容易卡死
 				//FormData上传时要加这两个配置项，不然会报错
-		        processData: processData,
-		        contentType: contentType,
+		        processData: config.processData,
+		        contentType: config.contentType,
 		        dataType: 'json',
 				success: function(res){
 					//判断预处理
-					if(prep==false){
-						_this.success(res,preRes);
+					if(config.prep==false){
+						config.success(res,preRes);
 					}else if(res.code==0){
-						_this.success(res.data,preRes);
+						config.success(res.data,preRes);
 					}else if(res.message != null && res.message != undefined){
 						alert(res.message);
-						if(_this.error){
-							_this.error(res,preRes);
+						if(config.error){
+							config.error(res,preRes);
 						}
 					}else{
 						alert("访问服务器时出现异常！");
-						if(_this.error){
-							_this.error(res,preRes);
+						if(config.error){
+							config.error(res,preRes);
 						}
 					}
 					
@@ -235,8 +239,8 @@
 				traditional: true,
 				error:function(res){
 					alert("请求服务器失败!");
-					if(_this.error){
-						_this.error(res);
+					if(config.error){
+						config.error(res);
 					}
 					deferred.resolve(res);
 	 			}
