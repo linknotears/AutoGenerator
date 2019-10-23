@@ -231,7 +231,7 @@
 						if(current.calls){
 							for(let x in current.calls){
 								console.log("执行done-" + x + "方法回调");
-								current.calls[x].call(res,preRes);
+								current.calls[x](res,preRes);
 							}
 						}
 					}
@@ -422,6 +422,7 @@
 			});
 		}
 		deferObj.done(function(){
+			console.log("done回调了")
 			if(typeof(layer)!="undefined") {
 				layer.close(index);
 			}
