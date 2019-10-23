@@ -19,7 +19,7 @@ public class PageData<T> {
 		return orderby;
 	}
 	public void setOrderby(String orderby) {
-		this.orderby = orderby==null? "" : orderby;
+		this.orderby = "ORDER BY " + orderby;
 	}
 	public int getOffset() {
 		return offset;
