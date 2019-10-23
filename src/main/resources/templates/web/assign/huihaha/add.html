@@ -123,6 +123,22 @@ function iframeClose() {
 	var index = window.parent.layer.getFrameIndex(window.name); // 获取窗口索引
 	window.parent.layer.close(index);
 }
+function onClickHander(ele) {
+	let checked = ele.checked;
+	if(!checked){
+		let parentEle = ele.parentElement;
+		parentEle.appendChild($("<input type='hidden' name='" + ele.name + "' value='0' />")[0]);
+	}else{
+		let parentEle = ele.parentElement;
+		childEle = parentEle.getElementsByTagName("input")[1];
+		parentEle.removeChild(childEle);
+	}
+}
+$(function(){
+	$(".switch checkbox").load(function(){
+		onClickHander(this);
+	});
+})
 </script>
 <style>
 body{
