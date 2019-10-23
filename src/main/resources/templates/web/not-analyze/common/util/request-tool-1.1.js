@@ -85,7 +85,13 @@
 		done: function(call){
 			let index = this.deferreds.length-1;
 			if(index>-1){
-				this.deferreds[index].call = call;
+				let calls = this.deferreds[index].calls;
+				if(calls){
+					calls.push(call);
+				}else{
+					this.deferreds[index].calls = [];
+					this.deferreds[index].calls.push(call);
+				}
 			}else{
 				call();
 			}
@@ -103,7 +109,7 @@
 					//获取状态
 					var state = this.deferreds[x].state();
 					if(state=="resolved"){
-						console.log("删除deferred"+x);
+						console.log("删除deferred-"+x);
 						this.deferreds.splice(x,1);
 					}
 				}
@@ -129,7 +135,7 @@
 		});
 		*/
 		var _this = this;
-		this.url = config.url;
+		//this.url = config.url;
 		this.data = config.data;
 		this.form = config.form;
 		this.success = config.success;
@@ -222,9 +228,11 @@
 					console.log("current="+current);
 					//deferred.call回调
 					if(current){
-						if(current.call){
-							console.log("执行done方法回调");
-							current.call(res,preRes);
+						if(current.calls){
+							for(let x in current.calls){
+								console.log("执行done-" + x + "方法回调");
+								current.calls[x].call(res,preRes);
+							}
 						}
 					}
 					//解析下一个deferred
@@ -382,6 +390,9 @@
 	function loadData(){
 		//记录索引
 		loadIndex = 0;
+		if(typeof(layer)!="undefined"){
+			var index = layer.load(1);//显示加载图标
+		}
 		for(var i = 0; i < loadUrls.length; i++){
 			request({
 				url: loadUrls[i].url,
@@ -410,6 +421,11 @@
 				}
 			});
 		}
+		deferObj.done(function(){
+			if(typeof(layer)!="undefined") {
+				layer.close(index);
+			}
+		})
 		//启动伪同步提交提交
 		deferObj.start();
 	}
