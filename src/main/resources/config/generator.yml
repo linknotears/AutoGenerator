@@ -1,7 +1,8 @@
 #AutoGenerator 
 #普通配置 
+onlyCreateTemplates: !!str true
 #项目名
-project.name: online-order-web
+project.name: test
 #-- 俩id挂了、generator之前做个备份、saveOrUpdateByCheck方法bug:检测没有记录无法插入id、增加一个条件更新
 OutputDir: D:/Project/*{project.name}/src/main/java
 #配置文件路径
@@ -30,8 +31,14 @@ tables:
 createWebtemplates: !!str true
 createConfig: !!str false
 createNotAnalyze: !!str false
-createAnalyze: !!str true
-createGeneratorConfig: !!str true
+createAnalyze: !!str false
+createGeneratorConfig: !!str false
+createBaseclass: |- 
+  *{!onlyCreateTemplates}
+createEntity: |- 
+  *{!onlyCreateTemplates}
+createXml: |- 
+  *{!onlyCreateTemplates}
 #是否覆盖文件（（xml）和entity、mapper或其他拷贝文件除外）
 isOverFile: !!str false
 
@@ -108,12 +115,10 @@ webtemplates:
 #    template: edit_vertical.html
 #    outpath: ${entity}/edit_vertical.html
 #    exclude: all.bz1,all.bz2
-#  - 
-#    tables: [agreement,wh_goods]
-#    template: add_vertical.html
-#    outpath: ${entity}/add_vertical.html
-#    exclude: all.bz1,all.bz2
-#    outpath: include.html
+  - 
+    tables: [agreement,wh_goods]
+    template: include.html
+    outpath: include.html
 #指定文件类型（表名重复时不识别,加时间下划线自动创建）:{0:女,1:男}、img、sex、file、(date、datetime-加_自动创建时间）、（_uuid、_dateNo、_squNo,包含双下滑先表示不可见不可加，一个下划线可见不可加）
 propertyType: 
 #  uriPrefix:key:name:firstId(用于判断是否使用函数):secondId(用于判断初始化和change触发名)

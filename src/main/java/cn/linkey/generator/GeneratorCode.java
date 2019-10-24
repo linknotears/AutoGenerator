@@ -103,7 +103,19 @@ public class GeneratorCode {
         		while(matcher.find()) {
         			String group = matcher.group();
         			String searchStr =  group.replace("*", "").replace("{", "").replace("}", "").trim();
+        			boolean isNot = false;
+        			if(searchStr.indexOf("!") == 0) {
+        				searchStr = searchStr.substring(1);
+        				isNot = true;
+        			}
         			String replaceStr = yamlMap.get(searchStr).toString();
+        			if(isNot) {
+        				if("true".equals(replaceStr)) {
+        					replaceStr = "false";
+        				}else {
+        					replaceStr = "true";
+        				}
+        			}
         			val = val.replace(group, replaceStr);
         		}
         		entry.setValue(val);
@@ -208,22 +220,27 @@ public class GeneratorCode {
         
         // 调整 xml 生成目录演示（这里既可以设置模板路径，也可以设置输出路径）
         List<FileOutConfig> focList = new ArrayList<FileOutConfig>();
-        focList.add(new FileOutConfig("/templates/mapper.xml.vm") {
-            @Override
-            public String outputFile(TableInfo tableInfo) {
-            	return (String)yamlMap.get("OutputDirConfig")+ "/" + xmlSuffix + "/" + tableInfo.getEntityName() + "Mapper.xml";
-            }
-        });
-        //设置覆盖entity
-        focList.add(new FileOutConfig("/templates/entity.java.vm") {
-            @Override
-            public String outputFile(TableInfo tableInfo) {
-                return (String)yamlMap.get("OutputDir")+ basePath + "/" + entitySuffix + "/" + tableInfo.getEntityName() + ".java";
-            }
-        });
+        if(!"false".equals((String)yamlMap.get("createXml"))) {
+	        focList.add(new FileOutConfig("/templates/mapper.xml.vm") {
+	            @Override
+	            public String outputFile(TableInfo tableInfo) {
+	            	return (String)yamlMap.get("OutputDirConfig")+ "/" + xmlSuffix + "/" + tableInfo.getEntityName() + "Mapper.xml";
+	            }
+	        });
+        }
+        if(!"false".equals((String)yamlMap.get("createEntity"))) {
+	        //设置覆盖entity
+	        focList.add(new FileOutConfig("/templates/entity.java.vm") {
+	            @Override
+	            public String outputFile(TableInfo tableInfo) {
+	                return (String)yamlMap.get("OutputDir")+ basePath + "/" + entitySuffix + "/" + tableInfo.getEntityName() + ".java";
+	            }
+	        });
+		}
         
         //初始化
         //生成基础类（生成的类对基础类有依赖，不作为初始化模板）
+        if(!"false".equals((String)yamlMap.get("createBaseclass")))
         {
         	String templateDir = "baseclass";
         	String outPath = (String) yamlMap.get("OutputDir") + basePath;
@@ -380,12 +397,26 @@ public class GeneratorCode {
                 this.setFileCreate(new IFileCreate() {
 					@Override
 					public boolean isCreate(ConfigBuilder configBuilder, FileType fileType, String filePath) {
+						//禁用java相关文件生成
+						if(yamlMap.get("onlyCreateTemplates") != "false") {
+							if(fileType==FileType.CONTROLLER ||
+									fileType==FileType.SERVICE ||
+									fileType==FileType.SERVICE_IMPL ||
+									fileType==FileType.MAPPER ||
+									fileType==FileType.ENTITY ||
+									fileType==FileType.XML){
+								return false;
+							}
+						}
+						if(fileType==FileType.ENTITY||fileType==FileType.XML) {
+							return false;
+						}
 						//判断文件路径是否为空
 						if(filePath==null || "".equals(filePath)){
 							return false;
 						}
 						//mapper.java、entity.java、xxxMapper.xml覆盖，其他不覆盖
-						if(fileType==FileType.MAPPER||fileType==FileType.ENTITY||fileType==FileType.XML){
+						if(fileType==FileType.MAPPER){
 							return true;
 						}
 						//不存在才创建
