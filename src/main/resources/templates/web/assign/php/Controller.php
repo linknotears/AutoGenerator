@@ -62,7 +62,7 @@ class ${entity} extends Controller
 #end
 		$res = null;
 		if($id != null){
-			#tab([1..3])#d()res = #d()model->data(#d()entity)->where('id='.id)->save();
+			#tab([1..3])#d()res = #d()model->where('id='.id)->update(#d()entity);
 		}else{
 			#tab([1..3])#d()entity['id'] = md5(uniqid());
 			#tab([1..3])#d()res = #d()model->data(#d()entity)->add();
