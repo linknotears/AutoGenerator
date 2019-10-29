@@ -1,6 +1,7 @@
 #AutoGenerator 
 #普通配置 
 onlyCreateTemplates: !!str true
+tablePrefix: yoshop_
 #项目名
 project.name: test
 #-- 俩id挂了、generator之前做个备份、saveOrUpdateByCheck方法bug:检测没有记录无法插入id、增加一个条件更新
@@ -9,8 +10,8 @@ OutputDir: D:/Project/*{project.name}/src/main/java
 OutputDirConfig: D:/Project/*{project.name}/src/main/resources/
 #静态资源路径 
 OutputDirStatic: D:/Project/*{project.name}/src/main/resources/static
-#templatesDir D:/Project/guyueconsole-master/src/main/webapp/WEB-INF/views
-OutputDirTemplates: D:/Project/*{project.name}/src/main/resources/views
+#templatesDir D:/Project/*{project.name}/src/main/resources/views
+OutputDirTemplates: C:/wamp/www/newenergy-server/source/application/api
 #templatesPath
 templatesPath: classes/templates
 #作者名
@@ -20,7 +21,7 @@ prefix.ctrl: /
 #html访问 uri前缀
 prefix.view: /view/
 #基础包名  
-basePackage: com.huihaha.onlineorder
+basePackage: test
 #登录表名
 login.table: user
 login.usercolumn: username
@@ -44,9 +45,9 @@ isOverFile: !!str false
 
 #jdbc配置
 jdbc.driver: com.mysql.cj.jdbc.Driver
-jdbc.url: jdbc:mysql://wx.j66c.com:3306/huihaha?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=CONVERT_TO_NULL
+jdbc.url: jdbc:mysql://app.j66c.com:3306/newenergy?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=CONVERT_TO_NULL
 jdbc.user: root
-jdbc.pwd: wwwj66ccom
+jdbc.pwd: lang1987
 #5.0的时候会更改配置
 mysql.version: !!str 5.0
 #各层包名配置
@@ -116,9 +117,14 @@ webtemplates:
 #    outpath: ${entity}/edit_vertical.html
 #    exclude: all.bz1,all.bz2
   - 
-    tables: [agreement,wh_goods]
+    tables: [yoshop_depot,yoshop_depot_log]
     template: php/Controller.php
-    outpath: ${Entity}.php
+    outpath: controller/${Entity}.php
+    exclude: all.bz1,all.bz2
+  - 
+    tables: [yoshop_depot,yoshop_depot_log]
+    template: php/Entity.php
+    outpath: model/${Entity}.php
     exclude: all.bz1,all.bz2
 #指定文件类型（表名重复时不识别,加时间下划线自动创建）:{0:女,1:男}、img、sex、file、(date、datetime-加_自动创建时间）、（_uuid、_dateNo、_squNo,包含双下滑先表示不可见不可加，一个下划线可见不可加）
 propertyType: 

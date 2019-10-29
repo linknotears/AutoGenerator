@@ -182,7 +182,10 @@ public class GeneratorCode {
         // 策略配置
         StrategyConfig strategy = new StrategyConfig();
         // strategy.setCapitalMode(true);// 全局大写命名 ORACLE 注意
-        //strategy.setTablePrefix(new String[] { "SYS_" });// 此处可以修改为您的表前缀
+        String tablePrefix = (String)yamlMap.get("tablePrefix");
+        if(tablePrefix != null) {        	
+        	strategy.setTablePrefix(new String[] { tablePrefix });// 此处可以修改为您的表前缀
+        }
         strategy.setNaming(NamingStrategy.underline_to_camel);// 表名生成策略
         //自己加的，获取需要逆向的所有表
         String tablesStr = (String)yamlMap.get("tables");
