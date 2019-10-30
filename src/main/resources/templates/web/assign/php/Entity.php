@@ -2,9 +2,9 @@
 namespace app\api\model;
 
 use think\Model;
-use think\Db;
+//use think\Db;
 
 class ${entity} extends Model {
-    protected $name = "${table.name}";
+    protected $table = "${table.name}";
 	
 }
