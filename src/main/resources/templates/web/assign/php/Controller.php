@@ -64,7 +64,7 @@ class ${entity} extends Controller
 		if($id != null){
 			#tab([1..3])#d()res = #d()model->where('id='.id)->update(#d()entity);
 		}else{
-			#tab([1..3])#d()entity['id'] = md5(uniqid());
+			//#tab([1..3])#d()entity['id'] = md5(uniqid());
 			#tab([1..3])#d()res = #d()model->data(#d()entity)->add();
 		}
 		return ["count" => #d()res];
@@ -91,7 +91,21 @@ class ${entity} extends Controller
 		return $res;
 	}
 	
-	public function findPage($offset,$limit){
-		
+	public function findPage(#d()offset = 0,#d()limit = 10,#foreach($field in ${table.fields})#if(!$cfg.colExclude.get($table.name).get($field.name))#d()${field.propertyName} = null#if(${foreach.hasNext}), #end#end#end){
+	    #tab([1..2])#d()filter = [];
+#foreach($field in ${table.fields})
+##判断排除字段
+#if(!$cfg.colExclude.get($table.name).get($field.name))
+		if(#d()${field.propertyName} != null){
+			#tab([1..3])#d()filter['${field.name}'] = #d()${field.propertyName};
+		}
+#end
+#end
+        #tab([1..2])#d()model = new ${entity}Model();
+        #tab([1..2])#d()res = collection( 
+			#tab([1..3])#d()model
+	    #d()res = #d()model->where(#d()filter)->limit(#d()offset,#d()limit)->select();
+	    #d()total = #d()model->field("count(1) total")->where(#d()filter)->select();//distinct ${colId}
+	    return ["rows" => #d()res,"total" => #d()total["total"]];
 	}
 }

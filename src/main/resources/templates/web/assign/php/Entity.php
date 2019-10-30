@@ -1,10 +1,11 @@
 <?php
+#macro(d)$#end
 namespace app\api\model;
 
 use think\Model;
 //use think\Db;
 
 class ${entity} extends Model {
-    protected $table = "${table.name}";
+    protected #d()table = "${table.name}";
 	
 }

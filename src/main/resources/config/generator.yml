@@ -117,12 +117,12 @@ webtemplates:
 #    outpath: ${entity}/edit_vertical.html
 #    exclude: all.bz1,all.bz2
   - 
-    tables: [yoshop_company,yoshop_company_receipt]
+    tables: [yoshop_account_record]
     template: php/Controller.php
     outpath: controller/${Entity}.php
     exclude: all.bz1,all.bz2
   - 
-    tables: [yoshop_company,yoshop_company_receipt]
+    tables: [yoshop_account_record]
     template: php/Entity.php
     outpath: model/${Entity}.php
     exclude: all.bz1,all.bz2
