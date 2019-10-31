@@ -64,7 +64,7 @@ class ${entity} extends Controller
 		if($id != null){
 			#tab([1..3])#d()res = #d()model->where('id='.id)->update(#d()entity);
 		}else{
-			//#tab([1..3])#d()entity['id'] = md5(uniqid());
+			//#d()entity['id'] = md5(uniqid());
 			#tab([1..3])#d()res = #d()model->data(#d()entity)->add();
 		}
 		return ["count" => #d()res];
@@ -102,10 +102,8 @@ class ${entity} extends Controller
 #end
 #end
         #tab([1..2])#d()model = new ${entity}Model();
-        #tab([1..2])#d()res = collection( 
-			#tab([1..3])#d()model
-	    #d()res = #d()model->where(#d()filter)->limit(#d()offset,#d()limit)->select();
-	    #d()total = #d()model->field("count(1) total")->where(#d()filter)->select();//distinct ${colId}
+	    #tab([1..2])#d()res = #d()model->where(#d()filter)->limit(#d()offset,#d()limit)->select();
+	    #tab([1..2])#d()total = #d()model->field("count(1) total")->where(#d()filter)->select();//distinct ${colId}
 	    return ["rows" => #d()res,"total" => #d()total["total"]];
 	}
 }
