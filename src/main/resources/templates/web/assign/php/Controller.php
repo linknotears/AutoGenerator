@@ -21,13 +21,13 @@ use app\api\model\\${entity} as ${entity}Model;
 
 class ${entity} extends Controller
 {
-    public function findList(#foreach($field in ${table.fields})#if(!$cfg.colExclude.get($table.name).get($field.name))#d()${field.propertyName} = null#if(${foreach.hasNext}), #end#end#end) {
+    public function findList(#foreach($field in ${table.fields})#if(!$cfg.colExclude.get($table.name).get($field.name))#d()${field.name} = null#if(${foreach.hasNext}), #end#end#end) {
         #tab([1..2])#d()filter = [];
 #foreach($field in ${table.fields})
 ##判断排除字段
 #if(!$cfg.colExclude.get($table.name).get($field.name))
-		if(#d()${field.propertyName} != null){
-			#tab([1..3])#d()filter['${field.name}'] = #d()${field.propertyName};
+		if(#d()${field.name} != null){
+			#tab([1..3])#d()filter['${field.name}'] = #d()${field.name};
 		}
 #end
 #end
@@ -47,15 +47,15 @@ class ${entity} extends Controller
 		return ["count" => #d()res];
 	}
 	
-	public function saveOrUpdate($id = null,#foreach($field in ${table.fields})#if(!$cfg.colExclude.get($table.name).get($field.name))#d()${field.propertyName} = null#if(${foreach.hasNext}), #end#end#end) {
+	public function saveOrUpdate($id = null,#foreach($field in ${table.fields})#if(!$cfg.colExclude.get($table.name).get($field.name))#d()${field.name} = null#if(${foreach.hasNext}), #end#end#end) {
 		#tab([1..2])#d()model = new ${entity}Model();
 		#tab([1..2])#d()entity = [];
 #foreach($field in ${table.fields})
 ##判断排除字段
 #if(!$cfg.colExclude.get($table.name).get($field.name))
 #if(!${field.keyFlag})
-		if(#d()${field.propertyName} != null){
-			#tab([1..3])#d()entity['${field.name}'] = #d()${field.propertyName};
+		if(#d()${field.name} != null){
+			#tab([1..3])#d()entity['${field.name}'] = #d()${field.name};
 		}
 #end
 #end
@@ -70,14 +70,14 @@ class ${entity} extends Controller
 		return ["count" => #d()res];
 	}
 	
-	public function save(#foreach($field in ${table.fields})#if(!$cfg.colExclude.get($table.name).get($field.name))#d()${field.propertyName} = null#if(${foreach.hasNext}), #end#end#end) {
+	public function save(#foreach($field in ${table.fields})#if(!$cfg.colExclude.get($table.name).get($field.name))#d()${field.name} = null#if(${foreach.hasNext}), #end#end#end) {
 		#tab([1..2])#d()model = new ${entity}Model();
 		#tab([1..2])#d()entity = [];
 #foreach($field in ${table.fields})
 ##判断排除字段
 #if(!$cfg.colExclude.get($table.name).get($field.name))
-		if(#d()${field.propertyName} != null){
-			#tab([1..3])#d()entity['${field.name}'] = #d()${field.propertyName};
+		if(#d()${field.name} != null){
+			#tab([1..3])#d()entity['${field.name}'] = #d()${field.name};
 		}
 #end
 #end
@@ -91,13 +91,13 @@ class ${entity} extends Controller
 		return $res;
 	}
 	
-	public function findPage(#d()offset = 0,#d()limit = 10,#foreach($field in ${table.fields})#if(!$cfg.colExclude.get($table.name).get($field.name))#d()${field.propertyName} = null#if(${foreach.hasNext}), #end#end#end){
+	public function findPage(#d()offset = 0,#d()limit = 10,#foreach($field in ${table.fields})#if(!$cfg.colExclude.get($table.name).get($field.name))#d()${field.name} = null#if(${foreach.hasNext}), #end#end#end){
 	    #tab([1..2])#d()filter = [];
 #foreach($field in ${table.fields})
 ##判断排除字段
 #if(!$cfg.colExclude.get($table.name).get($field.name))
-		if(#d()${field.propertyName} != null){
-			#tab([1..3])#d()filter['${field.name}'] = #d()${field.propertyName};
+		if(#d()${field.name} != null){
+			#tab([1..3])#d()filter['${field.name}'] = #d()${field.name};
 		}
 #end
 #end
