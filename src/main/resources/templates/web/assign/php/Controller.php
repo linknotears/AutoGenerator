@@ -103,7 +103,7 @@ class ${entity} extends Controller
 #end
         #tab([1..2])#d()model = new ${entity}Model();
 	    #tab([1..2])#d()res = #d()model->where(#d()filter)->limit(#d()offset,#d()limit)->select();
-	    #tab([1..2])#d()total = #d()model->field("count(1) total")->where(#d()filter)->select();//distinct ${colId}
-	    return ["rows" => #d()res,"total" => #d()total["total"]];
+	    #tab([1..2])#d()total = #d()model->where(#d()filter)->count(1);//distinct ${colId}
+	    return ["rows" => #d()res,#d()total];
 	}
 }
