@@ -104,6 +104,6 @@ class ${entity} extends Controller
         #tab([1..2])#d()model = new ${entity}Model();
 	    #tab([1..2])#d()res = #d()model->where(#d()filter)->limit(#d()offset,#d()limit)->select();
 	    #tab([1..2])#d()total = #d()model->where(#d()filter)->count(1);//distinct ${colId}
-	    return ["rows" => #d()res,"total" => #d()res,#d()total];
+	    return ["rows" => #d()res,"total" => #d()total];
 	}
 }
