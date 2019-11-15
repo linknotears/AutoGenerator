@@ -65,7 +65,7 @@ class ${entity} extends Controller
 			#tab([1..3])#d()res = #d()model->where('id='.id)->update(#d()entity);
 		}else{
 			//#d()entity['id'] = md5(uniqid());
-			#tab([1..3])#d()res = #d()model->data(#d()entity)->add();
+			#tab([1..3])#d()res = #d()model->insert(#d()entity);
 		}
 		return ["count" => #d()res];
 	}
@@ -81,7 +81,7 @@ class ${entity} extends Controller
 		}
 #end
 #end
-		#tab([1..2])#d()res = #d()model->data(#d()entity)->add();
+		#tab([1..2])#d()res = #d()model->insert(#d()entity);
 		return ["count" => #d()res];
 	}
 	
