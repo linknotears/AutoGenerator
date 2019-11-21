@@ -13,7 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class UploadFileSpringMVC {
 	/**
 	 * 
-	 * @param imagefile
+	 * @param cmfile
 	 * @param servletContext
 	 * @return 返回文件成功上传的位置，上传不成功返回null 
 	 */
