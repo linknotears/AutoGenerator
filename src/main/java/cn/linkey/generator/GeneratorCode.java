@@ -401,7 +401,7 @@ public class GeneratorCode {
 					@Override
 					public boolean isCreate(ConfigBuilder configBuilder, FileType fileType, String filePath) {
 						//禁用java相关文件生成
-						if(yamlMap.get("onlyCreateTemplates") != "false") {
+						if(!"false".equals(yamlMap.get("onlyCreateTemplates"))) {
 							if(fileType==FileType.CONTROLLER ||
 									fileType==FileType.SERVICE ||
 									fileType==FileType.SERVICE_IMPL ||
