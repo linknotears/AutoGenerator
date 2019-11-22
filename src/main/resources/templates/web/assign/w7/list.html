@@ -1,0 +1,292 @@
+## 首字母小写
+#macro(d)$#end
+#macro(tolowercase $str)$str.substring(0,1).toLowerCase()$str.substring(1)#end
+##找出第一个id
+#foreach($field in ${table.fields})
+#if(${field.keyFlag})
+#set( $propId = $field.propertyName )
+#set( $colId = $field.name )
+#break
+#end
+#end
+#if(!$colId)
+#set( $propId = $table.fields[0].propertyName )
+#set( $colId = $table.fields[0].name )
+#end
+{template 'public/header'}
+
+{template 'public/comhead'}
+<link rel="stylesheet" type="text/css" href="../addons/zh_tcwq/template/public/ygcsslist.css">
+<style type="text/css">
+	.yg5_tr1>.col-md-1{
+		width: 7.69%;
+	}
+	.accout_inp{width: 100%;height: 35px;border: 1px solid #cccccc;font-size: 14px;color: #333;}
+	.czbtn{position: relative;outline: none;}
+	.czbtn>.fa-sort-desc{
+		font-size: 20px;
+		margin-left: 2px;
+		margin-top: -5px;
+	}
+	.czbtn:hover .czbox{
+		transition: all 0.3s;
+		-webkit-transition: all 0.3s;
+		height: auto;
+		display: block;
+	}
+	.czbox{
+		position: absolute;
+		top: 20px;
+		left: -30px;
+		z-index: 10;		
+		height: 0px;
+		overflow: hidden;
+		display: none;
+		transition: all 0.3s;
+		-webkit-transition: all 0.3s;
+	}
+	.czbox>li{
+		border-bottom: 1px solid #DEDEDE;
+    background-color: #333;
+	}
+  .czbox>li:hover{
+    background-color: #39485D;
+  }
+	.czstorespan{
+		font-size: 14px;
+		color: #fff;
+		margin: 5px;
+	}
+	.czstorespan:hover{
+		color: #fff;
+	}
+	.cztext{margin-left: 10px;}
+  .czboxtop{color: #333;font-size: 20px;height: 9px;overflow: hidden;line-height: 15px;}
+      .rel{
+      position: relative;
+    }
+    .ab{
+      position: absolute;
+    }
+</style>
+<ul class="nav nav-tabs">
+    <span class="ygxian"></span>
+    <div class="ygdangq">当前位置:</div> 
+    <li  {if #d()type=='wait'} class="active" {/if}><a href="{php echo #d()this->createWebUrl('store',array('type'=>wait,'state'=>1));}"></a></li>
+</ul>
+<div class="row ygrow">
+
+    <div class="col-lg-12">
+        <form action="" method="get" class="col-md-4">
+        <input type="hidden" name="c" value="site" />
+          <input type="hidden" name="a" value="entry" />
+          <input type="hidden" name="m" value="zh_tcwq" />
+          <input type="hidden" name="do" value="store" />
+            <div class="input-group" style="width: 300px">
+                <input type="text" name="keywords" class="form-control" value="{$_GPC['keywords']}" placeholder="请输入关键词">&nbsp;&nbsp;
+                <span class="input-group-btn">
+                    <input type="submit" class="btn btn-default" name="submit" value="查找"/>
+                    <input type="hidden" name="type" value="all"/>
+                </span>
+            </div>
+            <input type="hidden" name="token" value="{$_W['token']}"/>
+        </form>
+</div>  
+<div class="main">
+    <div class="panel panel-default">
+    <div class="panel-body ygbtn">
+    </div>
+</div>
+    <div class="panel panel-default">
+        <div class="panel-body" style="padding: 0px 15px;">
+            <div class="row">
+                <table class="yg5_tabel col-md-12">
+                    <tr class="yg5_tr1">
+                        <td class="col-md-1"  style="text-align: center;">
+                          <input type="checkbox" class="allcheck" />                   
+                        </td>
+
+#foreach($field in ${table.fields})
+##判断排除字段
+#if(!$cfg.colExclude.get($table.name).get($field.name))
+##参数类型
+#set( $type = $cfg.propertyType.get($table.name).get($field.name) )
+##判断
+#if( (!$type && !${field.keyFlag}) || ($type && !$type.contains('__')) )
+#set( $type = $type.replace("_","") )
+						<td class="col-md-1">${field.comment}</td>				
+#end
+#end
+#end
+                        <td class="col-md-1" >操作</td>
+                    </tr>
+                    {loop $list $key $item}
+                    <tr class="yg5_tr2">
+                        <td>
+                          <input type="checkbox" name="test" value="{#d()item['$colId']}">
+                        </td>
+#foreach($field in ${table.fields})
+##判断排除字段
+#if(!$cfg.colExclude.get($table.name).get($field.name))
+##判断
+#if(!${field.keyFlag} || $cfg.propertyType.get($table.name).get($field.name))
+##参数类型
+#set( $type = $cfg.propertyType.get($table.name).get($field.name) )
+#if($type == 'img' || ${field.name.contains('img')})
+				<td style="text-align:center"><img style='width: 80px;height: 80px;' src="{#d()item['${field.name}']}" alt=''></td>
+#elseif($field.type == 'date' || $field.type == 'datetime' || $field.type == 'time')
+				<td style="text-align:center">{#d()item['${field.name}']}</td>
+#elseif($type == 'sex' || ${field.name.contains('sex')})
+				<td style="text-align:center">
+					{if #d()item['${field.name}']==1}男{else}女{/if}
+				</td>
+#elseif($type == 'sf')
+				<td style="text-align:center">
+					{if #d()item['${field.name}']==1}是{else}否{/if}
+				</td>
+#else
+				<td style="text-align:center">{#d()item['${field.name}']}</td>
+#end
+#end
+#end
+#end
+                       <td>
+                           <button class="btn btn-xs btn-info czbtn">操作
+                           		<span class="fa fa-sort-desc"></span>
+	                           	<ul class="czbox">
+                                	<div class="czboxtop"><span class="fa fa-sort-asc"></span></div>
+	                                <li>
+	                                  <a href="{php echo #d()this->createWebUrl('#tolowercase($entity)info',array('id' => #d()item['$colId)']));}" class="czstorespan btn btn-xs">
+	                                    <span class="fa fa-pencil" style="margin:0px;"></span>
+	                                    <span class="cztext">编辑</span>
+	                                </a>
+	                                </li>
+	                           		<li>
+	                           			<a href="javascript:void(0);" class="czstorespan btn btn-xs" data-toggle="modal" data-target="#myModal{#d()item['$colId)']}">
+				                            <span class="fa fa-trash-o" style="margin:0px;"></span>
+				                            <span class="cztext">删除</span>
+				                        </a>
+	                           		</li>
+	                           	</ul>
+                           </button>
+                       </td>
+                   </tr>
+                   <div class="modal fade" id="myModal{#d()item['$colId)']}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel" style="font-size: 20px;">提示</h4>
+                        </div>
+                        <div class="modal-body" style="font-size: 20px">
+                            	确定删除么？
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                            <a href="{php echo #d()this->createWebUrl('#tolowercase($entity)', array('op' => 'delete', 'id' => #d()item['$colId)']))}" type="button" class="btn btn-info" >确定</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {/loop}
+            {if empty(#d()list)}
+            <tr class="yg5_tr2">
+              <td colspan="12">
+                                                  暂无商家信息
+              </td>
+            </tr>
+            {/if}
+      </table>
+  </div>
+</div>
+</div>
+</div>
+<div class="text-right we7-margin-top">
+   {#d()pager}
+</div>
+<script type="text/javascript">
+    /* $(function(){
+        $("#frame-0").show();
+        $("#yframe-0").addClass("wyactive");
+        // ———————————————批量删除———————————————
+        $("#allselect").on('click',function(){
+            var check = $("input[type=checkbox][class!=allcheck]:checked");
+            if(check.length < 1){
+                alert('请选择要删除的商家!');
+                return false;
+            }else if(confirm("确认要删除此商家?")){
+                var id = new Array();
+                check.each(function(i){
+                    id[i] = $(this).val();
+                });
+                console.log(id)
+                $.ajax({
+                    type:"post",
+                    url:"{$_W['siteroot']}web/index.php?c=site&a=entry&do=usersearch&m=zh_tcwq",
+                    dataType:"text",
+                    data:{id:id},
+                    success:function(data){
+                        console.log(data);      
+                       location.reload();
+                    }
+                })
+               
+            }
+        }); */
+
+        // ———————————————批量通过———————————————
+        /* $("#allpass").on('click',function(){
+            var check = $("input[type=checkbox][class!=allcheck]:checked");
+            if(check.length < 1){
+                alert('请选择要通过的商家!');
+                return false;
+            }else if(confirm("确认要通过此商家?")){
+                var id = new Array();
+                check.each(function(i){
+                    id[i] = $(this).val();
+                });
+                console.log(id)
+                $.ajax({
+                    type:"post",
+                    url:"{$_W['siteroot']}/app/index.php?i={$_W['uniacid']}&c=entry&do=AdoptStore&m=zh_tcwq",
+                    dataType:"text",
+                    data:{id:id},
+                    success:function(data){
+                        console.log(data);      
+                       location.reload();
+                    }
+                })               
+            }
+        });
+
+        // ———————————————批量拒绝———————————————
+        $("#allrefuse").on('click',function(){
+            var check = $("input[type=checkbox][class!=allcheck]:checked");
+            if(check.length < 1){
+                alert('请选择要拒绝的商家!');
+                return false;
+            }else if(confirm("确认要拒绝此商家?")){
+                var id = new Array();
+                check.each(function(i){
+                    id[i] = $(this).val();
+                });
+                console.log(id)
+                $.ajax({
+                    type:"post",
+                    url:"{$_W['siteroot']}/app/index.php?i={$_W['uniacid']}&c=entry&do=RejectStore&m=zh_tcwq",
+                    dataType:"text",
+                    data:{id:id},
+                    success:function(data){
+                        console.log(data);      
+                       location.reload();
+                    }
+                })               
+            }
+        }); */
+
+        $(".allcheck").on('click',function(){
+            var checked = $(this).get(0).checked;
+            $("input[type=checkbox]").prop("checked",checked);
+        });
+    })
+</script>

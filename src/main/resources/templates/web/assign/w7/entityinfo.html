@@ -1,0 +1,354 @@
+{template 'public/header'}
+{template 'public/comhead'}
+<link rel="stylesheet" type="text/css" href="../addons/zh_tcwq/template/public/ygcss.css">
+<style type="text/css">
+      .dizhiname{width: 500px;float: left;}
+      .dizhi:hover{color: #ff3b3b}
+      .dizhi{
+          color: #ff3b3b;
+          float: left;
+          height: 35px;
+          line-height: 35px;
+          margin-left: 20px;
+          font-weight: bold;
+
+        }
+    #ygsinput{font-size: 14px;height: 33px;border-radius: 4px;border:1px solid #e7e7eb;padding-left: 10px;}
+    .searchname{font-size: 14px;color: #666;width: 220px;}
+    .searchname>a>p{color: #666;}
+</style>
+
+<ul class="nav nav-tabs">
+    <span class="ygxian"></span>
+    <div class="ygdangq">当前位置:</div>    
+    <li class="active"><a href="javascript:void(0);">商家信息</a></li>
+</ul>
+<div class="main">
+    <form action="" method="post" class="form-horizontal form" enctype="multipart/form-data">
+        <!--<input type="hidden" name="parentid" value="{$parent['id']}" />-->
+        <div class="panel panel-default ygdefault">
+            <div class="panel-heading wyheader">
+                商家信息
+            </div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">商家名称</label>
+                    <div class="col-sm-9">
+                        <input type="text" name="store_name" class="form-control" value="{$info['store_name']}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">商家电话</label>
+                    <div class="col-sm-9">
+                        <input type="text" name="tel" class="form-control" value="{$info['tel']}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">商家地址</label>
+                    <div class="col-sm-9">
+                        <input type="text" name="address" class="form-control" value="{$info['address']}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">地址坐标</label>
+                    <div class="col-sm-10">
+                     <!-- {php echo tpl_form_field_coordinate('op',$list['coordinates'])} -->
+                     <input type="text" name="coordinates" class="form-control dizhiname" value="{$info['coordinates']}" placeholder="地理位置" />
+                     <a href="http://lbs.qq.com/tool/getpoint/" target="_blank" class="dizhi">点击获取地理位置</a>
+                    </div>
+                </div>
+                
+                
+			    <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">起送价</label>
+                    <div class="col-sm-9">
+                        <input type="number" name="least_price" class="form-control" value="{$info['least_price']}" />
+                    </div>
+                </div>
+			    <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">运费</label>
+                    <div class="col-sm-9">
+                        <input type="number" name="fare" class="form-control" value="{$info['fare']}" />
+                    </div>
+                </div>
+			    <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">配送时间/分钟</label>
+                    <div class="col-sm-9">
+                        <input type="number" name="delivery_time" class="form-control" value="{$info['delivery_time']}" />
+                    </div>
+                </div>
+			    <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">加盟开关</label>
+                    <div class="col-sm-9">
+	                	<select class="col-sm-2" name="join_switch">
+	                    	{if $info['join_switch']==1}
+	                    	<option value="1" selected}>是</option>
+	                    	<option value="0">否</option>
+	                    	{else}
+	                    	<option value="1">是</option>
+	                    	<option value="0" selected>否</option>
+	                    	{/if}
+	                    </select>
+                    </div>
+                </div>
+			    <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">入股开关</label>
+                    <div class="col-sm-9">
+	                	<select class="col-sm-2" name="partner_switch">
+	                    	{if $info['partner_switch']==1}
+	                    	<option value="1" selected}>是</option>
+	                    	<option value="0">否</option>
+	                    	{else}
+	                    	<option value="1">是</option>
+	                    	<option value="0" selected>否</option>
+	                    	{/if}
+	                    </select>
+                    </div>
+                </div>
+			    <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">品牌推荐开关</label>
+                    <div class="col-sm-9">
+	                	<select class="col-sm-2" name="is_recommend">
+	                    	{if $info['is_recommend']==1}
+	                    	<option value="1" selected}>是</option>
+	                    	<option value="0">否</option>
+	                    	{else}
+	                    	<option value="1">是</option>
+	                    	<option value="0" selected>否</option>
+	                    	{/if}
+	                    </select>
+                    </div>
+                </div>
+			    <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">优品推广开关</label>
+                    <div class="col-sm-9">
+	                	<select class="col-sm-2" name="set_yptg">
+	                		{if $info['set_yptg']==1}
+	                    	<option value="1" selected}>是</option>
+	                    	<option value="0">否</option>
+	                    	{else}
+	                    	<option value="1">是</option>
+	                    	<option value="0" selected>否</option>
+	                    	{/if}
+	                    </select>
+                    </div>
+                </div>
+			    <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">发现好店开关</label>
+                    <div class="col-sm-9">
+	                	<select class="col-sm-2" name="set_fxhd">
+	                    	{if $info['set_fxhd']==1}
+	                    	<option value="1" selected}>是</option>
+	                    	<option value="0">否</option>
+	                    	{else}
+	                    	<option value="1">是</option>
+	                    	<option value="0" selected>否</option>
+	                    	{/if}
+	                    </select>
+                    </div>
+                </div>
+                
+                
+                
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">商家营业执照</label>
+                    <div class="col-sm-9">
+                        {php echo tpl_form_field_image('yyzz_img', $info['yyzz_img'])}
+                    </div>
+                </div>   
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">商家门头照</label>
+                    <div class="col-sm-9">
+                        {php echo tpl_form_field_image('logo', $info['logo'])}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">商家店内陈列环境轮播图</label>
+                    <div class="col-sm-9">
+                       {php echo tpl_form_field_multi_image('ad',$ad);}
+                       <span class="help-block">*建议尺寸大小:2:1</span>
+                    </div>
+                </div>
+              <div class="form-group">
+
+                    <label for="inputEmail3" class="col-sm-2 control-label">营业开始时间</label>
+
+                    <div class="col-sm-10">
+
+                   {php echo tpl_form_field_clock('start_time', $info['start_time']);}
+
+                    </div>
+
+                  </div>
+
+                <div class="form-group">
+
+                    <label for="inputEmail3" class="col-sm-2 control-label">营业结束时间</label>
+
+                    <div class="col-sm-10">
+                    {php echo tpl_form_field_clock('end_time', $info['end_time']);}
+                    </div>
+
+                  </div>
+               <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label">人气数</label>
+                <div class="col-sm-10">
+                    <input type="number" name="views" value="{$info['views']}" class="form-control" id="inputEmail3">
+                </div>
+            </div>
+             <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label">商家简介</label>
+                <div class="col-sm-10">
+                    <textarea name="details" class="form-control" cols="30" rows="7">{$info['details']}</textarea>
+                </div>
+            </div>
+                   <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label" style="margin-right: 15px;">绑定微信端管理员</label>
+                    <select class="col-sm-4" id="username" name="user_id">
+                     <option value="{$info['user_id']}">{$info['wxuser_name']}</option>
+                    </select>
+                    <input type="hidden" name="wxuser_name" value="{$info['wxuser_name']}"/>
+                    <span class="btn btn-sm storeblue" data-toggle="modal" data-target="#myModal1" style="margin-left: 30px;">搜索管理员</span>
+                    <div class="col-xs-12 col-sm-9 col-md-10 col-sm-push-3 col-md-push-2 ">
+                      <span class="help-block">*请手动选择微信管理员，一个微信账号只能绑定一个商家店铺</span>
+                    </div>
+                    <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                  <h4 class="modal-title" id="myModalLabel" style="font-size: 20px;">提示</h4>
+                                </div>
+                                <div class="modal-body ygsearch" style="font-size: 20px;padding: 15px 30px;">
+                                    <input type="text" id="ygsinput" placeholder="请输入微信昵称">
+                                    <span class="btn btn-sm ygbtn storeblue">搜索</span>
+                                    <div class="searchname" style="margin-top: 8px;"></div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>   
+              </div>
+            
+              <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label">登入账号</label>
+                <div class="col-sm-10">
+                    <input type="text"  name="user_name" value="{$info['user_name']}" class="form-control" id="inputEmail3" >
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label">登入密码</label>
+                <div class="col-sm-10">
+                    <input type="text" name="pwd" value="" class="form-control" id="inputEmail3" >
+                    <span style="color:red">此账号为手机端登入账号,密码密文不显示,忘记请直接修改</span>
+                </div>
+            </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <input type="submit" name="submit" value="修改" class="btn col-lg-offset-2 col-lg-3" style="color: white;background-color: #44ABF7;"/>
+            <input type="hidden" name="token" value="{$_W['token']}" />
+            <input type="hidden" name="id" value="{$info['id']}" />
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+	function show(){
+		$('#yhtime').show();
+	}
+    $(function(){
+        $("#frame-0").show();
+        $("#yframe-0").addClass("wyactive");
+
+        // ——————————分类选择器事件——————————————
+        var onefen = $("#onefenlei").val();
+        console.log("111是："+$("#hiddeninfo").val())
+        $.ajax({
+            type:"post",
+            url:"{$_W['siteroot']}/app/index.php?i={$_W['uniacid']}&c=entry&do=GetStoreType&m=zh_tcwq",
+            dataType:"text",
+            data:{id:onefen},
+            success:function(data){
+                var data = eval('(' + data + ')');
+                console.log(data);
+                for(var i = 0; i<data.length;i++){
+                    console.log(data[i].name+data[i].id);
+                    $("#twofenlei").append("<option value="+data[i].id+">"+data[i].name+"</option>");
+                }
+                console.log("这是选中的值twofenlei："+$("#twofenlei").val());
+                $("#twofenlei").val($("#hiddeninfo").val());
+            }
+        })
+        $("#onefenlei").change(function(){
+            $("#twofenlei").empty();
+            var str = $("#onefenlei option").map(function(){
+                return $(this).text();
+            }).get().join(", ")
+            console.log(str);
+            var onefenl = $("#onefenlei").val();
+            var twofen = $("#twofenlei").val();
+            console.log("这是选中的值onefenl："+$("#onefenl").val());
+            console.log("这是选中的值twofenlei："+$("#twofenlei").val());
+            $.ajax({
+                type:"post",
+                url:"{$_W['siteroot']}/app/index.php?i={$_W['uniacid']}&c=entry&do=GetStoreType&m=zh_tcwq",
+                dataType:"text",
+                data:{id:onefenl},
+                success:function(data){
+                    var data = eval('(' + data + ')');
+                    console.log(data);
+                    for(var i = 0; i<data.length;i++){
+                        console.log(data[i].name+data[i].id);
+                        $("#twofenlei").append("<option value="+data[i].id+">"+data[i].name+"</option>");                       
+                    }
+                    console.log("这是选中的值："+$("#twofenlei").val());
+                }
+            })
+        });
+		
+
+        // —————————————管理员搜索事件———————————————
+        $(".searchname").hide();
+        $(".ygbtn").on("click",function(){
+            var ygsinput = $("#ygsinput").val();
+            console.log(ygsinput)
+            if(ygsinput.length==''){
+              $(".searchname").html('');
+            }else{
+              $(".searchname").html('')  
+              var keywords = $("#ygsinput").val()
+              $.ajax({
+                  type:"post",
+                  url:"{$_W['siteroot']}web/index.php?c=site&a=entry&do=usersearch&m=zh_tcwq",
+                  dataType:"text",
+                  data:{keywords:keywords},
+                  success:function(data){                    
+                      var data = eval('(' + data + ')')
+                      console.log(data);
+                      $(".searchname").show();
+                      for(var i=0;i<data.length;i++){
+                        $(".searchname").append('<div class="shnbox" data-dismiss="modal" id="'+data[i].user_id+'" name="'+data[i].nickName+'"><a href="javascript:void(0);"><p>' + data[i].user_id + " -> " + data[i].nickName + '</p></a></div>')
+                      }
+                      $(".shnbox").each(function(){
+                        $(this).click(function(){
+                            // console.log($(this).attr("id"));
+                            // $("#username").val($(this).html())
+                            var thid = $(this).attr("id");
+                            var name = $(this).attr("name");
+                            $('#username option').attr("selected", true);
+                            $('#username option').val(thid);
+                            $('#username option').text(name);
+                            $(":input[name='wxuser_name']").val(name);
+                        })
+                        
+                      })
+                      
+                  }
+              }) 
+            }
+            
+        })
+    })
+</script>
