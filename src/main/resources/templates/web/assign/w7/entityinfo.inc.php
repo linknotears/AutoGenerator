@@ -1,5 +1,7 @@
 <?php
 ## 首字母小写
+## 生成指定数目的制表符
+#macro(tab $countArr)#foreach($i in $countArr)	#end#end
 #macro(d)$#end
 #macro(tolowercase $str)$str.substring(0,1).toLowerCase()$str.substring(1)#end
 ##找出第一个id
@@ -23,8 +25,8 @@ $info = pdo_get("$shortName",array('id'=>$_GPC['id']));
 if(checksubmit('submit')){
 #foreach($field in ${table.fields})
 #if(!${field.keyFlag})
-    if(!empty($_GPC['$field.name'])){
-        $data['$field.name'] = $_GPC['$field.name'];
+    if(!empty(#d()_GPC['${field.name}'])){
+		#tab([1..2])#d()data['${field.name}'] = #d()_GPC['${field.name}'];
     }
 #end
 #end
