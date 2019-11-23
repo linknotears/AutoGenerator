@@ -295,7 +295,7 @@ public class GeneratorCode {
     	        				templateStr = templateStr.substring(0, index);
     	        			}
     	        			//文件名换成正则
-    	        			templateStr = templateStr.replace("${entity}", "[a-zA-Z]+").replace("${Entity}", "[a-zA-Z]+") + "\\.[a-zA-Z]+";
+    	        			templateStr = templateStr.replace("${entity}", "[a-zA-Z]+").replace("${Entity}", "[a-zA-Z]+").replace("${e}", "[a-zA-Z]+") + "\\.[a-zA-Z]+";
     	        			colExcludeMap.put(templateStr, excludes);
     	        		}
     	        		//判断输出模板
@@ -310,7 +310,7 @@ public class GeneratorCode {
     		                			this.setTemplatePath("/templates/web/assign/" + tempInfo.get("template"));
     		                			//首字母转小写
     		                			String tip = tableInfo.getEntityName().substring(0, 1).toLowerCase() + tableInfo.getEntityName().substring(1);
-    		                			String filePath = ((String) tempInfo.get("outpath")).replace("${entity}", tip).replace("${Entity}", tableInfo.getEntityName());
+    		                			String filePath = ((String) tempInfo.get("outpath")).replace("${entity}", tip).replace("${Entity}", tableInfo.getEntityName()).replace("${e}", tableInfo.getEntityName().toLowerCase());
     		                			return (String)yamlMap.get("OutputDirTemplates") + "/" + filePath;
     		                		}
     							}
