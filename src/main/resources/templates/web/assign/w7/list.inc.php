@@ -37,7 +37,7 @@ $list = pdo_fetchall($select_sql);
 
 $pager = pagination($total, $pageindex, $pagesize);
 if($_GPC['op']=='delete'){
-    $res=pdo_delete('$shortName',array('id'=>$_GPC['id']));
+    $res=pdo_delete('$shortName',array('$colId'=>$_GPC['id']));
     if($res){
          message('删除成功！', $this->createWebUrl('#tolowercaseall($entity)'), 'success');
     }else{
