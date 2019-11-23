@@ -152,13 +152,13 @@
 	                           	<ul class="czbox">
                                 	<div class="czboxtop"><span class="fa fa-sort-asc"></span></div>
 	                                <li>
-	                                  <a href="{php echo #d()this->createWebUrl('#tolowercase($entity)info',array('id' => #d()item['$colId)']));}" class="czstorespan btn btn-xs">
+	                                  <a href="{php echo #d()this->createWebUrl('#tolowercase($entity)info',array('id' => #d()item['$colId']));}" class="czstorespan btn btn-xs">
 	                                    <span class="fa fa-pencil" style="margin:0px;"></span>
 	                                    <span class="cztext">编辑</span>
 	                                </a>
 	                                </li>
 	                           		<li>
-	                           			<a href="javascript:void(0);" class="czstorespan btn btn-xs" data-toggle="modal" data-target="#myModal{#d()item['$colId)']}">
+	                           			<a href="javascript:void(0);" class="czstorespan btn btn-xs" data-toggle="modal" data-target="#myModal{#d()item['$colId']}">
 				                            <span class="fa fa-trash-o" style="margin:0px;"></span>
 				                            <span class="cztext">删除</span>
 				                        </a>
@@ -179,7 +179,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                            <a href="{php echo #d()this->createWebUrl('#tolowercase($entity)', array('op' => 'delete', 'id' => #d()item['$colId)']))}" type="button" class="btn btn-info" >确定</a>
+                            <a href="{php echo #d()this->createWebUrl('#tolowercase($entity)', array('op' => 'delete', 'id' => #d()item['$colId']))}" type="button" class="btn btn-info" >确定</a>
                         </div>
                     </div>
                 </div>
