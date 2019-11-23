@@ -141,4 +141,5 @@ propertyType:
 #  uriPrefix:key:name:firstId(用于判断是否使用函数):secondId(用于判断初始化和change触发名)
   cy_course:
     pic: img
+    qrcode_url: img
     isshow: switch

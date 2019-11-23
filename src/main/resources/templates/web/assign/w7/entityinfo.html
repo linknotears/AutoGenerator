@@ -2,6 +2,7 @@
 #set($shortName = ${table.name.replace($cfg.tablePrefix,'')})
 #macro(tab $countArr)#foreach($i in $countArr)	#end#end
 #macro(d)$#end
+#macro(tolowercaseall $str)$str.toLowerCase()#end
 #macro(tolowercase $str)$str.substring(0,1).toLowerCase()$str.substring(1)#end
 ##找出第一个id
 #foreach($field in ${table.fields})

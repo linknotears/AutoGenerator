@@ -2,6 +2,7 @@
 #set($shortName = ${table.name.replace($cfg.tablePrefix,'')})
 #macro(tab $countArr)#foreach($i in $countArr)	#end#end
 #macro(d)$#end
+#macro(tolowercaseall $str)$str.toLowerCase()#end
 #macro(tolowercase $str)$str.substring(0,1).toLowerCase()$str.substring(1)#end
 ##找出第一个id
 #foreach($field in ${table.fields})
@@ -81,7 +82,7 @@
         <input type="hidden" name="c" value="site" />
           <input type="hidden" name="a" value="entry" />
           <input type="hidden" name="m" value="zh_tcwq" />
-          <input type="hidden" name="do" value="#tolowercase($entity)" />
+          <input type="hidden" name="do" value="#tolowercaseall($entity)" />
             <div class="input-group" style="width: 300px">
                 <input type="text" name="keywords" class="form-control" value="{$_GPC['keywords']}" placeholder="请输入关键词">
                 <span class="input-group-btn">
@@ -152,7 +153,7 @@
 	                           	<ul class="czbox">
                                 	<div class="czboxtop"><span class="fa fa-sort-asc"></span></div>
 	                                <li>
-	                                  <a href="{php echo #d()this->createWebUrl('#tolowercase($entity)info',array('id' => #d()item['$colId']));}" class="czstorespan btn btn-xs">
+	                                  <a href="{php echo #d()this->createWebUrl('#tolowercaseall($entity)info',array('id' => #d()item['$colId']));}" class="czstorespan btn btn-xs">
 	                                    <span class="fa fa-pencil" style="margin:0px;"></span>
 	                                    <span class="cztext">编辑</span>
 	                                </a>
@@ -179,7 +180,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                            <a href="{php echo #d()this->createWebUrl('#tolowercase($entity)', array('op' => 'delete', 'id' => #d()item['$colId']))}" type="button" class="btn btn-info" >确定</a>
+                            <a href="{php echo #d()this->createWebUrl('#tolowercaseall($entity)', array('op' => 'delete', 'id' => #d()item['$colId']))}" type="button" class="btn btn-info" >确定</a>
                         </div>
                     </div>
                 </div>

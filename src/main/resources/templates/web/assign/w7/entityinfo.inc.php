@@ -3,6 +3,7 @@
 ## 生成指定数目的制表符
 #macro(tab $countArr)#foreach($i in $countArr)	#end#end
 #macro(d)$#end
+#macro(tolowercaseall $str)$str.toLowerCase()#end
 #macro(tolowercase $str)$str.substring(0,1).toLowerCase()$str.substring(1)#end
 ##找出第一个id
 #foreach($field in ${table.fields})
@@ -34,17 +35,17 @@ if(checksubmit('submit')){
         $res = pdo_insert('$shortName', $data);
         //pdo_debug();exit;
         if($res) {
-            message('新增成功',$this->createWebUrl('#tolowercase($entity)',array('type'=>'all')),'success');
+            message('新增成功',$this->createWebUrl('#tolowercaseall($entity)',array('type'=>'all')),'success');
         } else {
             message('新增失败','','error');
         }
     }else {
         $res = pdo_update('$shortName', $data, array('$colId'=>$_GPC['id']));
         if($res) {
-            message('编辑成功', $this->createWebUrl('#tolowercase($entity)',array('type'=>'all')),'success');
+            message('编辑成功', $this->createWebUrl('#tolowercaseall($entity)',array('type'=>'all')),'success');
         } else {
             message('编辑失败', '', 'error');
         }
     }
 }
-include $this->template('web/#tolowercase($entity)info');
+include $this->template('web/#tolowercaseall($entity)info');
