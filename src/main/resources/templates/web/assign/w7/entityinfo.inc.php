@@ -19,7 +19,7 @@
 #set($shortName = ${table.name.replace($cfg.tablePrefix,'')})
 global $_GPC, $_W;
 $GLOBALS['frames'] = #d()this->getMainMenu();
-$info = pdo_get("$shortName",array('id'=>$_GPC['id']));
+$info = pdo_get("$shortName",array('$colId'=>$_GPC['id']));
 //二维数组转一维
 
 if(checksubmit('submit')){
