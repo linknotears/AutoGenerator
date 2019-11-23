@@ -119,22 +119,22 @@ webtemplates:
   - 
     tables: [cy_course,cy_course_user]
     template: w7/entityinfo.html
-    outpath: template/web/${entity}info.html
+    outpath: template/web/${e}info.html
     exclude: all.bz1,all.bz2
   - 
     tables: [cy_course,cy_course_user]
     template: w7/list.html
-    outpath: template/web/${entity}.html
+    outpath: template/web/${e}.html
     exclude: all.bz1,all.bz2
   - 
     tables: [cy_course,cy_course_user]
     template: w7/entityinfo.inc.php
-    outpath: inc/web/${entity}info.inc.php
+    outpath: inc/web/${e}info.inc.php
     exclude: all.bz1,all.bz2
   - 
     tables: [cy_course,cy_course_user]
     template: w7/list.inc.php
-    outpath: inc/web/${entity}.inc.php
+    outpath: inc/web/${e}.inc.php
     exclude: all.bz1,all.bz2
 #指定文件类型（表名重复时不识别,加时间下划线自动创建）:{0:女,1:男}、img、sex、file、(date、datetime-加_自动创建时间）、（_uuid、_dateNo、_squNo,包含双下滑先表示不可见不可加，一个下划线可见不可加）
 propertyType: 
