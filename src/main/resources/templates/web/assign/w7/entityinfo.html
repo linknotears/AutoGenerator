@@ -1,3 +1,20 @@
+## 首字母小写
+#set($shortName = ${table.name.replace($cfg.tablePrefix,'')})
+#macro(tab $countArr)#foreach($i in $countArr)	#end#end
+#macro(d)$#end
+#macro(tolowercase $str)$str.substring(0,1).toLowerCase()$str.substring(1)#end
+##找出第一个id
+#foreach($field in ${table.fields})
+#if(${field.keyFlag})
+#set( $propId = $field.propertyName )
+#set( $colId = $field.name )
+#break
+#end
+#end
+#if(!$colId)
+#set( $propId = $table.fields[0].propertyName )
+#set( $colId = $table.fields[0].name )
+#end
 {template 'public/header'}
 {template 'public/comhead'}
 <link rel="stylesheet" type="text/css" href="../addons/zh_tcwq/template/public/ygcss.css">
@@ -21,7 +38,7 @@
 <ul class="nav nav-tabs">
     <span class="ygxian"></span>
     <div class="ygdangq">当前位置:</div>    
-    <li class="active"><a href="javascript:void(0);"></a></li>
+    <!-- <li class="active"><a href="javascript:void(0);"></a></li> -->
 </ul>
 <div class="main">
     <form action="" method="post" class="form-horizontal form" enctype="multipart/form-data">
@@ -43,7 +60,7 @@
 				<div class="form-group">
                     <label class="col-xs-12 col-sm-3 col-md-2 control-label">${field.comment}</label>
                     <div class="col-sm-9">
-                        {php echo tpl_form_field_image('${field.name}', $info['${field.name}'])}
+                        {php echo tpl_form_field_image('${field.name}', #d()info['${field.name}'])}
                     </div>
                 </div>
 #elseif($type == 'switch')
@@ -51,7 +68,7 @@
                     <label class="col-xs-12 col-sm-3 col-md-2 control-label">${field.comment}</label>
                     <div class="col-sm-9">
 	                	<select class="col-sm-2" name="${field.name}">
-	                    	{if $info['${field.name}']==1}
+	                    	{if #d()info['${field.name}']==1}
 	                    	<option value="1" selected}>是</option>
 	                    	<option value="0">否</option>
 	                    	{else}
@@ -65,7 +82,7 @@
               <div class="form-group">
                     <label for="inputEmail3" class="col-sm-2 control-label">${field.comment}</label>
                     <div class="col-sm-10">
-                   {php echo tpl_form_field_clock('${field.name}', $info['${field.name}']);}
+                   {php echo tpl_form_field_clock('${field.name}', #d()info['${field.name}']);}
                     </div>
               </div>
 ##自动识别
@@ -73,14 +90,14 @@
 			    <div class="form-group">
                     <label class="col-xs-12 col-sm-3 col-md-2 control-label">${field.comment}</label>
                     <div class="col-sm-9">
-                        <input type="number" name="${field.name}" class="form-control" value="{$info['${field.name}']}" />
+                        <input type="number" name="${field.name}" class="form-control" value="{#d()info['${field.name}']}" />
                     </div>
                 </div>
 #else
 				<div class="form-group">
                     <label class="col-xs-12 col-sm-3 col-md-2 control-label">${field.comment}</label>
                     <div class="col-sm-9">
-                        <input type="text" name="${field.name}" class="form-control" value="{$info['${field.name}']}" />
+                        <input type="text" name="${field.name}" class="form-control" value="{#d()info['${field.name}']}" />
                     </div>
                 </div>
 #end
@@ -92,7 +109,7 @@
         <div class="form-group">
             <input type="submit" name="submit" value="提交" class="btn col-lg-offset-2 col-lg-3" style="color: white;background-color: #44ABF7;"/>
             <input type="hidden" name="token" value="{$_W['token']}" />
-            <input type="hidden" name="id" value="{$info['id']}" />
+            <input type="hidden" name="id" value="{#d()info['$colId']}" />
         </div>
     </form>
 </div>

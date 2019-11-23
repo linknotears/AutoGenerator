@@ -1,4 +1,6 @@
 ## 首字母小写
+#set($shortName = ${table.name.replace($cfg.tablePrefix,'')})
+#macro(tab $countArr)#foreach($i in $countArr)	#end#end
 #macro(d)$#end
 #macro(tolowercase $str)$str.substring(0,1).toLowerCase()$str.substring(1)#end
 ##找出第一个id
@@ -72,20 +74,18 @@
 <ul class="nav nav-tabs">
     <span class="ygxian"></span>
     <div class="ygdangq">当前位置:</div> 
-    <li  {if #d()type=='wait'} class="active" {/if}><a href="{php echo #d()this->createWebUrl('store',array('type'=>wait,'state'=>1));}"></a></li>
+    <!-- <li  class="active"><a href="{php echo #d()this->createWebUrl('$shortName',array('type'=>wait));}"></a></li> -->
 </ul>
 <div class="row ygrow">
-
-    <div class="col-lg-12">
         <form action="" method="get" class="col-md-4">
         <input type="hidden" name="c" value="site" />
           <input type="hidden" name="a" value="entry" />
           <input type="hidden" name="m" value="zh_tcwq" />
-          <input type="hidden" name="do" value="store" />
+          <input type="hidden" name="do" value="#tolowercase($entity)" />
             <div class="input-group" style="width: 300px">
-                <input type="text" name="keywords" class="form-control" value="{$_GPC['keywords']}" placeholder="请输入关键词">&nbsp;&nbsp;
+                <input type="text" name="keywords" class="form-control" value="{$_GPC['keywords']}" placeholder="请输入关键词">
                 <span class="input-group-btn">
-                    <input type="submit" class="btn btn-default" name="submit" value="查找"/>
+                    <input type="submit"  style="height: 34px !important;" class="btn btn-default" name="submit" value="查找"/>
                     <input type="hidden" name="type" value="all"/>
                 </span>
             </div>
@@ -93,10 +93,6 @@
         </form>
 </div>  
 <div class="main">
-    <div class="panel panel-default">
-    <div class="panel-body ygbtn">
-    </div>
-</div>
     <div class="panel panel-default">
         <div class="panel-body" style="padding: 0px 15px;">
             <div class="row">

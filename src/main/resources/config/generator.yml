@@ -11,7 +11,7 @@ OutputDirConfig: D:/Project/*{project.name}/src/main/resources/
 #静态资源路径 
 OutputDirStatic: D:/Project/*{project.name}/src/main/resources/static
 #templatesDir D:/Project/*{project.name}/src/main/resources/views
-OutputDirTemplates: D:/php/repast-admin/addons/zh_tcwq/inc/web/test
+OutputDirTemplates: C:/wamp/www/repast-admin/addons/zh_tcwq
 #templatesPath
 templatesPath: classes/templates
 #作者名
@@ -117,88 +117,28 @@ webtemplates:
 #    outpath: ${entity}/edit_vertical.html
 #    exclude: all.bz1,all.bz2
   - 
-    tables: [cy_account_record,cy_withdraw]
+    tables: [cy_course,cy_course_user]
     template: w7/entityinfo.html
     outpath: template/web/${entity}info.html
     exclude: all.bz1,all.bz2
   - 
-    tables: [cy_account_record,cy_withdraw]
+    tables: [cy_course,cy_course_user]
     template: w7/list.html
     outpath: template/web/${entity}.html
     exclude: all.bz1,all.bz2
   - 
-    tables: [cy_account_record,cy_withdraw]
+    tables: [cy_course,cy_course_user]
     template: w7/entityinfo.inc.php
     outpath: inc/web/${entity}info.inc.php
     exclude: all.bz1,all.bz2
   - 
-    tables: [cy_account_record,cy_withdraw]
+    tables: [cy_course,cy_course_user]
     template: w7/list.inc.php
     outpath: inc/web/${entity}.inc.php
     exclude: all.bz1,all.bz2
 #指定文件类型（表名重复时不识别,加时间下划线自动创建）:{0:女,1:男}、img、sex、file、(date、datetime-加_自动创建时间）、（_uuid、_dateNo、_squNo,包含双下滑先表示不可见不可加，一个下划线可见不可加）
 propertyType: 
 #  uriPrefix:key:name:firstId(用于判断是否使用函数):secondId(用于判断初始化和change触发名)
-  club:
-    club_id: _dateNo
-    logo_url: img
-    state: switch
-    is_show: switch
-    wh_id: wareHouse:whId:name
-  goods: 
-    goods_id: _dateNo
-    type_id: goodsType:typeId:name
+  cy_course:
     pic: img
-  merch_application:
-    sign_pic: img
-    bus_license_pic: img
-    card_type: |-
-      {"0":"身份证（限中国大陆居民）","1":"护照（限境外人士）"}
-    card_front: img
-    card_back: img
-    set_acc_type: |-
-      {"0":"对公账户","1":"法人账户"}
-  pay_setting: 
-    main_switch: switch
-    wxpay_switch: switch
-    alipay_switch: switch
-    integral_switch: switch
-    balance_switch: switch
-  user: 
-    username: true
-    use_club_id: club:clubId:name
-  call_service:
-    call_id: uuid
-  dining_table:
-    no: uuid
-    joint_no: diningTable:dtNo:dtNo
-    state: switch
-  queue_up:
-    no: uuid
-    qu_id: _squNo
-  order: 
-    oid: _dateNo
-    club_id: club:clubId:name
-    operate_time: _datetime
-  order_item:
-    item_id: __uuid
-  wh_goods: 
-    whg_id: _dateNo
-    wh_id: wareHouse:whId:name
-    type_id: goodsType:typeId:name
-    pic: img
-  coupon:
-    club_id: club:clubId:name
-    state: switch
-  coupon_card: 
-    card_id: _dateNo
-    coupon_id: coupon:couponId:name
-  coupon_record: 
-    cr_id: _dateNo
-    use_time: _datetime
-    club_id: club:clubId:name
-    state: switch
-    pay_type: |-
-      {"0":"APP核销","1":"后台核销"}
-  charge_record: 
-    cr_id: _dateNo
+    isshow: switch

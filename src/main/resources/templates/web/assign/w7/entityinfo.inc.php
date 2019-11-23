@@ -47,4 +47,4 @@ if(checksubmit('submit')){
         }
     }
 }
-include $this->template('web/#tolowercase($entity)');
+include $this->template('web/#tolowercase($entity)info');

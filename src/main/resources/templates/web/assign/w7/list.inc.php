@@ -28,11 +28,11 @@ $where = "";
 $pageindex = max(1, intval($_GPC['page']));
 $pagesize=10;
 
-$sql = "SELECT a.* FROM " . tablename('$shortName') . " a" . $where . " ORDER BY a.id DESC";
-$total = pdo_fetchcolumn("select count(1) from " . tablename('$shortName') . " a" . $where , $data );
+$sql = "SELECT a.* FROM " . tablename('$shortName') . " a" . $where;
+$total = pdo_fetchcolumn("select count(1) from " . tablename('$shortName') . " a" . $where);
 $select_sql = $sql . " LIMIT " .($pageindex - 1) * $pagesize . "," . $pagesize;
 
-$list = pdo_fetchall($select_sql, $data);
+$list = pdo_fetchall($select_sql);
 
 $pager = pagination($total, $pageindex, $pagesize);
 if($_GPC['op']=='delete'){
