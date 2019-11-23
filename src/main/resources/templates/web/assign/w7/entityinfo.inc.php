@@ -39,7 +39,7 @@ if(checksubmit('submit')){
             message('新增失败','','error');
         }
     }else {
-        $res = pdo_update('$shortName', $data,array('id'=>$_GPC['id']));
+        $res = pdo_update('$shortName', $data, array('$colId'=>$_GPC['id']));
         if($res) {
             message('编辑成功', $this->createWebUrl('#tolowercase($entity)',array('type'=>'all')),'success');
         } else {

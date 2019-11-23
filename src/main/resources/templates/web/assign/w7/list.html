@@ -129,7 +129,7 @@
 ##参数类型
 #set( $type = $cfg.propertyType.get($table.name).get($field.name) )
 #if($type == 'img' || ${field.name.contains('img')})
-				<td style="text-align:center"><img style='width: 80px;height: 80px;' src="{#d()item['${field.name}']}" alt=''></td>
+				<td style="text-align:center"><img style='width: 80px;height: 80px;' src="{media #d()item['${field.name}']}" alt=''></td>
 #elseif($field.type == 'date' || $field.type == 'datetime' || $field.type == 'time')
 				<td style="text-align:center">{#d()item['${field.name}']}</td>
 #elseif($type == 'sex' || ${field.name.contains('sex')})
@@ -167,7 +167,7 @@
                            </button>
                        </td>
                    </tr>
-                   <div class="modal fade" id="myModal{#d()item['$colId)']}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                   <div class="modal fade" id="myModal{#d()item['$colId']}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                       <div class="modal-dialog" role="document">
                         <div class="modal-content">
                           <div class="modal-header">
