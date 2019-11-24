@@ -14,7 +14,7 @@ import  ${cfg.basePackage}.util.CommonParams;
 import  ${cfg.basePackage}.util.DatetimeConverter;
 
 @Configuration
-public class MvcConfig implements WebMvcConfigurer {
+public class MvcConfig implements WebMvcConfigurer { 
 	@Autowired
     private RequestMappingHandlerAdapter requestMappingHandlerAdapter;
 	@PostConstruct
