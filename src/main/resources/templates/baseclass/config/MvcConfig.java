@@ -7,14 +7,14 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.support.GenericConversionService;
 import org.springframework.web.bind.support.ConfigurableWebBindingInitializer;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 
 import  ${cfg.basePackage}.util.CommonParams;
 import  ${cfg.basePackage}.util.DatetimeConverter;
 
 @Configuration
-public class MvcConfig extends WebMvcConfigurationSupport {
+public class MvcConfig implements WebMvcConfigurer {
 	@Autowired
     private RequestMappingHandlerAdapter requestMappingHandlerAdapter;
 	@PostConstruct
@@ -33,6 +33,5 @@ public class MvcConfig extends WebMvcConfigurationSupport {
                 .addResourceLocations("classpath:/static/")
                 .addResourceLocations("classpath:/public/")
                 .addResourceLocations("file:" + CommonParams.UPLOAD_PATH);
-        super.addResourceHandlers(registry);
     }
 }
