@@ -1,20 +1,38 @@
 package ${cfg.basePackage}.config;
 
-import ${cfg.basePackage}.util.CommonParams;
+import javax.annotation.PostConstruct;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.core.convert.support.GenericConversionService;
+import org.springframework.web.bind.support.ConfigurableWebBindingInitializer;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
+
+import  ${cfg.basePackage}.util.CommonParams;
+import  ${cfg.basePackage}.util.DatetimeConverter;
 
 @Configuration
 public class MvcConfig extends WebMvcConfigurationSupport {
+	@Autowired
+    private RequestMappingHandlerAdapter requestMappingHandlerAdapter;
+	@PostConstruct
+    public void addConversionConfig() {
+        ConfigurableWebBindingInitializer initializer = (ConfigurableWebBindingInitializer) requestMappingHandlerAdapter.getWebBindingInitializer();
+        if (initializer.getConversionService() != null) {
+            GenericConversionService genericConversionService = (GenericConversionService)initializer.getConversionService();
+            genericConversionService.addConverter(new DatetimeConverter());
+        }
+    }
+	
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/**","/static/**")
                 .addResourceLocations("classpath:/resources/")
                 .addResourceLocations("classpath:/static/")
                 .addResourceLocations("classpath:/public/")
-                .addResourceLocations("file:" + CommonParams.IMG_PATH);
+                .addResourceLocations("file:" + CommonParams.UPLOAD_PATH);
         super.addResourceHandlers(registry);
     }
 }

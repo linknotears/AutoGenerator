@@ -24,7 +24,7 @@ public class UploadFileSpringMVC {
 				String imagename = cmfile.getOriginalFilename();
 				String suffix = imagename.substring(imagename.lastIndexOf("."));
 				String uuid = UUID.randomUUID().toString().replace("-", "");
-				String webPath = CommonParams.IMG_PATH;//servletContext.getRealPath("/");
+				String webPath = CommonParams.UPLOAD_PATH;//servletContext.getRealPath("/");
 				SimpleDateFormat sf = new SimpleDateFormat("yyyyMMddHHmm");
 				sqlPath = "/" + outDir + "/" + sf.format(new Date()) + uuid + suffix;
 				File newfile = new File(webPath+"/"+sqlPath);
