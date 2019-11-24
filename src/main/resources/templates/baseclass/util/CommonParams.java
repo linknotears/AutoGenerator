@@ -4,7 +4,7 @@ public class CommonParams {
     public static final String UPLOAD_PATH;
     static{
     	//获取jar包所在路径(不打jar包情况下显示的是项目路径)
-		String rootPath = System.getProperty("user.dir");
+		String rootPath = System.getProperty("user.dir"); 
 		String uploadPath = rootPath + "/SpringBootUpload/";
 		UPLOAD_PATH = uploadPath.replace("\\", "/");
         System.out.println("UPLOAD_PATH="+UPLOAD_PATH);
