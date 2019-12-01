@@ -106,18 +106,16 @@ public class ${table.controllerName} extends BaseController{
 			#if( $type == 'img' || (!$type && ${field.propertyName.contains('img')}))
 			if(${field.propertyName}File != null){
 				if(!${field.propertyName}File.isEmpty()){
-					#tab([1..5])#touppercase(${columnType}) dirId = id != null? id : #tolowercase($entity).get#toheaduppercase(${propId})();
 					#tab([1..5])#tolowercase($entity).set#toheaduppercase(${field.propertyName})(
-						UploadFileSpringMVC.getUploadPath(${field.propertyName}File,"images/#tolowercase(${entity})/${field.propertyName}/" + dirId,#tolowercase($entity).get#toheaduppercase(${field.propertyName})(),servletContext)
+						UploadFileSpringMVC.getUploadPath(${field.propertyName}File,"images/#tolowercase(${entity})/${field.propertyName}",#tolowercase($entity).get#toheaduppercase(${field.propertyName})(),servletContext)
 					);
 				}
 			}
 			#elseif( $type == 'file' )
 			if(${field.propertyName}File != null){
 				if(!${field.propertyName}File.isEmpty()){
-					#tab([1..5])#touppercase(${columnType}) dirId = id != null? id : #tolowercase($entity).get#toheaduppercase(${propId})();
 					#tab([1..5])#tolowercase($entity).set#toheaduppercase(${field.propertyName})(
-						UploadFileSpringMVC.getUploadPath(${field.propertyName}File,"files/#tolowercase(${entity})/${field.propertyName}/" + dirId,#tolowercase($entity).get#toheaduppercase(${field.propertyName})(),servletContext)
+						UploadFileSpringMVC.getUploadPath(${field.propertyName}File,"files/#tolowercase(${entity})/${field.propertyName}",#tolowercase($entity).get#toheaduppercase(${field.propertyName})(),servletContext)
 					);
 				}
 			}
