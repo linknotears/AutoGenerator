@@ -367,7 +367,11 @@ public class GeneratorCode {
         	
 	        //复制不需要解析的文件
 	        //复制web文件
-        	if(!"false".equals((String)yamlMap.get("createNotAnalyze"))){
+        	if(!"false".equals((String)yamlMap.get("createJars"))){
+	        	templatesToNotAnalyze("web/jars",(String)yamlMap.get("OutputDirJars"));
+	        }
+        	
+        	if(!"false".equals((String)yamlMap.get("createStatic"))){
 	        	templatesToNotAnalyze("web/not-analyze",(String)yamlMap.get("OutputDirStatic"));
 	        }
 	        

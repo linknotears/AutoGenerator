@@ -10,6 +10,8 @@ OutputDir: D:/Project/*{project.name}/src/main/java
 OutputDirConfig: D:/Project/*{project.name}/src/main/resources/
 #静态资源路径 
 OutputDirStatic: D:/Project/*{project.name}/src/main/resources/static
+#静态资源路径 
+OutputDirJars: D:/Project/*{project.name}/src/main/resources/jars
 #templatesDir D:/Project/*{project.name}/src/main/resources/views
 OutputDirTemplates: D:/Project/*{project.name}/src/main/resources/views
 #templatesPath
@@ -31,7 +33,8 @@ tables:
 #是否初始化（生成拷贝文件）只生成baseclass、xml、和各层的文件
 createWebtemplates: !!str true
 createConfig: !!str false
-createNotAnalyze: !!str false
+createStatic: !!str false
+createJars: !str false
 createAnalyze: !!str false
 createGeneratorConfig: !!str false
 createBaseclass: |- 
