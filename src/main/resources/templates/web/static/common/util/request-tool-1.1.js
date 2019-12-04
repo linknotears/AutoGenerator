@@ -53,7 +53,7 @@
 		deferreds: [],
 		current: null,
 		getCurrent: function(){
-			console.log("this.squNo="+ this.squNo);
+			//console.log("currentIndex="+ this.squNo);
 			this.current = this.deferreds[this.squNo] || null;
 			return this.current;
 		},
@@ -115,7 +115,8 @@
 				}
 				//链式解析
 				if(this.deferreds[0]){
-					this.deferreds[0].resolve();
+					this.squNo = 0;
+					this.deferreds[this.squNo].resolve();
 				}
 			}
 		}
@@ -225,12 +226,11 @@
 					
 					//获取当前deferred
 					let current = deferObj.getCurrent();
-					console.log("current="+current);
 					//deferred.call回调
 					if(current){
 						if(current.calls){
 							for(let x in current.calls){
-								console.log("执行done-" + x + "方法回调");
+								console.log("执行deferreds["+deferObj.squNo+"].done[" + x + "]方法回调");
 								current.calls[x](res,preRes);
 							}
 						}
@@ -241,7 +241,9 @@
 						deferred.resolve(res);
 						console.log("解析下一个deferred");
 					}else{
-						console.log("deferreds全部解析完成");
+						if(current){
+							console.log("deferreds同步链执行完成");
+						}
 					}
 				},
 				traditional: true,
@@ -403,10 +405,29 @@
 					console.log("loadIndex=" + loadIndex);
 					if(loadUrls[loadIndex].refNames){
 						for(var j = 0; j < loadUrls[loadIndex].refNames.length; j++){
+							/*
+							let refData1 = globalData.data[loadUrls[loadIndex].refNames[j]];
+							let refData2 = data[loadUrls[loadIndex].refNames[j]];
+							console.log("refData1="+refData1)
+							if(refData1){
+								if(refData1.isArray){
+									//清空原数组
+									refData1.splice(0,refData1.length);
+									Object.assign(refData1,refData2);
+								}else{
+									//清空对象
+									for(var key in refData1) {
+										delete refData1[key];
+									}
+									console.log("pre refData1="+JSON.stringify(refData1));
+									Object.assign(refData1,refData2);
+									console.log("after refData1="+JSON.stringify(refData1))
+								}
+							}else{}*/
 							globalData.data[loadUrls[loadIndex].refNames[j]] = data[loadUrls[loadIndex].refNames[j]];
 						}
 					}
-					if(loadUrls[loadIndex].success != undefined){
+					if(loadUrls[loadIndex].success != undefined) {
 						//this是数组对象
 						var success = loadUrls[loadIndex].success;
 						success(data);
@@ -422,8 +443,7 @@
 			});
 		}
 		deferObj.done(function(){
-			console.log("done回调了")
-			if(typeof(layer)!="undefined") {
+			if(typeof(layer) != "undefined" && typeof(index) != "undefined") {
 				layer.close(index);
 			}
 		})
