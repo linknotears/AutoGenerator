@@ -223,25 +223,26 @@
 							config.error(res,preRes);
 						}
 					}
-					
-					//获取当前deferred
-					let current = deferObj.getCurrent();
-					//deferred.call回调
-					if(current){
-						if(current.calls){
-							for(let x in current.calls){
-								console.log("执行deferreds["+deferObj.squNo+"].done[" + x + "]方法回调");
-								current.calls[x](res,preRes);
+
+					//链式执行操作
+					if(config.async==false) {
+						//获取当前deferred
+						let current = deferObj.getCurrent();
+						//deferred.call回调
+						if(current){
+							if(current.calls){
+								for(let x in current.calls){
+									console.log("执行deferreds["+deferObj.squNo+"].done[" + x + "]方法回调");
+									current.calls[x](res,preRes);
+								}
 							}
 						}
-					}
-					//解析下一个deferred
-					let deferred = deferObj.next();
-					if(deferred){
-						deferred.resolve(res);
-						console.log("解析下一个deferred");
-					}else{
-						if(current){
+						//解析下一个deferred
+						let deferred = deferObj.next();
+						if(deferred){
+							deferred.resolve(res);
+							console.log("解析下一个deferred");
+						}else{
 							console.log("deferreds同步链执行完成");
 						}
 					}
