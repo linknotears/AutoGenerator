@@ -12,7 +12,7 @@
 	globalData = {'items':[],'item':{},'page':{},'data':{},params:{}};
 	vueMap = {};
 	loadUrls = [];
-	loadEls = [];
+	loadEls = []; 
 	loadParameters = [];
 	//定义全局变量
 	function define(defineData){
