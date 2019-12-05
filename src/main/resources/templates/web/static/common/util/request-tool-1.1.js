@@ -344,7 +344,7 @@
 								  return fmt
 							},
 							
-							formatDateTime: function(time,isShowSecond){
+							formatDateTime: function(time,isShowSecond = true){
 								var formatStr = "yyyy-MM-dd hh:mm";
 								if(isShowSecond){
 									formatStr = "yyyy-MM-dd hh:mm:ss";
@@ -353,7 +353,11 @@
 							},
 							
 							formatDate: function(time) {
-								return this.dateFormat(time, "yyyy-MM-dd")
+								if((time+"").indexOf("-") > -1){
+									return time.substring(0,10);
+								}else{
+									return this.dateFormat(time, "yyyy-MM-dd")
+								}
 							},
 							
 							padLeftZero: function(str) {
