@@ -11,15 +11,15 @@ public class ResultData {
 	
 	private Map<String,Object> data = new HashMap<String, Object>();
 	//提示消息
-	private String message = null;
+	private String msg = null;
 	
 	
-	public String getMessage() {
-		return message;
+	public String getMsg() {
+		return msg;
 	}
 
-	public ResultData setMessage(String message) {
-		this.message = message;
+	public ResultData setMsg(String msg) {
+		this.msg = msg;
 		return this;
 	}
 	

@@ -1,6 +1,7 @@
 	//模板：<script type="text/javascript" src="common/util/request-tool-1.1.js"></script>
 	addScript("/common/util/jquery-1.10.2.min.js");
 	addScript("/common/util/vue.min.js");
+	addScript("/js/plugins/layer/layer.js");
 	function addScript(url){
 		document.write("<script language='javascript' src='"+url+"'></script>");
 	}
@@ -123,28 +124,18 @@
 	};
 	
 	function request(config) {
-		//模板
-		/*
-		return request({
-			url: "user/login.do",
-			form: "loginForm",
-			success:function(data){
-				window.location.href = "user/index.do";
-			},
-			multipart:false,
-			check:function(){return true;}
-		});
-		*/
 		var _this = this;
-		//this.url = config.url;
-		this.data = config.data;
-		this.form = config.form;
-		this.success = config.success;
-		this.async = config.async==undefined? true : config.async;
-		this.error = config.error;
-		this.multipart = config.multipart;
-		this.check = config.check;
-		this.prep = config.prep==undefined? true : config.prep;//preprocess是否预处理
+		/*
+			config.url;
+			config.error;
+			config.multipart;
+			config.check;
+			config.data;
+			config.form;
+			config.success;
+		*/
+		config.async = config.async==undefined? true : config.async;
+		config.prep = config.prep==undefined? true : config.prep;//preprocess是否预处理
 		//模板
 		/* 
 		for (var index = 0; index < form.length; index++) {
@@ -161,8 +152,8 @@
 		if(config.data == undefined){
 			config.data = {}
 		}
-		if(typeof(form)=="string"){
-			form = document.getElementById(form);
+		if(typeof(config.form)=="string"){
+			config.form = document.getElementById(config.form);
 		}
 		
 		config.processData = true;
@@ -170,33 +161,37 @@
 		config.contentType = "application/x-www-form-urlencoded; charset=utf-8";
 		//标签数组
 		var els = [];
-		if(form != undefined){
+		if(config.form != undefined){
 			//如果form和data同时存在则合并参数
 			if(config.data != undefined){
 				for(var x in config.data){
 					var el = $("<input type='hidden' name='"+x+"' value='"+config.data[x]+"'/>");
 					els.push(el);
-					$(form).append(el);
+					$(config.form).append(el);
 				}
 			}
 			//两种选择提交方式
-			config.data = $(form).serialize();
-			if(multipart != undefined && multipart == true){
+			config.data = $(config.form).serialize();
+			if(config.multipart != undefined && config.multipart == true){
 				config.data = new FormData(form);
 				config.processData = false;
 				config.contentType = false;
 			}
 		}
-		
+
 		//校验表单
 		var checkFlag = true;
-		if(check != undefined){
-			checkFlag = check(form);
+		if(config.check != undefined){
+			checkFlag = config.check(config.form);
 		}
 		if(!checkFlag){
 			return false;
 		}
 		function ajaxSubmit(preRes){
+			let index = undefined;
+			if(typeof(layer)!="undefined" && config.async) {
+				index = layer.load(1);//显示加载图标
+			}
 			$.ajax({
 				url: config.url,
 				data: config.data,
@@ -212,13 +207,21 @@
 						config.success(res,preRes);
 					}else if(res.code==0){
 						config.success(res.data,preRes);
-					}else if(res.message != null && res.message != undefined){
-						alert(res.message);
+					}else if(res.msg != null && res.msg != undefined){
+						if(typeof(layer)!="undefined"){
+							layer.msg(res.msg);
+						}else{
+							alert(res.msg);
+						}
 						if(config.error){
 							config.error(res,preRes);
 						}
 					}else{
-						alert("访问服务器时出现异常！");
+						if(typeof(layer)!="undefined"){
+							layer.msg("访问服务器时出现异常！");
+						}else{
+							alert("访问服务器时出现异常！");
+						}
 						if(config.error){
 							config.error(res,preRes);
 						}
@@ -246,10 +249,19 @@
 							console.log("deferreds同步链执行完成");
 						}
 					}
+					
+					//关闭加载图标
+					if(typeof(layer)!="undefined" && config.async) {
+						layer.close(index);//关闭加载图标
+					}
 				},
 				traditional: true,
 				error:function(res){
-					alert("请求服务器失败!");
+					if(typeof(layer)!="undefined"){
+						layer.msg("请求服务器失败!");
+					}else{
+						alert("请求服务器失败!");
+					}
 					if(config.error){
 						config.error(res);
 					}
@@ -258,7 +270,7 @@
 			});
 		}
 		//判断是否加入提交序列
-		if(async == true){
+		if(config.async == true){
 			ajaxSubmit();
 		}else{
 			let deferred = $.Deferred();
