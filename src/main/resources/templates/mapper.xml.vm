@@ -127,7 +127,7 @@ $cfg.conjInfoMap.get($table.name).get('conjQueryStr')
    	limit 0,1
   </select>
   
-  <select id="selectPage" resultMap="BaseResultMap" parameterType="${package.Entity}.vo.PageData">
+  <select id="selectPage" resultMap="BaseResultMap" parameterType="${package.Entity}.vo.Page">
   	select 
    	<include refid="Base_Column_List" />
    	from `${table.name}`

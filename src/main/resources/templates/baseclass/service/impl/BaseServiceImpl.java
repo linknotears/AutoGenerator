@@ -2,7 +2,7 @@ package ${package.ServiceImpl};
 
 import java.util.List;
 
-import ${package.Entity}.vo.PageData;
+import ${package.Entity}.vo.Page;
 import ${package.Mapper}.BaseMapper;
 import ${package.Service}.BaseService;
 
@@ -16,19 +16,19 @@ public abstract class BaseServiceImpl<T> implements BaseService<T> {
 	}
 
 	@Override
-	public PageData<T> findPage(PageData<T> pageData,T condition) {
-		if(pageData==null){
-			pageData = new PageData<T>();
+	public Page<T> findPage(Page<T> page,T condition) {
+		if(page==null){
+			page = new Page<T>();
 		}
 		//设置条件
-		pageData.setCondition(condition);
+		page.setCondition(condition);
 		//设置数据
-		List<T> rows = baseMapper.selectPage(pageData);
-		pageData.setRows(rows);
+		List<T> rows = baseMapper.selectPage(page);
+		page.setRows(rows);
 		//设置记录
-		int total = baseMapper.selectCount(pageData.getCondition());
-		pageData.setTotal(total);
-		return pageData;
+		int total = baseMapper.selectCount(page.getCondition());
+		page.setTotal(total);
+		return page;
 	}
 
 	@Override

@@ -6,7 +6,7 @@ import ${package.Mapper}.${table.mapperName};
 import ${package.Service}.${table.serviceName};
 import org.springframework.stereotype.Service;
 #if($cfg.conjInfoMap.get($table.name).get('resultStr'))
-import ${package.Entity}.vo.PageData;
+import ${package.Entity}.vo.Page;
 import java.util.List;
 #end
 #macro(tolowercase $str)$str.substring(0,1).toLowerCase()$str.substring(1)#end
@@ -32,19 +32,19 @@ public class ${table.serviceImplName} extends BaseServiceImpl<${entity}> impleme
 	}
 
 	@Override
-	public PageData<${entity}> conjQueryPage(PageData<${entity}> pageData,${entity} condition) {
-		if(pageData==null){
-			pageData = new PageData<${entity}>();
+	public Page<${entity}> conjQueryPage(Page<${entity}> page,${entity} condition) {
+		if(page==null){
+			page = new Page<${entity}>();
 		}
 		//设置条件
-		pageData.setCondition(condition);
+		page.setCondition(condition);
 		//设置数据
-		List<${entity}> list = #tolowercase(${entity})Mapper.conjQueryPage(pageData);
-		pageData.setRows(list);
+		List<${entity}> list = #tolowercase(${entity})Mapper.conjQueryPage(page);
+		page.setRows(list);
 		//设置记录
-		int total = #tolowercase(${entity})Mapper.conjQueryCount(pageData.getCondition());
-		pageData.setTotal(total);
-		return pageData;
+		int total = #tolowercase(${entity})Mapper.conjQueryCount(page.getCondition());
+		page.setTotal(total);
+		return page;
 	}
 
 	@Override

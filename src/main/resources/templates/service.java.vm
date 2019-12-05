@@ -2,7 +2,7 @@ package ${package.Service};
 
 import ${package.Entity}.${entity};
 #if($cfg.conjInfoMap.get($table.name).get('resultStr'))
-import ${package.Entity}.vo.PageData;
+import ${package.Entity}.vo.Page;
 import java.util.List;
 #end
 
@@ -17,7 +17,7 @@ public interface ${table.serviceName} extends BaseService<${entity}> {
 	//联合查询接口
 	List<${entity}> conjQueryList(${entity} condition);
 	
-	PageData<${entity}> conjQueryPage(PageData<${entity}> pageData,${entity} condition);
+	Page<${entity}> conjQueryPage(Page<${entity}> page,${entity} condition);
 	
 	int conjQueryCount(${entity} condition);
 	

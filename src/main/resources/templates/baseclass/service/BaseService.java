@@ -4,12 +4,12 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
-import ${package.Entity}.vo.PageData;
+import ${package.Entity}.vo.Page;
 
 public interface BaseService<T> {
 	List<T> findList(T condition);
 	
-	PageData<T> findPage(PageData<T> pageData,T condition);
+	Page<T> findPage(Page<T> page,T condition);
 	
 	int findCount(T condition);
 	

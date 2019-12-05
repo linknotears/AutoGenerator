@@ -4,13 +4,13 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
-import ${package.Entity}.vo.PageData;
+import ${package.Entity}.vo.Page;
 
 @Repository("${package.Mapper}.BaseMapper")
 public interface BaseMapper<T> {
 	List<T> selectList(@Param("condition") T condition);
 	
-	List<T> selectPage(PageData<T> pageData);
+	List<T> selectPage(Page<T> page);
 	
 	int selectCount(@Param("condition") T condition);
 	

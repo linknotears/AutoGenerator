@@ -3,7 +3,7 @@ package ${package.Entity}.vo;
 import java.util.List;
 
 
-public class PageData<T> {
+public class Page<T> {
 	private int page = 1;//当前页
 	private int total;//总记录数
 	private int totalPage;//总页数
