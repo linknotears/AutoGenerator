@@ -74,7 +74,7 @@
 			}
 			return this.current;
 		},
-		add: function(deferred){
+		add: function(deferred) {
 			this.deferreds.push(deferred);
 		},
 		/*getFirst: function(){
@@ -350,6 +350,22 @@
 									formatStr = "yyyy-MM-dd hh:mm:ss";
 								}
 								return this.dateFormat(time, formatStr)
+							},
+
+							formatTime: function(time,isShowSecond = true){
+								var formatStr = "hh:mm";
+								if(isShowSecond){
+									formatStr = "hh:mm:ss";
+								}
+								if((time+"").indexOf("-") > -1){
+									if(isShowSecond){
+										return time.substring(11);
+									}else{
+										return time.substring(11,16);
+									}
+								}else{
+									return this.dateFormat(time, formatStr)
+								}
 							},
 							
 							formatDate: function(time) {
