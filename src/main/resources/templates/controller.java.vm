@@ -97,7 +97,7 @@ public class ${table.controllerName} extends BaseController{
 	#end
 	#end
 	) { 
-		Res resultData = new Res();
+		Res res = new Res();
 		int i = 0;
 		try {
 			#foreach($field in ${table.fields})
@@ -147,12 +147,12 @@ public class ${table.controllerName} extends BaseController{
 			i = #tolowercase($entity)Service.saveOrUpdate(id, #tolowercase($entity));
 		} catch (Exception e) {
 			e.printStackTrace();
-			resultData.setCode(-1);
+			res.setCode(-1);
 		}
 		#if($cfg.loginTable==$table.name)
 		//更新session
 		if(id != null){
-			if(resultData.getCode()!=-1){
+			if(res.getCode()!=-1){
 				if(session.getAttribute("existUser")!=null){
 					#tab([1..5])#tolowercase($entity) = #tolowercase($entity)Service.#query()ById(id);
 					session.setAttribute("existUser",#tolowercase($entity));
@@ -160,81 +160,81 @@ public class ${table.controllerName} extends BaseController{
 			}
 		}
 		#end
-		resultData
+		res
 		.setData("count", i)
 		.setData("id",#tolowercase($entity).get#toheaduppercase(${propId})());;
-		return resultData;
+		return res;
 	}
 	
 	@RequestMapping("/update")//允许置空
 	public @ResponseBody Res update(${entity} #tolowercase($entity)){
-		Res resultData = new Res();
+		Res res = new Res();
 		int i = 0;
 		try {
 			i = #tolowercase($entity)Service.updateById(#tolowercase($entity));
 		} catch (Exception e) {
 			e.printStackTrace();
-			resultData.setCode(-1);
+			res.setCode(-1);
 		}
-		resultData.setData("count", i);
-		return resultData;
+		res.setData("count", i);
+		return res;
 	}
 	
 	@RequestMapping("/remove")
 	public @ResponseBody Res remove(#touppercase(${columnType}) id){
-		Res resultData = new Res();
+		Res res = new Res();
 		int i = 0;
 		try {
 			i = #tolowercase($entity)Service.removeById(id);
 		} catch (Exception e) {
 			e.printStackTrace();
-			resultData.setCode(-1);
+			res.setCode(-1);
 		}
-		resultData.setData("count", i);
-		return resultData;
+		res.setData("count", i);
+		return res;
 	}
 	
 	@RequestMapping("/batchRemove")
 	public @ResponseBody Res remove(#touppercase(${columnType})[] ids){
-		Res resultData = new Res();
+		Res res = new Res();
 		int i = 0;
 		try {
 			Object[] objArr = ids;
 			i = #tolowercase($entity)Service.removeBatchIds(objArr);
 		} catch (Exception e) {
 			e.printStackTrace();
-			resultData.setCode(-1);
+			res.setCode(-1);
 		}
-		resultData.setData("count", i);
-		return resultData;
+		res.setData("count", i);
+		return res;
 	}
 	
 	@RequestMapping("/findList")
 	public @ResponseBody Res #query()List($entity entity){
-		Res resultData = new Res();
+		Res res = new Res();
 		List<${entity}> #tolowercase($entity)s = null;
 		try {
 			#tab([1..3])#tolowercase($entity)s = #tolowercase($entity)Service.#query()List(entity);
 		} catch (Exception e) {
 			e.printStackTrace();
-			resultData.setCode(-1);
+			res.setCode(-1);
 		}
-		resultData.setData("#tolowercase($entity)s", #tolowercase($entity)s);
-		return resultData;
+		res.setData("#tolowercase($entity)s", #tolowercase($entity)s);
+		return res;
 	}
 
 	@RequestMapping("/findById")
 	public @ResponseBody Res #query()ById(#touppercase(${columnType}) id){
-		Res resultData = new Res();
+		Res res = new Res();
 		${entity} #tolowercase($entity) = null;
 		try {
 			#tab([1..3])#tolowercase($entity) = #tolowercase($entity)Service.#query()ById(id);
 		} catch (Exception e) {
 			e.printStackTrace();
-			resultData.setCode(-1);
+			res.setCode(-1);
 		}
-		resultData.setData("#tolowercase($entity)", #tolowercase($entity));
-		return resultData;
+		res.setData("#tolowercase($entity)", #tolowercase($entity));
+		return res;
 	}
 	
 	@RequestMapping("/findPage")
@@ -268,12 +268,12 @@ public class ${table.controllerName} extends BaseController{
 					.setCode(-2)
 					.setMessage("用户已存在！");
 		}
-		Res resultData = saveOrUpdate(null, #tolowercase($entity),null#foreach($field in ${table.fields})#set($type = $cfg.propertyType.get($table.name).get($field.name))#if( $type == 'file' || $type == 'img' || (!$type && ${field.propertyName.contains('img')})),null#end#end);
-		if(resultData.getCode()==0){
+		Res res = saveOrUpdate(null, #tolowercase($entity),null#foreach($field in ${table.fields})#set($type = $cfg.propertyType.get($table.name).get($field.name))#if( $type == 'file' || $type == 'img' || (!$type && ${field.propertyName.contains('img')})),null#end#end);
+		if(res.getCode()==0){
 			request.getSession().setAttribute("existUser", #tolowercase($entity));
-			resultData.setData("existUser", #tolowercase($entity));
+			res.setData("existUser", #tolowercase($entity));
 		}
-		return resultData;
+		return res;
 	}
 	
 	@RequestMapping(value = "/login",method = {RequestMethod.POST})
