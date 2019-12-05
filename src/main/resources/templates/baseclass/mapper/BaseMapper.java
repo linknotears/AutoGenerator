@@ -39,4 +39,8 @@ public interface BaseMapper<T> {
 	String selectMaxValue(@Param("columnName") String columnName);
 	
 	String selectMaxValueByCondition(@Param("columnName") String columnName,@Param("condition") String condition);
+	
+	String selectValue(@Param("columnName") String columnName,@Param("condition") String condition);
+	
+	T selectOne(@Param("condition") T condition);
 }

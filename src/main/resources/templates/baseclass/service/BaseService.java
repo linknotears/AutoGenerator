@@ -2,6 +2,7 @@ package ${package.Service};
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 
 import ${package.Entity}.vo.PageData;
 
@@ -37,4 +38,8 @@ public interface BaseService<T> {
 	String findMaxValue(String columnName);
 	
 	String findMaxValue(String columnName,String condition);
+	
+	String findValue(String columnName,String condition);
+	
+	T findOne(T condition);
 }

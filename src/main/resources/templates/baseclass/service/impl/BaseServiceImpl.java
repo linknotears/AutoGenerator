@@ -47,6 +47,16 @@ public abstract class BaseServiceImpl<T> implements BaseService<T> {
 	}
 	
 	@Override
+	public String findValue(String columnName,String condition) {
+		return baseMapper.selectValue(columnName,condition);
+	}
+	
+	@Override
+	public T findOne(T condition) {
+		return baseMapper.selectOne(condition);
+	}
+	
+	@Override
 	public T findById(Object id) {
 		return baseMapper.selectById(id);
 	}

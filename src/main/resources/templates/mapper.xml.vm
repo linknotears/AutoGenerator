@@ -102,6 +102,31 @@ $cfg.conjInfoMap.get($table.name).get('conjQueryStr')
    	where ${condition}
   </select>
   
+  <select id="selectValue" parameterType="java.lang.String" resultType="java.lang.String">
+  	select 
+   	${columnName}
+   	from `${table.name}`
+   	where ${condition}
+   	limit 0,1
+  </select>
+  
+  <select id="selectOne" parameterType="${package.Entity}.${entity}" resultMap="BaseResultMap">
+  	select 
+   	<include refid="Base_Column_List" />
+   	from `${table.name}`
+   	<where>
+   		<if test="condition!=null">
+			#foreach($field in ${table.fields})
+    		<if test="condition.${field.propertyName}!=null">
+    			and ${field.name} = #{condition.${field.propertyName},javaType=${field.columnType}}
+    		</if>
+			#end
+    	</if>
+    	${condition.customCondition}
+   	</where>
+   	limit 0,1
+  </select>
+  
   <select id="selectPage" resultMap="BaseResultMap" parameterType="${package.Entity}.vo.PageData">
   	select 
    	<include refid="Base_Column_List" />
