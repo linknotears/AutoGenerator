@@ -95,6 +95,13 @@ $cfg.conjInfoMap.get($table.name).get('conjQueryStr')
    	from `${table.name}`
   </select>
   
+  <select id="selectMaxValueByCondition" parameterType="java.lang.String" resultType="java.lang.String">
+  	select 
+   	Max(${columnName})
+   	from `${table.name}`
+   	where ${condition}
+  </select>
+  
   <select id="selectPage" resultMap="BaseResultMap" parameterType="${package.Entity}.vo.PageData">
   	select 
    	<include refid="Base_Column_List" />

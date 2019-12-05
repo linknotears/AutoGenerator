@@ -37,4 +37,6 @@ public interface BaseMapper<T> {
 	int updateByCondition(@Param("id") T entity, @Param("condition") T condition);
 	
 	String selectMaxValue(@Param("columnName") String columnName);
+	
+	String selectMaxValueByCondition(@Param("columnName") String columnName,@Param("condition") String condition);
 }

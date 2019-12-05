@@ -42,6 +42,11 @@ public abstract class BaseServiceImpl<T> implements BaseService<T> {
 	}
 	
 	@Override
+	public String findMaxValue(String columnName,String condition) {
+		return baseMapper.selectMaxValueByCondition(columnName,condition);
+	}
+	
+	@Override
 	public T findById(Object id) {
 		return baseMapper.selectById(id);
 	}

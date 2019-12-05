@@ -6,7 +6,7 @@ import java.util.List;
 import ${package.Entity}.vo.PageData;
 
 public interface BaseService<T> {
-List<T> findList(T condition);
+	List<T> findList(T condition);
 	
 	PageData<T> findPage(PageData<T> pageData,T condition);
 	
@@ -35,4 +35,6 @@ List<T> findList(T condition);
 	int updateByCondition(T entity, T condition);
 	
 	String findMaxValue(String columnName);
+	
+	String findMaxValue(String columnName,String condition);
 }
