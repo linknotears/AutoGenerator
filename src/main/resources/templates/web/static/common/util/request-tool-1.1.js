@@ -173,7 +173,7 @@
 			//两种选择提交方式
 			config.data = $(config.form).serialize();
 			if(config.multipart != undefined && config.multipart == true){
-				config.data = new FormData(form);
+				config.data = new FormData(config.form);
 				config.processData = false;
 				config.contentType = false;
 			}
@@ -265,7 +265,19 @@
 					if(config.error){
 						config.error(res);
 					}
-					deferred.resolve(res);
+					//解析下一个deferred
+					let deferred = deferObj.next();
+					if(deferred){
+						deferred.resolve(res);
+						console.log("本次请求失败,解析下一个deferred");
+					}else{
+						console.log("本次请求失败,deferreds同步链执行完成");
+					}
+
+					//关闭加载图标
+					if(typeof(layer)!="undefined" && config.async) {
+						layer.close(index);//关闭加载图标
+					}
 	 			}
 			});
 		}
