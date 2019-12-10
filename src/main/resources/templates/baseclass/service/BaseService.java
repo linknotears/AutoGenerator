@@ -1,12 +1,14 @@
 package ${package.Service};
 
 import java.util.List;
-
+import java.util.Map;
 import org.apache.ibatis.annotations.Param;
 
 import ${package.Entity}.vo.Page;
 
 public interface BaseService<T> {
+	List<Map<String,Object>> findInject(String field, String table, String condition);
+	
 	List<T> findList(T condition);
 	
 	Page<T> findPage(Page<T> page,T condition);

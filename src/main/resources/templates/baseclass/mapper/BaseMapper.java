@@ -1,6 +1,7 @@
 package ${package.Mapper};
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -8,6 +9,8 @@ import ${package.Entity}.vo.Page;
 
 @Repository("${package.Mapper}.BaseMapper")
 public interface BaseMapper<T> {
+	List<Map<String,Object>> selectInject(@Param("field") String field,@Param("table") String table,@Param("condition") String condition);
+	
 	List<T> selectList(@Param("condition") T condition);
 	
 	List<T> selectPage(Page<T> page);

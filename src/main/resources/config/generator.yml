@@ -1,4 +1,4 @@
-#AutoGenerator 
+#AutoGenerator
 #普通配置 
 onlyCreateTemplates: !!str false
 #tablePrefix: cy_

@@ -1,6 +1,7 @@
 package ${package.ServiceImpl};
 
 import java.util.List;
+import java.util.Map;
 
 import ${package.Entity}.vo.Page;
 import ${package.Mapper}.BaseMapper;
@@ -9,6 +10,10 @@ import ${package.Service}.BaseService;
 public abstract class BaseServiceImpl<T> implements BaseService<T> {
 
 	protected BaseMapper<T> baseMapper;
+	
+	public List<Map<String,Object>> findInject(String field, String table, String condition) {
+		return baseMapper.selectInject(field, table, condition);
+	}
 	
 	@Override
 	public List<T> findList(T condition) {
