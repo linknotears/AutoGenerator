@@ -29,7 +29,7 @@ login.table: user
 login.usercolumn: username
 login.pwdcolumn: password
 #需要逆向的表(不写默认是全部表)
-tables: authority,my_authority
+tables: coupon,coupon_card
 #是否初始化（生成拷贝文件）只生成baseclass、xml、和各层的文件
 createWebtemplates: !!str true
 createConfig: !!str false
@@ -89,12 +89,12 @@ package.suffix.xml: mapper
 ## 使用方法一开始为一个数组，第一层为所需要连接的表（为主表），第二层是要连接的表，可以是多个，第三层是第二层要连接的表
 conj.infor: 
   - 
-    table: find
+    table: coupon
     innertables: #mybatis结果集是有顺序的，一对一的必须要写在前边
       - 
-        table: img
-        condition: find.find_id = img.use_id
-        relation: many
+        table: coupon_card
+        condition: coupon.coupon_id = coupon_card.coupon_id
+        relation: one
         conjtype: left
   - 
     table: lose

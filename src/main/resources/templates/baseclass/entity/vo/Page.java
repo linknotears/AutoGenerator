@@ -29,7 +29,7 @@ public class Page<T> {
 	}
 	
 	
-	public PageData() {
+	public Page() {
 		 
 	}
 	

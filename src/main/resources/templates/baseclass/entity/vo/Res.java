@@ -3,7 +3,7 @@ package ${package.Entity}.vo;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ResultData {
+public class Res {
 	/**
 	 * 0代表操作没有问题，-1代表操作失败
 	 */
@@ -18,7 +18,7 @@ public class ResultData {
 		return msg;
 	}
 
-	public ResultData setMsg(String msg) {
+	public Res setMsg(String msg) {
 		this.msg = msg;
 		return this;
 	}
@@ -27,7 +27,7 @@ public class ResultData {
 		return code;
 	}
 
-	public ResultData setCode(int code) {
+	public Res setCode(int code) {
 		this.code = code;
 		return this;
 	}
@@ -36,7 +36,7 @@ public class ResultData {
 		return data;
 	}
 
-	public ResultData setData(String key,Object value) {
+	public Res setData(String key,Object value) {
 		data.put(key, value);
 		return this;
 	}
