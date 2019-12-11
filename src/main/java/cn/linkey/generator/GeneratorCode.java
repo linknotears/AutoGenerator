@@ -1098,7 +1098,7 @@ public class GeneratorCode {
 						.append("\n\n\t<select id=\"conjQueryPage\" resultMap=\"ConjResultMap\" parameterType=\"")
 						.append(basePackage)
 						.append(".")
-						.append("vo.PageData")
+						.append("vo.Page")
 						.append("\">\n")
 						.append("\t\tselect \n\t\t<include refid=\"Conj_Column_List\" />\n\t\tfrom ")
 						.append("(select *\n\t\t\tfrom ")
