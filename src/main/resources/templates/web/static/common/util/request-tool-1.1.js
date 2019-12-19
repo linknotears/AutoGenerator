@@ -15,6 +15,7 @@
 	loadUrls = [];
 	loadEls = []; 
 	loadParameters = [];
+	showloading = true;
 	//定义全局变量
 	function define(defineData){
 		Object.assign(globalData,defineData);
@@ -74,7 +75,7 @@
 			}
 			return this.current;
 		},
-		add: function(deferred) {
+		add: function(deferred){
 			this.deferreds.push(deferred);
 		},
 		/*getFirst: function(){
@@ -136,6 +137,7 @@
 		*/
 		config.async = config.async==undefined? true : config.async;
 		config.prep = config.prep==undefined? true : config.prep;//preprocess是否预处理
+		config.showloading = config.showloading==undefined? true : config.showloading;
 		//模板
 		/* 
 		for (var index = 0; index < form.length; index++) {
@@ -189,7 +191,7 @@
 		}
 		function ajaxSubmit(preRes){
 			let index = undefined;
-			if(typeof(layer)!="undefined" && config.async) {
+			if(typeof(layer)!="undefined" && config.async && config.showloading) {
 				index = layer.load(1);//显示加载图标
 			}
 			$.ajax({
@@ -275,7 +277,7 @@
 					}
 
 					//关闭加载图标
-					if(typeof(layer)!="undefined" && config.async) {
+					if(typeof(layer)!="undefined" && config.async &&  config.showloading) {
 						layer.close(index);//关闭加载图标
 					}
 	 			}
@@ -351,22 +353,6 @@
 								}
 								return this.dateFormat(time, formatStr)
 							},
-
-							formatTime: function(time,isShowSecond = true){
-								var formatStr = "hh:mm";
-								if(isShowSecond){
-									formatStr = "hh:mm:ss";
-								}
-								if((time+"").indexOf("-") > -1){
-									if(isShowSecond){
-										return time.substring(11);
-									}else{
-										return time.substring(11,16);
-									}
-								}else{
-									return this.dateFormat(time, formatStr)
-								}
-							},
 							
 							formatDate: function(time) {
 								if((time+"").indexOf("-") > -1){
@@ -437,7 +423,7 @@
 	function loadData(){
 		//记录索引
 		loadIndex = 0;
-		if(typeof(layer)!="undefined"){
+		if(typeof(layer)!="undefined" && showloading){
 			var index = layer.load(1);//显示加载图标
 		}
 		for(var i = 0; i < loadUrls.length; i++){
@@ -449,7 +435,7 @@
 				success: function(data){
 					console.log("loadIndex=" + loadIndex);
 					if(loadUrls[loadIndex].refNames){
-						for(var j = 0; j < loadUrls[loadIndex].refNames.length; j++){
+						for(var j = 0; j < loadUrls[loadIndex].refNames.length; j++) {
 							/*
 							let refData1 = globalData.data[loadUrls[loadIndex].refNames[j]];
 							let refData2 = data[loadUrls[loadIndex].refNames[j]];
@@ -488,7 +474,7 @@
 			});
 		}
 		deferObj.done(function(){
-			if(typeof(layer) != "undefined" && typeof(index) != "undefined") {
+			if(typeof(layer) != "undefined" && typeof(index) != "undefined" && showloading) {
 				layer.close(index);
 			}
 		})
