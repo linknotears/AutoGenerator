@@ -34,8 +34,11 @@ loadUrls =[
 #end
 #end
 ];
-//初始化数据
-init();
+
+$(function(){
+	//初始化数据
+	init();
+})
 
 var prefix = "${cfg.prefixCtrl}#tolowercase(${entity})/";
 var htmlPrefix = "${cfg.prefixView}#tolowercase(${entity})/";
