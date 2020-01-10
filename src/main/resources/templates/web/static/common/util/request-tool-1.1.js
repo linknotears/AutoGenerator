@@ -429,6 +429,7 @@
 		for(var i = 0; i < loadUrls.length; i++){
 			request({
 				url: loadUrls[i].url,
+				type: loadUrls[i].type==undefined? loadUrls[i].type : 'post',
 				data: loadUrls[i].data==undefined? {} : loadUrls[i].data,
 				prep: loadUrls[i].prep,
 				async: false,
