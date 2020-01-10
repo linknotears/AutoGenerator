@@ -197,7 +197,7 @@
 			$.ajax({
 				url: config.url,
 				data: config.data,
-				type: 'post', 
+				type: config.type? config.type : 'post',
 				//async: false,//异步阻塞容易卡死
 				//FormData上传时要加这两个配置项，不然会报错
 		        processData: config.processData,
