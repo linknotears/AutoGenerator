@@ -8,6 +8,11 @@ import java.io.Serializable;
 import ${pkg};
 #end
 #end
+#if($cfg.useMyBatitsPlus == 'true')
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
+#end
 /**
  * $!{table.comment}
  *
@@ -17,15 +22,36 @@ import ${pkg};
 public class ${entity} implements Serializable {
 
     private static final long serialVersionUID = 1L;
-	
 ## ----------  BEGIN 字段循环遍历  ----------
 #foreach($field in ${table.fields})
+
+## ----------  BEGIN mybatisplus注解
+#if($cfg.useMyBatitsPlus == 'true')
+#if(${field.keyFlag})
+## 主键
+#if(${field.keyIdentityFlag})
+    @TableId(value = "${field.name}", type = IdType.AUTO)
+#else
+    @TableId("${field.name}")
+#end
+## 普通字段
+#else
+    @TableField("${field.name}")
+#end
+#end
+## ----------  END mybatisplus注解
 	private ${field.propertyType} ${field.propertyName};
 #end
 ## ----------  END 字段循环遍历  ----------
 
+#if($cfg.useMyBatitsPlus == 'true')
+	@TableLogic
+#end
 	private String customCondition = "";
 	
+#if($cfg.useMyBatitsPlus == 'true')
+	@TableLogic
+#end
 	private String orderby = "";
 ## ---------- BEGIN  遍历联合信息  ----------
 #if($cfg.conjInfoMap.get($table.name))
