@@ -1,37 +1,36 @@
 package ${package.Mapper};
 
 import java.util.List;
-import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import ${package.Entity}.vo.Page;
 
 @Repository("${package.Mapper}.BaseMapper")
-public interface BaseMapper<T> {
-	List<Map<String,Object>> selectInject(@Param("field") String field,@Param("table") String table,@Param("condition") String condition);
+public interface BaseMapper<T> extends com.baomidou.mybatisplus.core.mapper.BaseMapper<T>{
+	int insertOrUpdate(T entity);
 	
-	List<T> selectList(@Param("condition") T condition);
+	List<T> findList(@Param("condition") T condition);
 	
-	List<T> selectPage(Page<T> page);
+	List<T> findPage(Page<T> page);
 	
-	int selectCount(@Param("condition") T condition);
+	int findCount(@Param("condition") T condition);
 	
-	T selectById(Object id);
+	T findById(Object id);
 	
-	int deleteBatchIds(Object... ids);
+	int removeBatchIds(Object... ids);
 	//条件删除，条件不允许为空
-	int deleteByCondition(T condition);
+	int removeByCondition(T condition);
 	
-	int insertByList(List<T> entities);
+	int saveByList(List<T> entities);
 
-	int insert(T entity);
+	int save(T entity);
 	
 	int updateByIdIgnoreNull(T entity);
 	
-	int deleteById(Object id);
+	int removeById(Object id);
 	
-	int updateById(T entity);
+	int updateByIdSetNull(T entity);
 	
 	int updateByPartIdIgnoreNull(@Param("id") Object id,@Param("entity") T entity);
 	
@@ -39,11 +38,11 @@ public interface BaseMapper<T> {
 	
 	int updateByCondition(@Param("id") T entity, @Param("condition") T condition);
 	
-	String selectMaxValue(@Param("columnName") String columnName);
+	String findMaxValue(@Param("columnName") String columnName);
 	
-	String selectMaxValueByCondition(@Param("columnName") String columnName,@Param("condition") String condition);
+	String findMaxValueByCondition(@Param("columnName") String columnName,@Param("condition") String condition);
 	
-	String selectValue(@Param("columnName") String columnName,@Param("condition") String condition);
+	String findValue(@Param("columnName") String columnName,@Param("condition") String condition);
 	
-	T selectOne(@Param("condition") T condition);
+	T findOne(@Param("condition") T condition);
 }

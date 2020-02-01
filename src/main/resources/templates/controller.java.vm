@@ -162,21 +162,7 @@ public class ${table.controllerName} extends BaseController{
 		#end
 		res
 		.setData("count", i)
-		.setData("id",#tolowercase($entity).get#toheaduppercase(${propId})());;
-		return res;
-	}
-	
-	@RequestMapping("/update")//允许置空
-	public @ResponseBody Res update(${entity} #tolowercase($entity)){
-		Res res = new Res();
-		int i = 0;
-		try {
-			i = #tolowercase($entity)Service.updateById(#tolowercase($entity));
-		} catch (Exception e) {
-			e.printStackTrace();
-			res.setCode(-1);
-		}
-		res.setData("count", i);
+		.setData("id",#tolowercase($entity).get#toheaduppercase(${propId})());
 		return res;
 	}
 	
@@ -185,7 +171,7 @@ public class ${table.controllerName} extends BaseController{
 		Res res = new Res();
 		int i = 0;
 		try {
-			i = #tolowercase($entity)Service.removeById(id);
+			i = #tolowercase($entity)Service.removeById(id)? 1 : 0;
 		} catch (Exception e) {
 			e.printStackTrace();
 			res.setCode(-1);

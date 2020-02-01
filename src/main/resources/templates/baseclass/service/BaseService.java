@@ -1,13 +1,17 @@
 package ${package.Service};
 
+import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
-import org.apache.ibatis.annotations.Param;
+
+import com.colin.jiji.dao.BaseMapper;
 
 import ${package.Entity}.vo.Page;
 
-public interface BaseService<T> {
-	List<Map<String,Object>> findInject(String field, String table, String condition);
+public interface BaseService<T> extends IService<T> {
+	//适应mybatisplus
+	boolean saveOrUpdate(T entity);
+	
+	BaseMapper<T> getBaseMapper();
 	
 	List<T> findList(T condition);
 	
@@ -21,13 +25,13 @@ public interface BaseService<T> {
 	
 	int saveByList(List<T> entities);
 
-	int save(T entity);
+	//int save(T entity);
 	
 	int updateByIdIgnoreNull(T entity);
 	
-	int removeById(Object id);
+	boolean removeById(Serializable id);
 	
-	int updateById(T entity);
+	int updateByIdSetNull(T entity);
 	
 	T findById(Object id);
 	

@@ -1,7 +1,7 @@
 #AutoGenerator 
 #普通配置 
-onlyCreateTemplates: !!str true
-tablePrefix: cy_
+onlyCreateTemplates: !!str false
+#tablePrefix: hhh_
 #项目名
 project.name: test
 #-- 俩id挂了、generator之前做个备份、saveOrUpdateByCheck方法bug:检测没有记录无法插入id、增加一个条件更新
@@ -10,8 +10,10 @@ OutputDir: D:/Project/*{project.name}/src/main/java
 OutputDirConfig: D:/Project/*{project.name}/src/main/resources/
 #静态资源路径 
 OutputDirStatic: D:/Project/*{project.name}/src/main/resources/static
+#静态资源路径 
+OutputDirJars: D:/Project/*{project.name}/src/main/resources/jars
 #templatesDir D:/Project/*{project.name}/src/main/resources/views
-OutputDirTemplates: C:\wamp\www\repast-server\source\application\api
+OutputDirTemplates: D:/Project/*{project.name}/src/main/resources/views/
 #templatesPath
 templatesPath: classes/templates
 #作者名
@@ -21,17 +23,18 @@ prefix.ctrl: /
 #html访问 uri前缀
 prefix.view: /view/
 #基础包名  
-basePackage: test
+basePackage: com.colin.jiji
 #登录表名
 login.table: user
 login.usercolumn: username
 login.pwdcolumn: password
 #需要逆向的表(不写默认是全部表)
-tables: 
+tables: archives_of_chicken_farmers_chicken_shed_data,archives_of_chicken_farmers_data,village_data,town_data,county_data,city_data,province_data
 #是否初始化（生成拷贝文件）只生成baseclass、xml、和各层的文件
 createWebtemplates: !!str true
-createConfig: !!str false
-createNotAnalyze: !!str false
+createConfig: !!str true
+createStatic: !!str false
+createJars: !!str false
 createAnalyze: !!str false
 createGeneratorConfig: !!str false
 createBaseclass: |- 
@@ -45,9 +48,9 @@ isOverFile: !!str false
 
 #jdbc配置
 jdbc.driver: com.mysql.cj.jdbc.Driver
-jdbc.url: jdbc:mysql://app.j66c.com:3306/repast?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=CONVERT_TO_NULL
+jdbc.url: jdbc:mysql://47.92.127.224:3306/manage_power?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=CONVERT_TO_NULL
 jdbc.user: root
-jdbc.pwd: lang1987
+jdbc.pwd: handsome1.
 #5.0的时候会更改配置
 mysql.version: !!str 5.0
 #各层包名配置
@@ -86,109 +89,42 @@ package.suffix.xml: mapper
 ## 使用方法一开始为一个数组，第一层为所需要连接的表（为主表），第二层是要连接的表，可以是多个，第三层是第二层要连接的表
 conj.infor: 
   - 
-    table: order
+    table: archives_of_chicken_farmers_chicken_shed_data
     innertables: #mybatis结果集是有顺序的，一对一的必须要写在前边
       - 
-        table: order_item
-        condition: order.oid = order_item.oid
-        relation: many
-        conjtype: left
+        table: archives_of_chicken_farmers_data
+        condition: archives_of_chicken_farmers_chicken_shed_data.chicken_farmers = archives_of_chicken_farmers_data.id
+        relation: one
+        conjtype: inner
 #一个表可能有多个模板，所以这里面有多少个就要建多少个FileOutput
 webtemplates: 
-#  - 
-#    tables: [agreement]
-#    template: list.html
-#    icons: ["fa fa-calendar-plus-o","fa fa-user","fa fa-bandcamp","",""]
-#    outpath: ${entity}/list.html
-#    exclude: all.bz1,all.bz2
-#  - 
-#    tables: [agreement,wh_goods]
-#    template: add.html
-#    outpath: ${entity}/add.html
-#    exclude: all.bz1,all.bz2
-#  - 
-#    tables: [agreement,,wh_goods]
-#    template: edit.html
-#    outpath: ${entity}/edit.html
-#    exclude: all.bz1,all.bz2
-#  - 
-#    tables: [agreement,wh_goods]
-#    template: edit_vertical.html
-#    outpath: ${entity}/edit_vertical.html
-#    exclude: all.bz1,all.bz2
   - 
-    tables: [cy_account_record,cy_withdraw]
-    template: php/Controller.php
-    outpath: controller/${Entity}.php
+    tables: [hhh_member]
+    template: huihaha/add.html
+    outpath: ${entity}/add.html
     exclude: all.bz1,all.bz2
   - 
-    tables: [cy_account_record,cy_withdraw]
-    template: php/Entity.php
-    outpath: model/${Entity}.php
+    tables: [hhh_member]
+    template: huihaha/edit.html
+    outpath: ${entity}/edit.html
+    exclude: all.bz1,all.bz2
+  - 
+    tables: [hhh_member]
+    template: huihaha/list.html
+    outpath: ${entity}/list.html
     exclude: all.bz1,all.bz2
 #指定文件类型（表名重复时不识别,加时间下划线自动创建）:{0:女,1:男}、img、sex、file、(date、datetime-加_自动创建时间）、（_uuid、_dateNo、_squNo,包含双下滑先表示不可见不可加，一个下划线可见不可加）
 propertyType: 
 #  uriPrefix:key:name:firstId(用于判断是否使用函数):secondId(用于判断初始化和change触发名)
-  club:
-    club_id: _dateNo
-    logo_url: img
-    state: switch
-    is_show: switch
-    wh_id: wareHouse:whId:name
-  goods: 
-    goods_id: _dateNo
-    type_id: goodsType:typeId:name
+  hhh_member: 
     pic: img
-  merch_application:
-    sign_pic: img
-    bus_license_pic: img
-    card_type: |-
-      {"0":"身份证（限中国大陆居民）","1":"护照（限境外人士）"}
-    card_front: img
-    card_back: img
-    set_acc_type: |-
-      {"0":"对公账户","1":"法人账户"}
-  pay_setting: 
-    main_switch: switch
-    wxpay_switch: switch
-    alipay_switch: switch
-    integral_switch: switch
-    balance_switch: switch
-  user: 
-    username: true
-    use_club_id: club:clubId:name
-  call_service:
-    call_id: uuid
-  dining_table:
-    no: uuid
-    joint_no: diningTable:dtNo:dtNo
-    state: switch
-  queue_up:
-    no: uuid
-    qu_id: _squNo
-  order: 
-    oid: _dateNo
-    club_id: club:clubId:name
-    operate_time: _datetime
-  order_item:
-    item_id: __uuid
-  wh_goods: 
-    whg_id: _dateNo
-    wh_id: wareHouse:whId:name
-    type_id: goodsType:typeId:name
-    pic: img
-  coupon:
-    club_id: club:clubId:name
-    state: switch
-  coupon_card: 
-    card_id: _dateNo
-    coupon_id: coupon:couponId:name
-  coupon_record: 
-    cr_id: _dateNo
-    use_time: _datetime
-    club_id: club:clubId:name
-    state: switch
-    pay_type: |-
-      {"0":"APP核销","1":"后台核销"}
-  charge_record: 
-    cr_id: _dateNo
+    mem_id: _in
+    openid: __out
+    role: __out
+    secret: __out
+    amount: __out
+    integral: __out
+  lose: 
+    lose_id: uuid
+  img:
+    url: img

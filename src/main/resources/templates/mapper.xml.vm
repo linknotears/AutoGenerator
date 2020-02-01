@@ -54,11 +54,7 @@ $cfg.conjInfoMap.get($table.name).get('resultStr')
 $cfg.conjInfoMap.get($table.name).get('conjQueryStr')
 #end
 
-    <select id="selectInject" resultType="map" parameterType="java.lang.String">
-        select ${field} from #d(){table} ${condition}
-    </select>
-
-  <select id="selectList" resultMap="BaseResultMap" parameterType="${package.Entity}.${entity}">
+  <select id="findList" resultMap="BaseResultMap" parameterType="${package.Entity}.${entity}">
   	select 
    	<include refid="Base_Column_List" />
    	from `${table.name}`
@@ -75,7 +71,7 @@ $cfg.conjInfoMap.get($table.name).get('conjQueryStr')
    	${condition.orderby}
   </select>
   
-  <select id="selectCount" parameterType="${package.Entity}.${entity}" resultType="java.lang.Integer">
+  <select id="findCount" parameterType="${package.Entity}.${entity}" resultType="java.lang.Integer">
   	select 
    	count(1)
    	from `${table.name}`
@@ -91,20 +87,20 @@ $cfg.conjInfoMap.get($table.name).get('conjQueryStr')
    	</where>
   </select>
   
-  <select id="selectMaxValue" parameterType="java.lang.String" resultType="java.lang.String">
+  <select id="findMaxValue" parameterType="java.lang.String" resultType="java.lang.String">
   	select 
    	Max(${columnName})
    	from `${table.name}`
   </select>
   
-  <select id="selectMaxValueByCondition" parameterType="java.lang.String" resultType="java.lang.String">
+  <select id="findMaxValueByCondition" parameterType="java.lang.String" resultType="java.lang.String">
   	select 
    	Max(${columnName})
    	from `${table.name}`
    	where ${condition}
   </select>
   
-  <select id="selectValue" parameterType="java.lang.String" resultType="java.lang.String">
+  <select id="findValue" parameterType="java.lang.String" resultType="java.lang.String">
   	select 
    	${columnName}
    	from `${table.name}`
@@ -112,7 +108,7 @@ $cfg.conjInfoMap.get($table.name).get('conjQueryStr')
    	limit 0,1
   </select>
   
-  <select id="selectOne" parameterType="${package.Entity}.${entity}" resultMap="BaseResultMap">
+  <select id="findOne" parameterType="${package.Entity}.${entity}" resultMap="BaseResultMap">
   	select 
    	<include refid="Base_Column_List" />
    	from `${table.name}`
@@ -129,7 +125,7 @@ $cfg.conjInfoMap.get($table.name).get('conjQueryStr')
    	limit 0,1
   </select>
   
-  <select id="selectPage" resultMap="BaseResultMap" parameterType="${package.Entity}.vo.Page">
+  <select id="findPage" resultMap="BaseResultMap" parameterType="${package.Entity}.vo.Page">
   	select 
    	<include refid="Base_Column_List" />
    	from `${table.name}`
@@ -147,7 +143,7 @@ $cfg.conjInfoMap.get($table.name).get('conjQueryStr')
     limit #{offset },#{limit }
   </select>
   
-  <insert id="insertByList" parameterType="${package.Entity}.${entity}" useGeneratedKeys="true" keyProperty="${propId}" keyColumn="${colId}">
+  <insert id="saveByList" parameterType="${package.Entity}.${entity}" useGeneratedKeys="true" keyProperty="${propId}" keyColumn="${colId}">
   	insert into `${table.name}`
     values 
 	<foreach collection="list" item="item" separator=",">
@@ -155,19 +151,19 @@ $cfg.conjInfoMap.get($table.name).get('conjQueryStr')
     </foreach>
   </insert>
   
-  <select id="selectById" resultMap="BaseResultMap" parameterType="${package.Entity}.${entity}" >
+  <select id="findById" resultMap="BaseResultMap" parameterType="${package.Entity}.${entity}" >
     select 
     <include refid="Base_Column_List" />
     from `${table.name}`
     where ${colId} = #{${propId},javaType=${table.fields[0].columnType}}
   </select>
   
-  <delete id="deleteById" parameterType="${package.Entity}.${entity}" >
+  <delete id="removeById" parameterType="${package.Entity}.${entity}" >
     delete from `${table.name}`
     where ${colId} = #{${propId},javaType=${table.fields[0].columnType}}
   </delete>
   
-  <delete id="deleteBatchIds" parameterType="${package.Entity}.${entity}" >
+  <delete id="removeBatchIds" parameterType="${package.Entity}.${entity}" >
     delete from `${table.name}`
     where ${colId} in 
 	<foreach collection="array" item="item" open="(" separator="," close=")">
@@ -175,7 +171,7 @@ $cfg.conjInfoMap.get($table.name).get('conjQueryStr')
 	</foreach>
   </delete>
   
-  <delete id="deleteByCondition" parameterType="${package.Entity}.${entity}" >
+  <delete id="removeByCondition" parameterType="${package.Entity}.${entity}" >
     delete from `${table.name}`
 	<where>
 		#foreach($field in ${table.fields})
@@ -186,7 +182,7 @@ $cfg.conjInfoMap.get($table.name).get('conjQueryStr')
    	</where>
   </delete>
   
-  <insert id="insert" parameterType="${package.Entity}.${entity}" useGeneratedKeys="true" keyProperty="${propId}" keyColumn="${colId}">
+  <insert id="save" parameterType="${package.Entity}.${entity}" useGeneratedKeys="true" keyProperty="${propId}" keyColumn="${colId}">
     insert into `${table.name}`
     <trim prefix="(" suffix=")" suffixOverrides="," >
 	#foreach($field in ${table.fields})
@@ -204,6 +200,41 @@ $cfg.conjInfoMap.get($table.name).get('conjQueryStr')
     </trim>
   </insert>
   
+  <insert id="insertOrUpdate" parameterType="${package.Entity}.${entity}" useGeneratedKeys="true" keyProperty="${propId}" keyColumn="${colId}">
+    <choose>
+    	<when test="id!=null">
+    		insert into `${table.name}`
+		    <trim prefix="(" suffix=")" suffixOverrides="," >
+			#foreach($field in ${table.fields})
+			  <if test="${field.propertyName} != null" >
+		        ${field.name},
+			  </if>
+		    #end
+		    </trim>
+		    <trim prefix="values (" suffix=")" suffixOverrides="," >
+		    #foreach($field in ${table.fields})
+		      <if test="${field.propertyName} != null" >
+		        #{${field.propertyName},javaType=${field.columnType}},
+		      </if>
+		    #end
+		    </trim>
+    	</when>
+    	<otherwise>
+    		update `${table.name}`
+		    <set>
+			#foreach($field in ${table.fields})
+			  #if(!${field.keyFlag})
+		      <if test="${field.propertyName} != null" >
+		        ${field.name} = #{${field.propertyName},javaType=${field.columnType}},
+		      </if>
+		      #end
+			#end  
+		    </set>
+		    where ${colId} = #{${propId},javaType=${table.fields[0].columnType}}
+    	</otherwise>
+    </choose>
+  </insert>
+  
   <update id="updateByIdIgnoreNull" parameterType="${package.Entity}.${entity}" >
     update `${table.name}`
     <set >
@@ -218,7 +249,7 @@ $cfg.conjInfoMap.get($table.name).get('conjQueryStr')
     where ${colId} = #{${propId},javaType=${table.fields[0].columnType}}
   </update>
   
-  <update id="updateById" parameterType="${package.Entity}.${entity}" >
+  <update id="updateByIdSetNull" parameterType="${package.Entity}.${entity}" >
     update `${table.name}`
     set 
 	#foreach($field in ${table.fields})#if(!${field.keyFlag})${field.name} = #{${field.propertyName},javaType=${field.columnType}}#if(${foreach.hasNext}),#end#end#end  
