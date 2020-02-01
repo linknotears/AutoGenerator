@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import ${package.Entity}.vo.Page;
 
 @Repository("${package.Mapper}.BaseMapper")
-public interface BaseMapper<T> extends com.baomidou.mybatisplus.core.mapper.BaseMapper<T>{
+public interface BaseMapper<T>#if($cfg.useMyBatitsPlus == 'true') extends com.baomidou.mybatisplus.core.mapper.BaseMapper<T>#end {
 	int insertOrUpdate(T entity);
 	
 	List<T> findList(@Param("condition") T condition);

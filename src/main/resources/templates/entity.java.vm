@@ -9,9 +9,9 @@ import ${pkg};
 #end
 #end
 #if($cfg.useMyBatitsPlus == 'true')
-import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.baomidou.mybatisplus.annotation.TableField;
 #end
 /**
  * $!{table.comment}
@@ -19,6 +19,9 @@ import com.baomidou.mybatisplus.annotation.TableLogic;
  * @author ${author}
  * @since ${date}
  */
+#if($cfg.useMyBatitsPlus == 'true')
+@TableName(value = "${table.name}")
+#end
 public class ${entity} implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -35,7 +38,7 @@ public class ${entity} implements Serializable {
     @TableId("${field.name}")
 #end
 ## 普通字段
-#else
+#elseif(${field.name.contains('_')})
     @TableField("${field.name}")
 #end
 #end
@@ -45,12 +48,12 @@ public class ${entity} implements Serializable {
 ## ----------  END 字段循环遍历  ----------
 
 #if($cfg.useMyBatitsPlus == 'true')
-	@TableLogic
+	@TableField(exist = false)
 #end
 	private String customCondition = "";
 	
 #if($cfg.useMyBatitsPlus == 'true')
-	@TableLogic
+	@TableField(exist = false)
 #end
 	private String orderby = "";
 ## ---------- BEGIN  遍历联合信息  ----------

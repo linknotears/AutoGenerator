@@ -7,7 +7,7 @@ import com.colin.jiji.dao.BaseMapper;
 
 import ${package.Entity}.vo.Page;
 
-public interface BaseService<T> extends IService<T> {
+public interface BaseService<T>#if($cfg.useMyBatitsPlus == 'true') extends IService<T>#end {
 	//适应mybatisplus
 	boolean saveOrUpdate(T entity);
 	

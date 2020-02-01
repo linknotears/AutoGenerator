@@ -2,6 +2,7 @@
 #普通配置 
 onlyCreateTemplates: !!str false
 #tablePrefix: hhh_
+useMyBatitsPlus: !!str true
 #项目名
 project.name: test
 #-- 俩id挂了、generator之前做个备份、saveOrUpdateByCheck方法bug:检测没有记录无法插入id、增加一个条件更新

@@ -1,12 +1,14 @@
 package ${package.Service};
 
+#if($cfg.useMyBatitsPlus == 'true')
 import java.util.Collection;
 import java.util.Map;
 import java.util.function.Function;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 
-public interface IService<T>  extends com.baomidou.mybatisplus.extension.service.IService<T> {
+
+public interface IService<T> extends com.baomidou.mybatisplus.extension.service.IService<T> {
 	@Override
 	default boolean saveBatch(Collection<T> entityList, int batchSize) {
 		boolean flag = false;
@@ -89,3 +91,8 @@ public interface IService<T>  extends com.baomidou.mybatisplus.extension.service
 		return null;
 	}
 }
+#else
+public interface IService<T> {
+
+}
+#end
