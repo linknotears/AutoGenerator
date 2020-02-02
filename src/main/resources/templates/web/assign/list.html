@@ -39,11 +39,14 @@ $(function(){
 	//初始化数据
 	init();
 })
+
 function searchName(){
-	let condition = "name like '%" + $("#searchName").val() + "%'";
+	let name = $("#searchName").val().replace("_","\\_").replace("%","\\%");
+	let condition = "name like '%" + name + "%'";
 	addParams({"customCondition": condition});
 	reLoad();
 }
+
 var prefix = "${cfg.prefixCtrl}#tolowercase(${entity})/";
 var htmlPrefix = "${cfg.prefixView}#tolowercase(${entity})/";
 var idName = "${propId}";
