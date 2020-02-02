@@ -39,7 +39,11 @@ $(function(){
 	//初始化数据
 	init();
 })
-
+function searchName(){
+	let condition = "name like '%" + $("#searchName").val() + "%'";
+	addParams({"customCondition": condition});
+	reLoad();
+}
 var prefix = "${cfg.prefixCtrl}#tolowercase(${entity})/";
 var htmlPrefix = "${cfg.prefixView}#tolowercase(${entity})/";
 var idName = "${propId}";
@@ -148,7 +152,7 @@ var columns = [
 							</button>
 						</div>
 						<div class="columns pull-right">
-							<button class="btn btn-success" >查询</button>
+							<button class="btn btn-success" onclick="searchName()">查询</button>
 						</div>
 
 						<div class="columns pull-right col-md-2 nopadding">
@@ -157,7 +161,7 @@ var columns = [
 								style="width: 100%">
 								<option value="">选择类别</option>
 							</select> -->
-							<input class="form-control" type="text" id="searchName"/>
+							<input class="form-control" placeholder="请输入关键词" type="text" id="searchName"/>
 						</div>
 					</div>
 					<table id="exampleTable" data-mobile-responsive="true">
