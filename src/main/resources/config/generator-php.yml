@@ -2,8 +2,11 @@
 #普通配置 
 onlyCreateTemplates: !!str true
 #tablePrefix: hhh_
+useMyBatitsPlus: !!str true
 #项目名
-project.name: test
+project.name: teaching-aid-sys
+#项目根目录
+OutputDirRoot: D:/Project/*{project.name}/
 #-- 俩id挂了、generator之前做个备份、saveOrUpdateByCheck方法bug:检测没有记录无法插入id、增加一个条件更新
 OutputDir: D:/Project/*{project.name}/src/main/java
 #配置文件路径
@@ -11,7 +14,7 @@ OutputDirConfig: D:/Project/*{project.name}/src/main/resources/
 #静态资源路径 
 OutputDirStatic: D:/Project/*{project.name}/src/main/resources/static
 #静态资源路径 
-OutputDirJars: D:/Project/*{project.name}/src/main/resources/jars
+OutputDirJars: D:/Project/*{project.name}/lib
 #templatesDir D:/Project/*{project.name}/src/main/resources/views
 OutputDirTemplates: D:/Project/*{project.name}/src/main/resources/views/
 #templatesPath
@@ -23,7 +26,7 @@ prefix.ctrl: /
 #html访问 uri前缀
 prefix.view: /view/
 #基础包名  
-basePackage: com.colin.jiji
+basePackage: com.colin.teaching_aid_sys
 #登录表名
 login.table: user
 login.usercolumn: username
@@ -32,9 +35,10 @@ login.pwdcolumn: password
 tables: archives_of_chicken_farmers_chicken_shed_data,archives_of_chicken_farmers_data,village_data,town_data,county_data,city_data,province_data
 #是否初始化（生成拷贝文件）只生成baseclass、xml、和各层的文件
 createWebtemplates: !!str true
+createRoot: !!str true
 createConfig: !!str true
 createStatic: !!str false
-createJars: !!str false
+createJars: !!str true
 createAnalyze: !!str false
 createGeneratorConfig: !!str false
 createBaseclass: |- 

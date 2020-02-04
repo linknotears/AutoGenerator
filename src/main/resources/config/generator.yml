@@ -20,7 +20,7 @@ OutputDirTemplates: D:/Project/*{project.name}/src/main/resources/views/
 #templatesPath
 templatesPath: classes/templates
 #作者名
-author: linking
+author: Jack Son
 #controller uri前缀 
 prefix.ctrl: /
 #html访问 uri前缀
@@ -28,11 +28,11 @@ prefix.view: /view/
 #基础包名  
 basePackage: com.colin.teaching_aid_sys
 #登录表名
-login.table: user
+login.table: admin
 login.usercolumn: username
 login.pwdcolumn: password
 #需要逆向的表(不写默认是全部表)
-tables: archives_of_chicken_farmers_chicken_shed_data,archives_of_chicken_farmers_data,village_data,town_data,county_data,city_data,province_data
+tables: 
 #是否初始化（生成拷贝文件）只生成baseclass、xml、和各层的文件
 createWebtemplates: !!str true
 createRoot: !!str true
@@ -52,9 +52,9 @@ isOverFile: !!str false
 
 #jdbc配置
 jdbc.driver: com.mysql.cj.jdbc.Driver
-jdbc.url: jdbc:mysql://47.92.127.224:3306/manage_power?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=CONVERT_TO_NULL
+jdbc.url: jdbc:mysql://localhost:3306/teaching_aid_sys?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=CONVERT_TO_NULL
 jdbc.user: root
-jdbc.pwd: handsome1.
+jdbc.pwd: root
 #5.0的时候会更改配置
 mysql.version: !!str 5.0
 #各层包名配置
@@ -93,11 +93,19 @@ package.suffix.xml: mapper
 ## 使用方法一开始为一个数组，第一层为所需要连接的表（为主表），第二层是要连接的表，可以是多个，第三层是第二层要连接的表
 conj.infor: 
   - 
-    table: archives_of_chicken_farmers_chicken_shed_data
+    table: course
     innertables: #mybatis结果集是有顺序的，一对一的必须要写在前边
       - 
-        table: archives_of_chicken_farmers_data
-        condition: archives_of_chicken_farmers_chicken_shed_data.chicken_farmers = archives_of_chicken_farmers_data.id
+        table: teacher
+        condition: course.teach_id = teacher.teach_id
+        relation: one
+        conjtype: inner
+  - 
+    table: student_work
+    innertables: 
+      - 
+        table: student
+        condition: student_work.stu_id = student.stu_no
         relation: one
         conjtype: inner
 #一个表可能有多个模板，所以这里面有多少个就要建多少个FileOutput
