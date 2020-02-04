@@ -322,7 +322,13 @@ public class GeneratorCode {
         	}
         	
 
-        	//拿共有参数时适用，非共用不适用
+        	
+        	//创建root配置文件
+        	if(!"false".equals((String)yamlMap.get("createRoot"))){
+	        	String templateDir = "root";
+	        	String outPath = (String)yamlMap.get("OutputDirRoot");
+	        	templatesTo(focList,templateDir,outPath);
+        	}
 	        //创建spring等配置拷贝配置
         	if(!"false".equals((String)yamlMap.get("createConfig"))){
 	        	String templateDir = "config";
