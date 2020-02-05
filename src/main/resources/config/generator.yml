@@ -111,20 +111,41 @@ conj.infor:
 #一个表可能有多个模板，所以这里面有多少个就要建多少个FileOutput
 webtemplates: 
   - 
-    tables: [hhh_member]
-    template: huihaha/add.html
+    tables: [admin,course,student,student_work,teacher,work]
+    template: java_v1/add.html
     outpath: ${entity}/add.html
     exclude: all.bz1,all.bz2
   - 
-    tables: [hhh_member]
-    template: huihaha/edit.html
+    tables: [admin,course,student,student_work,teacher,work]
+    template: java_v1/edit.html
     outpath: ${entity}/edit.html
     exclude: all.bz1,all.bz2
   - 
-    tables: [hhh_member]
-    template: huihaha/list.html
+    tables: [admin,course,student,student_work,teacher,work]
+    template: java_v2/list.html
     outpath: ${entity}/list.html
     exclude: all.bz1,all.bz2
+  - 
+    tables: [admin,course,student,student_work,teacher,work]
+    template: java_v2/list.html
+    outpath: ${entity}/list.html
+    exclude: all.bz1,all.bz2
+  -
+    tables: [admin]
+    template: java_v1/include.html
+    outpath: ${entity}/include.html
+    exclude: all.bz1,all.bz2
+  -
+    tables: [admin]
+    template: java_v2/index.html
+    outpath: ${entity}/index.html
+    exclude: all.bz1,all.bz2
+  -
+    tables: [admin]
+    template: java_v2/login.html
+    outpath: ${entity}/login.html
+    exclude: all.bz1,all.bz2
+  
 #指定文件类型（表名重复时不识别,加时间下划线自动创建）:{0:女,1:男}、img、sex、file、(date、datetime-加_自动创建时间）、（_uuid、_dateNo、_squNo,包含双下滑先表示不可见不可加，一个下划线可见不可加）
 propertyType: 
 #  uriPrefix:key:name:firstId(用于判断是否使用函数):secondId(用于判断初始化和change触发名)

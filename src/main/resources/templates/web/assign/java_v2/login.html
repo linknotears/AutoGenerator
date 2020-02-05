@@ -19,18 +19,33 @@
             top.location.replace(location.href);
         }
     </script>
+    <script type="text/javascript" src="/common/util/request-tool-1.1.js"></script>
+
+	<script type="text/javascript">
+		function login(form){
+			return request({
+				url: "${cfg.prefixCtrl}#tolowercase($entity)/login",
+				form: form,
+				success:function(data){
+					window.location.href = '/';
+				},
+				multipart: false,
+				check: function(){return true;}
+			});
+		}
+	</script>
 </head>
 <body>
 <div class="login-wrapper">
     <div class="login-header">
-        <img src="/assets/images/logo.png"> EasyWeb后台开发框架
+        <img src="/assets/images/logo.png"> 后台管理系统
     </div>
     <div class="login-body">
         <div class="layui-card">
             <div class="layui-card-header">
                 <i class="layui-icon layui-icon-engine"></i>&nbsp;&nbsp;用户登录
             </div>
-            <form class="layui-card-body layui-form layui-form-pane">
+            <form class="layui-card-body layui-form layui-form-pane" onsubmit="return login(this)">
                 <div class="layui-form-item">
                     <label class="layui-form-label"><i class="layui-icon layui-icon-username"></i></label>
                     <div class="layui-input-block">
@@ -45,7 +60,7 @@
                                lay-verType="tips" lay-verify="required" required/>
                     </div>
                 </div>
-                <div class="layui-form-item">
+                <!-- <div class="layui-form-item">
                     <label class="layui-form-label"><i class="layui-icon layui-icon-vercode"></i></label>
                     <div class="layui-input-block">
                         <div class="layui-row inline-block">
@@ -53,37 +68,27 @@
                                 <input name="code" type="text" placeholder="验证码" class="layui-input"
                                        autocomplete="off" lay-verType="tips" lay-verify="required" required/>
                             </div>
-                            <div class="layui-col-xs5" style="padding-left: 6px;">
-                                <img class="login-captcha" src="https://www.oschina.net/action/user/captcha">
-                            </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
                 <div class="layui-form-item">
-                    <a href="javascript:;" class="layui-link">帐号注册</a>
                     <a href="javascript:;" class="layui-link pull-right">忘记密码？</a>
                 </div>
                 <div class="layui-form-item">
                     <button lay-filter="login-submit" class="layui-btn layui-btn-fluid" lay-submit>登 录</button>
                 </div>
-                <div class="layui-form-item login-other">
-                    <label>第三方登录</label>
-                    <a href="javascript:;"><i class="layui-icon layui-icon-login-qq"></i></a>
-                    <a href="javascript:;"><i class="layui-icon layui-icon-login-wechat"></i></a>
-                    <a href="javascript:;"><i class="layui-icon layui-icon-login-weibo"></i></a>
-                </div>
             </form>
         </div>
     </div>
 
-    <div class="login-footer">
+    <!-- <div class="login-footer">
         <p>© 2019 easyweb.vip 版权所有</p>
         <p>
             <span><a href="https://easyweb.vip/" target="_blank">获取授权</a></span>
             <span><a href="https://easyweb.vip/doc/" target="_blank">开发文档</a></span>
             <span><a href="https://demo.easyweb.vip/spa/" target="_blank">单页面版</a></span>
         </p>
-    </div>
+    </div> -->
 </div>
 
 <!-- js部分 -->
@@ -97,16 +102,17 @@
 
         // 表单提交
         form.on('submit(login-submit)', function (obj) {
-            console.log(obj.field);
-            layer.msg('登录成功', {icon: 1, time: 1500}, function () {
-                location.replace('/index-2.html')
-            });
-            return false;
-        });
-
-        // 图形验证码
-        $('.login-captcha').click(function () {
-            this.src = this.src + '?t=' + (new Date).getTime();
+            return request({
+				url: "${cfg.prefixCtrl}#tolowercase($entity)/login",
+				data: obj.field,
+				success:function(data){
+					layer.msg('登录成功', {icon: 1, time: 1500}, function () {
+		                location.replace('/')
+		            });
+				},
+				multipart: false,
+				check: function(){return true;}
+			});
         });
     });
 </script>
