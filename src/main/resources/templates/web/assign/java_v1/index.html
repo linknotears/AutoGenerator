@@ -89,14 +89,14 @@
 						<!-- 子目录 -->
 						<ul class="nav nav-second-level">
 							<li>
-								<a class="J_menuItem" href="/base/${uri}" 
+								<a class="J_menuItem" href="${cfg.prefixView}${uri}" 
 								data-index="$foreach.count">${comment}列表</a>
 							</li>
 						</ul>
 					</li>
 ##判断第一个
 #if($foreach.count == 1)
-#set($mainUri = '/base/' + $uri)
+#set($mainUri = '${cfg.prefixView}' + $uri)
 #end
 #end
 #end
