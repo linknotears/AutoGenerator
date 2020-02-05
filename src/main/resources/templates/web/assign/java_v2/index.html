@@ -89,7 +89,6 @@
         <div class="layui-side-scroll">
             <ul class="layui-nav layui-nav-tree arrow2" lay-filter="admin-side-nav" lay-accordion="true"
                 style="margin-top: 15px;">
-                
 #foreach($webtemplate in $cfg.webtemplates)
 #set($temp = ($webtemplate.template == 'list.html'))
 #if($webtemplate.template == 'list.html')
@@ -103,6 +102,25 @@
                     <dl class="layui-nav-child">
                         <dd><a lay-href="${cfg.prefixView}${uri}">${comment}列表</a></dd>
                     </dl>
+                </li>
+##判断第一个
+#if($foreach.count == 1)
+#set($mainUri = '${cfg.prefixView}' + $uri)
+#end
+#end
+#end
+#end
+
+#foreach($webtemplate in $cfg.webtemplates)
+#set($temp = ($webtemplate.template == 'list.html'))
+#if($webtemplate.template == 'list.html')
+#foreach($tableName in $webtemplate.tables)
+#set($comment = ${cfg.tableInfoMap.get($tableName).comment})
+#set($entityName = ${cfg.tableInfoMap.get($tableName).entityName})
+#setEntityName(${cfg.tableInfoMap.get($tableName).entityName})
+#set($uri = ${webtemplate.outpath.replace('${entity}',$entityName).replace('.html','')})
+                <li class="layui-nav-item">
+                    <a lay-href="${cfg.prefixView}${uri}"><i class="layui-icon ${webtemplate.icons.get($foreach.count - 1)}"></i>&emsp;<cite>${comment}管理</cite></a>
                 </li>
 ##判断第一个
 #if($foreach.count == 1)
