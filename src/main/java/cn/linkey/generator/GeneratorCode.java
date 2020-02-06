@@ -378,7 +378,7 @@ public class GeneratorCode {
 	        }
         	
         	if(!"false".equals((String)yamlMap.get("createStatic"))){
-	        	templatesToNotAnalyze("web/not-analyze",(String)yamlMap.get("OutputDirStatic"));
+	        	templatesToNotAnalyze("web/static",(String)yamlMap.get("OutputDirStatic"));
 	        }
 	        
 	        //拷贝解析的web

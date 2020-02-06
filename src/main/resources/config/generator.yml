@@ -37,7 +37,7 @@ tables:
 createWebtemplates: !!str true
 createRoot: !!str true
 createConfig: !!str true
-createStatic: !!str false
+createStatic: !!str true
 createJars: !!str true
 createAnalyze: !!str false
 createGeneratorConfig: !!str false
@@ -131,11 +131,7 @@ webtemplates:
   - 
     tables: [admin,course,student,student_work,teacher,work]
     template: java_v2/list.html
-    outpath: ${entity}/list.html
-    exclude: all.bz1,all.bz2
-  - 
-    tables: [admin,course,student,student_work,teacher,work]
-    template: java_v2/list.html
+    icons: [layui-icon-username,layui-icon-release,layui-icon-user,layui-icon-read,layui-icon-group,layui-icon-list]
     outpath: ${entity}/list.html
     exclude: all.bz1,all.bz2
   -
@@ -144,9 +140,8 @@ webtemplates:
     outpath: include.html
     exclude: all.bz1,all.bz2
   -
-    tables: [admin,course,student,student_work,teacher,work]
+    tables: [admin]
     template: java_v2/index.html
-    icons: [layui-icon-username,layui-icon-release,layui-icon-user,layui-icon-read,layui-icon-group,layui-icon-list]
     outpath: index.html
     exclude: all.bz1,all.bz2
   -
