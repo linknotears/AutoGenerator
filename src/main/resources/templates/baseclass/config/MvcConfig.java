@@ -11,6 +11,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 
+import ${cfg.basePackage}.interceptor.CommonParams;
 import ${cfg.basePackage}.util.CommonParams;
 import ${cfg.basePackage}.util.DatetimeConverter;
 
@@ -38,10 +39,10 @@ public class MvcConfig implements WebMvcConfigurer {
     
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-//        registry.addInterceptor(new LoginInterceptor())
-//        .addPathPatterns(
-//            "/**"
-//         )
-//        .excludePathPatterns("/admin/login","/login");
+        registry.addInterceptor(new LoginInterceptor())
+        .addPathPatterns(
+            "/**"
+         )
+        .excludePathPatterns("/${cfg.loginTable}/login","/login");
     }
 }
