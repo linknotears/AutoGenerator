@@ -119,17 +119,17 @@ conj.infor:
 #一个表可能有多个模板，所以这里面有多少个就要建多少个FileOutput
 webtemplates: 
   - 
-    tables: [admin,course,student,student_work,teacher,work,student_course]
+    tables: [admin,course,student,student_work,teacher,work,student_course,clazz]
     template: java_v1/add.html
     outpath: ${entity}/add.html
     exclude: all.bz1,all.bz2
   - 
-    tables: [admin,course,student,student_work,teacher,work,student_course]
+    tables: [admin,course,student,student_work,teacher,work,student_course,clazz]
     template: java_v1/edit.html
     outpath: ${entity}/edit.html
     exclude: all.bz1,all.bz2
   - 
-    tables: [admin,course,student,student_work,teacher,work,student_course]
+    tables: [admin,course,student,student_work,teacher,work,student_course,clazz]
     template: java_v2/list.html
     icons: [layui-icon-username,layui-icon-release,layui-icon-user,layui-icon-read,layui-icon-group,layui-icon-list,layui-icon-list]
     outpath: ${entity}/list.html
@@ -157,5 +157,10 @@ propertyType:
     app_time: _datetime
   student:
     stu_id: _dateNo
+    class_id: clazz:classId:name
   teacher: 
     teach_id: _dateNo
+  course: 
+    teach_id: teacher:teachId:name
+    type: |-
+       {"0": "选修课", "1": "必修课"}
