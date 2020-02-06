@@ -70,8 +70,8 @@
 						</div>
 					</li>
 #foreach($webtemplate in $cfg.webtemplates)
-#set($temp = ($webtemplate.template == 'list.html'))
-#if($webtemplate.template == 'list.html')
+#set($temp = ($webtemplate.template.contains('list.html') ))
+#if($temp)
 #foreach($tableName in $webtemplate.tables)
 #set($comment = ${cfg.tableInfoMap.get($tableName).comment})
 #set($entityName = ${cfg.tableInfoMap.get($tableName).entityName})
@@ -96,7 +96,7 @@
 					</li>
 ##判断第一个
 #if($foreach.count == 1)
-#set($mainUri = '${cfg.prefixView}' + $uri)
+#set($mainUri = ${cfg.prefixView} + $uri)
 #end
 #end
 #end

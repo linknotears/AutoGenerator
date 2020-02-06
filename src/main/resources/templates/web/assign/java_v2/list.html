@@ -85,6 +85,7 @@ var columns = [
 	{
 		field : '${field.propertyName}',
 		title : '${field.comment}',
+		sort: true,
 		align : 'center',
 		templet : function(row) {
 			return "<img style='width: 80px;height: 80px;' src='"
@@ -95,12 +96,14 @@ var columns = [
 	{
 		field : '${field.propertyName}',
 		title : '${field.comment}',
+		sort: true,
 		align : 'center'
 	},
 #elseif($type == 'sex' || ${field.propertyName.contains('sex')})
 	{
 		field : '${field.propertyName}',
 		title : '${field.comment}',
+		sort: true,
 		align : 'center',
 		templet : function(row) {
 			let map = {"0":"女","1":"男"};
@@ -111,6 +114,7 @@ var columns = [
 	{
 		field : '${field.propertyName}',
 		title : '${field.comment}',
+		sort: true,
 		align : 'center',
 		templet : function(row) {
 			let map = ${type};
@@ -122,6 +126,7 @@ var columns = [
 	{
 		field : '${field.propertyName}',
 		title : '${field.comment}',
+		sort: true,
 		align : 'center',
 		templet : function(row) {
 			return ${tableMapping.get(1)}Map[row.${field.propertyName}] || "";
@@ -131,6 +136,7 @@ var columns = [
 	{
 		field : '${field.propertyName}',
 		title : '${field.comment}',
+		sort: true,
 		align : 'center'
 	},
 #end
@@ -140,6 +146,7 @@ var columns = [
 	{
 		title : '操作',
 		field : 'idx',
+		sort: true,
 		align : 'center',
 		templet : function(row) {
 			var e = '<a class="btn btn-primary btn-sm '

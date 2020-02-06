@@ -20,20 +20,6 @@
         }
     </script>
     <script type="text/javascript" src="/common/util/request-tool-1.1.js"></script>
-
-	<script type="text/javascript">
-		function login(form){
-			return request({
-				url: "${cfg.prefixCtrl}#tolowercase($entity)/login",
-				form: form,
-				success:function(data){
-					window.location.href = '/';
-				},
-				multipart: false,
-				check: function(){return true;}
-			});
-		}
-	</script>
 </head>
 <body>
 <div class="login-wrapper">
@@ -49,14 +35,14 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label"><i class="layui-icon layui-icon-username"></i></label>
                     <div class="layui-input-block">
-                        <input name="username" type="text" placeholder="账号" class="layui-input"
+                        <input name="${cfg.loginUsercolumn}" type="text" placeholder="账号" class="layui-input"
                                lay-verType="tips" lay-verify="required" required/>
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label"><i class="layui-icon layui-icon-password"></i></label>
                     <div class="layui-input-block">
-                        <input name="password" type="password" placeholder="密码" class="layui-input"
+                        <input name="${cfg.loginPwdcolumn}" type="password" placeholder="密码" class="layui-input"
                                lay-verType="tips" lay-verify="required" required/>
                     </div>
                 </div>

@@ -12,6 +12,15 @@ import ${pkg};
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableField;
+## id自增
+#foreach($field in ${table.fields})
+#if(${field.keyFlag})
+#if(${field.keyIdentityFlag})
+import com.baomidou.mybatisplus.annotation.IdType;
+#break
+#end
+#end
+#end
 #end
 /**
  * $!{table.comment}

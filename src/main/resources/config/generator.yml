@@ -2,7 +2,7 @@
 #普通配置 
 onlyCreateTemplates: !!str false
 #tablePrefix: hhh_
-useMyBatitsPlus: !!str true
+useMyBatitsPlus: !!str false
 #项目名
 project.name: teaching-aid-sys
 #项目根目录
@@ -20,7 +20,7 @@ OutputDirTemplates: D:/Project/*{project.name}/src/main/resources/views/
 #templatesPath
 templatesPath: classes/templates
 #作者名
-author: Jack Son
+author: Jack
 #controller uri前缀 
 prefix.ctrl: /
 #html访问 uri前缀
@@ -104,8 +104,16 @@ conj.infor:
     table: student_work
     innertables: 
       - 
-        table: student
-        condition: student_work.stu_id = student.stu_no
+        table: worker
+        condition: student_work.work_id = worker.work_id
+        relation: one
+        conjtype: inner
+  - 
+    table: student_course
+    innertables: 
+      - 
+        table: course
+        condition: student_course.course_id = course.course_id
         relation: one
         conjtype: inner
 #一个表可能有多个模板，所以这里面有多少个就要建多少个FileOutput
@@ -133,31 +141,25 @@ webtemplates:
   -
     tables: [admin]
     template: java_v1/include.html
-    outpath: ${entity}/include.html
+    outpath: include.html
     exclude: all.bz1,all.bz2
   -
-    tables: [admin]
+    tables: [admin,course,student,student_work,teacher,work]
     template: java_v2/index.html
-    outpath: ${entity}/index.html
+    icons: [layui-icon-username,layui-icon-release,layui-icon-user,layui-icon-read,layui-icon-group,layui-icon-list]
+    outpath: index.html
     exclude: all.bz1,all.bz2
   -
     tables: [admin]
     template: java_v2/login.html
-    outpath: ${entity}/login.html
+    outpath: login.html
     exclude: all.bz1,all.bz2
   
 #指定文件类型（表名重复时不识别,加时间下划线自动创建）:{0:女,1:男}、img、sex、file、(date、datetime-加_自动创建时间）、（_uuid、_dateNo、_squNo,包含双下滑先表示不可见不可加，一个下划线可见不可加）
 propertyType: 
 #  uriPrefix:key:name:firstId(用于判断是否使用函数):secondId(用于判断初始化和change触发名)
-  hhh_member: 
-    pic: img
-    mem_id: _in
-    openid: __out
-    role: __out
-    secret: __out
-    amount: __out
-    integral: __out
-  lose: 
-    lose_id: uuid
-  img:
-    url: img
+  student_work: 
+    stu_id: _dataNo
+    app_time: _datetime
+  teacher: 
+    teach_id: _dataNo

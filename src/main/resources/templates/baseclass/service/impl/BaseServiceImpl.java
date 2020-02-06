@@ -17,7 +17,6 @@ public abstract class BaseServiceImpl<T> implements BaseService<T> {
 		return baseMapper.insertOrUpdate(entity) > 0;
 	}
 	
-	@Override
 	public BaseMapper<T> getBaseMapper() {
 		return baseMapper;
 	}
