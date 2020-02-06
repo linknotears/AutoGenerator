@@ -104,8 +104,8 @@ conj.infor:
     table: student_work
     innertables: 
       - 
-        table: worker
-        condition: student_work.work_id = worker.work_id
+        table: work
+        condition: student_work.work_id = work.work_id
         relation: one
         conjtype: inner
   - 
@@ -154,7 +154,8 @@ webtemplates:
 propertyType: 
 #  uriPrefix:key:name:firstId(用于判断是否使用函数):secondId(用于判断初始化和change触发名)
   student_work: 
-    stu_id: _dataNo
     app_time: _datetime
+  student:
+    stu_id: _dateNo
   teacher: 
-    teach_id: _dataNo
+    teach_id: _dateNo

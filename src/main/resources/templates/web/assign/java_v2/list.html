@@ -85,7 +85,6 @@ var columns = [
 	{
 		field : '${field.propertyName}',
 		title : '${field.comment}',
-		sort: true,
 		align : 'center',
 		templet : function(row) {
 			return "<img style='width: 80px;height: 80px;' src='"
@@ -146,20 +145,17 @@ var columns = [
 	{
 		title : '操作',
 		field : 'idx',
-		sort: true,
 		align : 'center',
 		templet : function(row) {
 			var e = '<a class="btn btn-primary btn-sm '
-					+ s_edit_h
 					+ '" href="#" mce_href="#" title="编辑" onclick="edit(\''
 					+ row[idName]
 					+ '\')"><i class="fa fa-edit"></i>编辑</a> ';
 			var d = '<a class="btn btn-warning btn-sm '
-					+ s_remove_h
 					+ '" href="#" title="删除"  mce_href="#" onclick="remove(\''
 					+ row[idName]
 					+ '\')"><i class="fa fa-remove"></i>删除</a> ';
-			return e + d;
+			return e + "&emsp;" + d;
 		}
 	} ]
 	
@@ -185,7 +181,7 @@ var columns = [
                     <div class="layui-inline">
                         <label class="layui-form-label w-auto">搜索：</label>
                         <div class="layui-input-inline mr0">
-                            <input name="account" class="layui-input" type="text" placeholder="请输入关键词"/>
+                            <input name="searchName" class="layui-input" type="text" placeholder="请输入关键词"/>
                         </div>
                     </div>
                     <div class="layui-inline">
@@ -207,6 +203,7 @@ var columns = [
 <script type="text/javascript" src="/assets/libs/layui/layui.js"></script>
 <script type="text/javascript" src="/assets/js/common6294.js?v=315"></script>
 <script>
+	var insTb = null;
     layui.use(['layer', 'form', 'table', 'util', 'laydate'], function () {
         var $ = layui.jquery;
         var layer = layui.layer;
@@ -216,7 +213,7 @@ var columns = [
         var laydate = layui.laydate;
 
         // 渲染表格
-        var insTb = table.render({
+        insTb = table.render({
             elem: '#tableEle',
             url: prefix + "/findPage",
             page: true,
@@ -243,7 +240,10 @@ var columns = [
         
         // 搜索
         form.on('submit(formSubSearch)', function (data) {
-            let name = data.field.searchName.replace("_","\\_").replace("%","\\%");
+        	let name = ''
+            if(data.field.searchName){
+            	name = data.field.searchName.replace("_","\\_").replace("%","\\%");
+            }
         	var condition = "name like '%" + name + "%'";
             insTb.reload({where: {"customCondition": condition}}, 'data');
         });
@@ -251,7 +251,7 @@ var columns = [
     });
     
     function reLoad() {
-    	insTb.reload({where: {"customCondition": condition || '1=1' }}, 'data');
+    	insTb.reload({},'data');
     }
     
     function add() {
@@ -276,6 +276,8 @@ var columns = [
     }
     function remove(id) {
     	layer.confirm('确定要删除选中的记录？', {
+    		skin: 'layui-layer-admin',
+            shade: .1,
     		btn : [ '确定', '取消' ]
     	}, function() {
     		request({
@@ -304,6 +306,8 @@ var columns = [
     		return;
     	}
     	layer.confirm("确认要删除选中的'" + rows.length + "'条数据吗?", {
+    		skin: 'layui-layer-admin',
+            shade: .1,
     		btn : [ '确定', '取消' ]
     	// 按钮
     	}, function() {

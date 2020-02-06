@@ -2,7 +2,7 @@
 #普通配置 
 onlyCreateTemplates: !!str false
 #tablePrefix: hhh_
-useMyBatitsPlus: !!str true
+useMyBatitsPlus: !!str false
 #项目名
 project.name: teaching-aid-sys
 #项目根目录
@@ -20,25 +20,25 @@ OutputDirTemplates: D:/Project/*{project.name}/src/main/resources/views/
 #templatesPath
 templatesPath: classes/templates
 #作者名
-author: linking
+author: Jack
 #controller uri前缀 
 prefix.ctrl: /
 #html访问 uri前缀
 prefix.view: /view/
 #基础包名  
-basePackage: com.colin.jiji
+basePackage: com.colin.teaching_aid_sys
 #登录表名
-login.table: user
+login.table: admin
 login.usercolumn: username
 login.pwdcolumn: password
 #需要逆向的表(不写默认是全部表)
-tables: archives_of_chicken_farmers_chicken_shed_data,archives_of_chicken_farmers_data,village_data,town_data,county_data,city_data,province_data
+tables: 
 #是否初始化（生成拷贝文件）只生成baseclass、xml、和各层的文件
 createWebtemplates: !!str true
 createRoot: !!str true
 createConfig: !!str true
-createStatic: !!str false
-createJars: !!str false
+createStatic: !!str true
+createJars: !!str true
 createAnalyze: !!str false
 createGeneratorConfig: !!str false
 createBaseclass: |- 
@@ -52,9 +52,9 @@ isOverFile: !!str false
 
 #jdbc配置
 jdbc.driver: com.mysql.cj.jdbc.Driver
-jdbc.url: jdbc:mysql://47.92.127.224:3306/manage_power?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=CONVERT_TO_NULL
+jdbc.url: jdbc:mysql://localhost:3306/teaching_aid_sys?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=CONVERT_TO_NULL
 jdbc.user: root
-jdbc.pwd: handsome1.
+jdbc.pwd: root
 #5.0的时候会更改配置
 mysql.version: !!str 5.0
 #各层包名配置
@@ -93,42 +93,69 @@ package.suffix.xml: mapper
 ## 使用方法一开始为一个数组，第一层为所需要连接的表（为主表），第二层是要连接的表，可以是多个，第三层是第二层要连接的表
 conj.infor: 
   - 
-    table: archives_of_chicken_farmers_chicken_shed_data
+    table: course
     innertables: #mybatis结果集是有顺序的，一对一的必须要写在前边
       - 
-        table: archives_of_chicken_farmers_data
-        condition: archives_of_chicken_farmers_chicken_shed_data.chicken_farmers = archives_of_chicken_farmers_data.id
+        table: teacher
+        condition: course.teach_id = teacher.teach_id
+        relation: one
+        conjtype: inner
+  - 
+    table: student_work
+    innertables: 
+      - 
+        table: worker
+        condition: student_work.work_id = worker.work_id
+        relation: one
+        conjtype: inner
+  - 
+    table: student_course
+    innertables: 
+      - 
+        table: course
+        condition: student_course.course_id = course.course_id
         relation: one
         conjtype: inner
 #一个表可能有多个模板，所以这里面有多少个就要建多少个FileOutput
 webtemplates: 
   - 
-    tables: [hhh_member]
-    template: huihaha/add.html
+    tables: [admin,course,student,student_work,teacher,work]
+    template: java_v1/add.html
     outpath: ${entity}/add.html
     exclude: all.bz1,all.bz2
   - 
-    tables: [hhh_member]
-    template: huihaha/edit.html
+    tables: [admin,course,student,student_work,teacher,work]
+    template: java_v1/edit.html
     outpath: ${entity}/edit.html
     exclude: all.bz1,all.bz2
   - 
-    tables: [hhh_member]
-    template: huihaha/list.html
+    tables: [admin,course,student,student_work,teacher,work]
+    template: java_v2/list.html
+    icons: [layui-icon-username,layui-icon-release,layui-icon-user,layui-icon-read,layui-icon-group,layui-icon-list]
     outpath: ${entity}/list.html
     exclude: all.bz1,all.bz2
+  -
+    tables: [admin]
+    template: java_v1/include.html
+    outpath: include.html
+    exclude: all.bz1,all.bz2
+  -
+    tables: [admin]
+    template: java_v2/index.html
+    outpath: index.html
+    exclude: all.bz1,all.bz2
+  -
+    tables: [admin]
+    template: java_v2/login.html
+    outpath: login.html
+    exclude: all.bz1,all.bz2
+  
 #指定文件类型（表名重复时不识别,加时间下划线自动创建）:{0:女,1:男}、img、sex、file、(date、datetime-加_自动创建时间）、（_uuid、_dateNo、_squNo,包含双下滑先表示不可见不可加，一个下划线可见不可加）
 propertyType: 
 #  uriPrefix:key:name:firstId(用于判断是否使用函数):secondId(用于判断初始化和change触发名)
-  hhh_member: 
-    pic: img
-    mem_id: _in
-    openid: __out
-    role: __out
-    secret: __out
-    amount: __out
-    integral: __out
-  lose: 
-    lose_id: uuid
-  img:
-    url: img
+  student_work: 
+    app_time: _datetime
+  student:
+    stu_id: _dateNo
+  teacher: 
+    teach_id: _dateNo
