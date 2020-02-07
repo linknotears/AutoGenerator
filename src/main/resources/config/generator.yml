@@ -116,6 +116,14 @@ conj.infor:
         condition: student_course.course_id = course.course_id
         relation: one
         conjtype: inner
+  - 
+    table: clazz
+    innertables: 
+      - 
+        table: student
+        condition: clazz.class_id = student.class_id
+        relation: many
+        conjtype: left
 #一个表可能有多个模板，所以这里面有多少个就要建多少个FileOutput
 webtemplates: 
   - 
@@ -163,4 +171,4 @@ propertyType:
   course: 
     teach_id: teacher:teachId:name
     type: |-
-       {"0": "选修课", "1": "必修课"}
+       {"0": "选修课", "1": "必修课"}     
