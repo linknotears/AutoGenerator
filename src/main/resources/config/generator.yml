@@ -124,15 +124,23 @@ conj.infor:
         condition: clazz.class_id = student.class_id
         relation: many
         conjtype: left
+  -
+    table: clazz
+    innertables: 
+      - 
+        table: clazz_course
+        condition: clazz.class_id = clazz_course.class_id
+        relation: many
+        conjtype: left
 #一个表可能有多个模板，所以这里面有多少个就要建多少个FileOutput
 webtemplates: 
   - 
-    tables: [admin,course,student,student_work,teacher,work,student_course]
+    tables: [admin,course,student,student_work,teacher,work,student_course,clazz_course]
     template: java_v1/add.html
     outpath: teacher/${entity}/add.html
     exclude: all.bz1,all.bz2
   - 
-    tables: [admin,course,student,student_work,teacher,work,student_course]
+    tables: [admin,course,student,student_work,teacher,work,student_course,clazz_course]
     template: java_v1/edit.html
     outpath: teacher/${entity}/edit.html
     exclude: all.bz1,all.bz2
@@ -147,7 +155,7 @@ webtemplates:
     outpath: teacher/${entity}/edit.html
     exclude: all.bz1,all.bz2
   - 
-    tables: [admin,course,student,student_work,teacher,work,student_course,clazz]
+    tables: [admin,course,student,student_work,teacher,work,student_course,clazz,clazz_course]
     template: java_v2/list.html
     icons: [layui-icon-username,layui-icon-release,layui-icon-user,layui-icon-read,layui-icon-group,layui-icon-list,layui-icon-list,layui-icon-list]
     outpath: teacher/${entity}/list.html
@@ -181,4 +189,10 @@ propertyType:
   course: 
     teach_id: teacher:teachId:name
     type: |-
-       {"0": "选修课", "1": "必修课"}     
+       {"0": "选修课", "1": "必修课"}
+  clazz_course: 
+    class_id: clazz:classId:name
+    course_id: course:courseId:name
+  work: 
+    course_id: course:courseId:name
+    type: __out

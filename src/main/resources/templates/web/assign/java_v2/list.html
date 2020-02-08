@@ -67,7 +67,7 @@ $(function(){
 })
 
 var prefix = "${cfg.prefixCtrl}#tolowercase(${entity})/";
-var htmlPrefix = "${cfg.prefixView}#tolowercase(${entity})/";
+var viewPrefix = "${cfg.prefixView}#tolowercase(${entity})/";
 var idName = "${propId}";
 var columns = [
 	{
@@ -260,7 +260,7 @@ var columns = [
     		maxmin : true,
     		shadeClose : false, // 点击遮罩关闭层
     		area : [ '800px', '520px' ],
-    		content : htmlPrefix + '/add' // iframe的url
+    		content : viewPrefix + 'add' // iframe的url
     	});
     }
     function edit(id) {
@@ -270,7 +270,7 @@ var columns = [
     		maxmin : true,
     		shadeClose : false, // 点击遮罩关闭层
     		area : [ '800px', '520px' ],
-    		content : htmlPrefix + '/edit?id=' + id // iframe的url
+    		content : viewPrefix + 'edit?id=' + id // iframe的url
     	});
     }
     function remove(id) {
@@ -280,7 +280,7 @@ var columns = [
     		btn : [ '确定', '取消' ]
     	}, function() {
     		request({
-    			url : prefix + "/remove",
+    			url : prefix + "remove",
     			type : "post",
     			data : {
     				'id' : id

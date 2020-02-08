@@ -61,7 +61,7 @@ function add() {
 		maxmin : true,
 		shadeClose : false, // 点击遮罩关闭层
 		area : [ '800px', '520px' ],
-		content : htmlPrefix + '/add' // iframe的url
+		content : viewPrefix + 'add' // iframe的url
 	});
 }
 function edit(id) {
@@ -71,7 +71,7 @@ function edit(id) {
 		maxmin : true,
 		shadeClose : false, // 点击遮罩关闭层
 		area : [ '800px', '520px' ],
-		content : htmlPrefix + '/edit?id=' + id // iframe的url
+		content : viewPrefix + 'edit?id=' + id // iframe的url
 	});
 }
 function remove(id) {
@@ -79,7 +79,7 @@ function remove(id) {
 		btn : [ '确定', '取消' ]
 	}, function() {
 		request({
-			url : prefix + "/remove",
+			url : prefix + "remove",
 			type : "post",
 			data : {
 				'id' : id
@@ -116,7 +116,7 @@ function batchRemove() {
 			data : {
 				"ids": ids
 			},
-			url : prefix + '/batchRemove',
+			url : prefix + 'batchRemove',
 			success : function(data) {
 				if(data.count > 0){
 					layer.msg("删除成功！");
