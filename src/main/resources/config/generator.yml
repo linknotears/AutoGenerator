@@ -24,7 +24,7 @@ author: Jack
 #controller uri前缀 
 prefix.ctrl: /
 #html访问 uri前缀
-prefix.view: /view/
+prefix.view: /view/teacher/
 #基础包名  
 basePackage: com.colin.teaching_aid_sys
 #登录表名
@@ -127,20 +127,30 @@ conj.infor:
 #一个表可能有多个模板，所以这里面有多少个就要建多少个FileOutput
 webtemplates: 
   - 
-    tables: [admin,course,student,student_work,teacher,work,student_course,clazz]
+    tables: [admin,course,student,student_work,teacher,work,student_course]
     template: java_v1/add.html
-    outpath: ${entity}/add.html
+    outpath: teacher/${entity}/add.html
     exclude: all.bz1,all.bz2
   - 
-    tables: [admin,course,student,student_work,teacher,work,student_course,clazz]
+    tables: [admin,course,student,student_work,teacher,work,student_course]
     template: java_v1/edit.html
-    outpath: ${entity}/edit.html
+    outpath: teacher/${entity}/edit.html
+    exclude: all.bz1,all.bz2
+  - 
+    tables: [clazz]
+    template: java_v1/add_vertical.html
+    outpath: teacher/${entity}/add.html
+    exclude: all.bz1,all.bz2
+  - 
+    tables: [clazz]
+    template: java_v1/edit_vertical.html
+    outpath: teacher/${entity}/edit.html
     exclude: all.bz1,all.bz2
   - 
     tables: [admin,course,student,student_work,teacher,work,student_course,clazz]
     template: java_v2/list.html
-    icons: [layui-icon-username,layui-icon-release,layui-icon-user,layui-icon-read,layui-icon-group,layui-icon-list,layui-icon-list]
-    outpath: ${entity}/list.html
+    icons: [layui-icon-username,layui-icon-release,layui-icon-user,layui-icon-read,layui-icon-group,layui-icon-list,layui-icon-list,layui-icon-list]
+    outpath: teacher/${entity}/list.html
     exclude: all.bz1,all.bz2
   -
     tables: [admin]

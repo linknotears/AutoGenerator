@@ -6,6 +6,7 @@ layui.config({
     base: getProjectUrl() + 'assets/module/'
 }).extend({
     formSelects: 'formSelects/formSelects-v4',
+    treeTable: 'treeTable/treeTable',
     treetable: 'treetable-lay/treetable',
     dropdown: 'dropdown/dropdown',
     notice: 'notice/notice',

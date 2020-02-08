@@ -163,6 +163,7 @@
     layui.use(['index'], function () {
         var $ = layui.jquery;
         var index = layui.index;
+        index.setTabCache(true);
 
         // 默认加载主页
         index.loadHome({
