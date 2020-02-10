@@ -24,7 +24,7 @@ author: Jack
 #controller uri前缀 
 prefix.ctrl: /
 #html访问 uri前缀
-prefix.view: /view/teacher/
+prefix.view: /view/student/
 #基础包名  
 basePackage: com.colin.teaching_aid_sys
 #登录表名
@@ -137,28 +137,28 @@ webtemplates:
   - 
     tables: [admin,course,student,student_work,teacher,work,student_course,clazz_course]
     template: java_v1/add.html
-    outpath: teacher/${entity}/add.html
+    outpath: student/${entity}/add.html
     exclude: all.bz1,all.bz2
   - 
     tables: [admin,course,student,student_work,teacher,work,student_course,clazz_course]
     template: java_v1/edit.html
-    outpath: teacher/${entity}/edit.html
+    outpath: student/${entity}/edit.html
     exclude: all.bz1,all.bz2
   - 
     tables: [clazz]
     template: java_v1/add_vertical.html
-    outpath: teacher/${entity}/add.html
+    outpath: student/${entity}/add.html
     exclude: all.bz1,all.bz2
   - 
     tables: [clazz]
     template: java_v1/edit_vertical.html
-    outpath: teacher/${entity}/edit.html
+    outpath: student/${entity}/edit.html
     exclude: all.bz1,all.bz2
   - 
     tables: [admin,course,student,student_work,teacher,work,student_course,clazz,clazz_course]
     template: java_v2/list.html
     icons: [layui-icon-username,layui-icon-release,layui-icon-user,layui-icon-read,layui-icon-group,layui-icon-list,layui-icon-list,layui-icon-list]
-    outpath: teacher/${entity}/list.html
+    outpath: student/${entity}/list.html
     exclude: all.bz1,all.bz2
   -
     tables: [admin]
@@ -181,6 +181,9 @@ propertyType:
 #  uriPrefix:key:name:firstId(用于判断是否使用函数):secondId(用于判断初始化和change触发名)
   student_work: 
     app_time: _datetime
+    pass_time: _datetime
+    stu_id: student:stuId:name
+    work_id: work:workId:name
   student:
     stu_id: _dateNo
     class_id: clazz:classId:name

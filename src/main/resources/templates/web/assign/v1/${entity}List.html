@@ -43,7 +43,7 @@ $(function(){
 			refNames:['${propertyName}s'],
 			success: data => { 				
 				//改造pettypes
-				globalData.data.${propertyName}Map = objArrToMap(globalData.data.${propertyName}s,"id","name");
+				vue.data.${propertyName}Map = objArrToMap(vue.data.${propertyName}s,"id","name");
 			}
 		}
 #end

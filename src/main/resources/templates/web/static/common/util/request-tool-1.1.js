@@ -10,7 +10,7 @@
 	}
 	//通过索引复制的时候需用用Vue.set(target,i,target[i])通知vue
 	//全局变量
-	globalData = {'items':[],'item':{},'page':{},'data':{},params:{}};
+	vue = {'items':[],'item':{},'page':{},'data':{},params:{}};
 	vueMap = {};
 	loadUrls = [];
 	loadEls = []; 
@@ -18,7 +18,7 @@
 	showloading = true;
 	//定义全局变量
 	function define(defineData){
-		Object.assign(globalData,defineData);
+		Object.assign(vue,defineData);
 	}
 	//params.idcard.isDefault
 	/*模板
@@ -33,7 +33,7 @@
 			{
 				url:"userAnswer/findList.html",
 				data: {
-					'userno': globalData.params.idcard.value,
+					'userno': vue.params.idcard.value,
 					'typeno': 1
 				},
 				refNames:['userAnswers']
@@ -315,7 +315,7 @@
 				{
 					[loadEls[i]]: new Vue({
 						el: loadEls[i],
-						data: globalData,
+						data: vue,
 						methods:{
 							dateFormat: function(date, fmt) {
 								//如果等于空，则使用现在的时间
@@ -409,7 +409,7 @@
 							invert: function(event,invertName) {
 								var checked = event.currentTarget.checked;
 								if(checked){
-									globalData[invertName] = [];
+									vue[invertName] = [];
 								}
 							}
 						}
@@ -438,7 +438,7 @@
 					if(loadUrls[loadIndex].refNames){
 						for(var j = 0; j < loadUrls[loadIndex].refNames.length; j++) {
 							/*
-							let refData1 = globalData.data[loadUrls[loadIndex].refNames[j]];
+							let refData1 = vue.data[loadUrls[loadIndex].refNames[j]];
 							let refData2 = data[loadUrls[loadIndex].refNames[j]];
 							console.log("refData1="+refData1)
 							if(refData1){
@@ -456,7 +456,7 @@
 									console.log("after refData1="+JSON.stringify(refData1))
 								}
 							}else{}*/
-							globalData.data[loadUrls[loadIndex].refNames[j]] = data[loadUrls[loadIndex].refNames[j]];
+							vue.data[loadUrls[loadIndex].refNames[j]] = data[loadUrls[loadIndex].refNames[j]];
 						}
 					}
 					if(loadUrls[loadIndex].success != undefined) {
@@ -498,7 +498,7 @@
        </ul>
 	 */
 	function pageWrap(data,showPage = 8){
-		globalData.page = data;
+		vue.page = data;
 		
 		var currentIndex = Math.floor(((data.page-1)*1.0)/showPage);
 		var maxIndex = Math.floor((data.totalPage*1.0)/showPage);
@@ -517,7 +517,7 @@
 		data["pages"] = pages;//页数组
 		
 		var url = window.location.href.split("?")[0];
-		globalData.page["url"] = url;
+		vue.page["url"] = url;
 	}
 	
 	//加载参数
@@ -532,7 +532,7 @@
 				key = loadParameters[i];
 				value = getParameter(loadParameters[i]);
 			}
-			globalData.params[key] = {'value':value,'isDefault':isDefault};
+			vue.params[key] = {'value':value,'isDefault':isDefault};
 		}
 	}
 	

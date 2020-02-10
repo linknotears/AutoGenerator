@@ -55,7 +55,7 @@ $(function(){
 		{
 			url:"${cfg.prefixCtrl}${tableMapping.get(0)}/findList",
 			success:function(data){
-				globalData.${tableMapping.get(1)}Map = objArrToMap(data.${tableMapping.get(0)}s,"${tableMapping.get(1)}","${tableMapping.get(2)}");
+				vue.${tableMapping.get(1)}Map = objArrToMap(data.${tableMapping.get(0)}s,"${tableMapping.get(1)}","${tableMapping.get(2)}");
 			}
 		},
 #end
@@ -99,13 +99,13 @@ function selectFile(inputId,imgId){
 #if($tableMapping.size() > 3 && $tableMapping.get(3)!='')
 function change#toheaduppercase(${tableMapping.get(1)})Map($tableMapping.get(3)){
 	//清空数据
-	globalData.${tableMapping.get(1)}Map = {};
+	vue.${tableMapping.get(1)}Map = {};
 	if($tableMapping.get(3)){
 		request({
 			url: "/${tableMapping.get(0)}/findList",
 			data:{$tableMapping.get(3): $tableMapping.get(3)},
 			success:function(data){
-				globalData.${tableMapping.get(1)}Map = objArrToMap(data.${tableMapping.get(0)}s,"${tableMapping.get(1)}","${tableMapping.get(2)}");
+				vue.${tableMapping.get(1)}Map = objArrToMap(data.${tableMapping.get(0)}s,"${tableMapping.get(1)}","${tableMapping.get(2)}");
 			}
 		});
 	}
