@@ -4,7 +4,7 @@ onlyCreateTemplates: !!str false
 #tablePrefix: hhh_
 useMyBatitsPlus: !!str false
 #项目名
-project.name: teaching-aid-sys
+project.name: test
 #项目根目录
 OutputDirRoot: D:/Project/*{project.name}/
 #-- 俩id挂了、generator之前做个备份、saveOrUpdateByCheck方法bug:检测没有记录无法插入id、增加一个条件更新
@@ -24,7 +24,7 @@ author: Jack
 #controller uri前缀 
 prefix.ctrl: /
 #html访问 uri前缀
-prefix.view: /view/student/
+prefix.view: /view/teacher/
 #基础包名  
 basePackage: com.colin.teaching_aid_sys
 #登录表名
@@ -135,30 +135,30 @@ conj.infor:
 #一个表可能有多个模板，所以这里面有多少个就要建多少个FileOutput
 webtemplates: 
   - 
-    tables: [admin,course,student,student_work,teacher,work,student_course,clazz_course]
+    tables: [admin,course,student,student_work,teacher,work,student_course,clazz_course,announcement]
     template: java_v1/add.html
-    outpath: student/${entity}/add.html
+    outpath: teacher/${entity}/add.html
     exclude: all.bz1,all.bz2
   - 
-    tables: [admin,course,student,student_work,teacher,work,student_course,clazz_course]
+    tables: [admin,course,student,student_work,teacher,work,student_course,clazz_course,announcement]
     template: java_v1/edit.html
-    outpath: student/${entity}/edit.html
+    outpath: teacher/${entity}/edit.html
     exclude: all.bz1,all.bz2
   - 
     tables: [clazz]
     template: java_v1/add_vertical.html
-    outpath: student/${entity}/add.html
+    outpath: teacher/${entity}/add.html
     exclude: all.bz1,all.bz2
   - 
     tables: [clazz]
     template: java_v1/edit_vertical.html
-    outpath: student/${entity}/edit.html
+    outpath: teacher/${entity}/edit.html
     exclude: all.bz1,all.bz2
   - 
-    tables: [admin,course,student,student_work,teacher,work,student_course,clazz,clazz_course]
+    tables: [admin,course,student,student_work,teacher,work,student_course,clazz,clazz_course,announcement]
     template: java_v2/list.html
     icons: [layui-icon-username,layui-icon-release,layui-icon-user,layui-icon-read,layui-icon-group,layui-icon-list,layui-icon-list,layui-icon-list]
-    outpath: student/${entity}/list.html
+    outpath: teacher/${entity}/list.html
     exclude: all.bz1,all.bz2
   -
     tables: [admin]
@@ -187,8 +187,12 @@ propertyType:
   student:
     stu_id: _dateNo
     class_id: clazz:classId:name
+    major: |-
+       {"0":"计算机与科学技术","1":"经济学","2":"哲学","3":"教育学"}
   teacher: 
     teach_id: _dateNo
+    depart: |-
+       {"0":"土木工程系","1":"心理学系","2":"数学科学学院","3":"物理学院"}
   course: 
     teach_id: teacher:teachId:name
     type: |-
@@ -199,3 +203,7 @@ propertyType:
   work: 
     course_id: course:courseId:name
     type: __out
+  announcement: 
+    teach_id: teacher:teachId:name
+    class_id: clazz:classId:name
+    create_time: _datetime
