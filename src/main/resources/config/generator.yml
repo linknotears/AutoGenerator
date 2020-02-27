@@ -24,15 +24,15 @@ author: Jack
 #controller uri前缀 
 prefix.ctrl: /
 #html访问 uri前缀
-prefix.view: /view/teacher/
+prefix.view: /view/
 #基础包名  
-basePackage: com.colin.teaching_aid_sys
+basePackage: com.qibainong.map
 #登录表名
 login.table: admin
 login.usercolumn: username
 login.pwdcolumn: password
 #需要逆向的表(不写默认是全部表)
-tables: 
+tables: archives_of_batch_data,archives_of_chicken_farmers_chicken_shed_data,archives_of_chicken_farmers_data,batch_manager_data,sales_order_data,village_data,town_data,province_data,county_data,city_data
 #是否初始化（生成拷贝文件）只生成baseclass、xml、和各层的文件
 createWebtemplates: !!str true
 createRoot: !!str true
@@ -52,9 +52,9 @@ isOverFile: !!str false
 
 #jdbc配置
 jdbc.driver: com.mysql.cj.jdbc.Driver
-jdbc.url: jdbc:mysql://localhost:3306/teaching_aid_sys?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=CONVERT_TO_NULL
+jdbc.url: jdbc:mysql://47.92.127.224:3306/manage_power?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=CONVERT_TO_NULL
 jdbc.user: root
-jdbc.pwd: root
+jdbc.pwd: handsome1.
 #5.0的时候会更改配置
 mysql.version: !!str 5.0
 #各层包名配置
@@ -93,117 +93,30 @@ package.suffix.xml: mapper
 ## 使用方法一开始为一个数组，第一层为所需要连接的表（为主表），第二层是要连接的表，可以是多个，第三层是第二层要连接的表
 conj.infor: 
   - 
-    table: course
+    table: archives_of_chicken_farmers_chicken_shed_data
     innertables: #mybatis结果集是有顺序的，一对一的必须要写在前边
       - 
-        table: teacher
-        condition: course.teach_id = teacher.teach_id
+        table: archives_of_chicken_farmers_data
+        condition: archives_of_chicken_farmers_chicken_shed_data.chicken_farmers = archives_of_chicken_farmers_data.id
         relation: one
         conjtype: inner
-  - 
-    table: student_work
-    innertables: 
-      - 
-        table: work
-        condition: student_work.work_id = work.work_id
-        relation: one
-        conjtype: inner
-  - 
-    table: student_course
-    innertables: 
-      - 
-        table: course
-        condition: student_course.course_id = course.course_id
-        relation: one
-        conjtype: inner
-  - 
-    table: clazz
-    innertables: 
-      - 
-        table: student
-        condition: clazz.class_id = student.class_id
-        relation: many
-        conjtype: left
-  -
-    table: clazz
-    innertables: 
-      - 
-        table: clazz_course
-        condition: clazz.class_id = clazz_course.class_id
-        relation: many
-        conjtype: left
 #一个表可能有多个模板，所以这里面有多少个就要建多少个FileOutput
 webtemplates: 
   - 
-    tables: [admin,course,student,student_work,teacher,work,student_course,clazz_course,announcement]
-    template: java_v1/add.html
-    outpath: teacher/${entity}/add.html
+    tables: [hhh_recommend]
+    template: huihaha/add.html
+    outpath: ${entity}/add.html
     exclude: all.bz1,all.bz2
   - 
-    tables: [admin,course,student,student_work,teacher,work,student_course,clazz_course,announcement]
-    template: java_v1/edit.html
-    outpath: teacher/${entity}/edit.html
-    exclude: all.bz1,all.bz2
-  - 
-    tables: [clazz]
-    template: java_v1/add_vertical.html
-    outpath: teacher/${entity}/add.html
-    exclude: all.bz1,all.bz2
-  - 
-    tables: [clazz]
-    template: java_v1/edit_vertical.html
-    outpath: teacher/${entity}/edit.html
-    exclude: all.bz1,all.bz2
-  - 
-    tables: [admin,course,student,student_work,teacher,work,student_course,clazz,clazz_course,announcement]
-    template: java_v2/list.html
-    icons: [layui-icon-username,layui-icon-release,layui-icon-user,layui-icon-read,layui-icon-group,layui-icon-list,layui-icon-list,layui-icon-list]
-    outpath: teacher/${entity}/list.html
-    exclude: all.bz1,all.bz2
-  -
-    tables: [admin]
-    template: java_v1/include.html
-    outpath: include.html
-    exclude: all.bz1,all.bz2
-  -
-    tables: [admin]
-    template: java_v2/index.html
-    outpath: index.html
-    exclude: all.bz1,all.bz2
-  -
-    tables: [admin]
-    template: java_v2/login.html
-    outpath: login.html
+    tables: [hhh_recommend]
+    template: huihaha/edit.html
+    outpath: ${entity}/edit.html
     exclude: all.bz1,all.bz2
   
 #指定文件类型（表名重复时不识别,加时间下划线自动创建）:{0:女,1:男}、img、sex、file、(date、datetime-加_自动创建时间）、（_uuid、_dateNo、_squNo,包含双下滑先表示不可见不可加，一个下划线可见不可加）
 propertyType: 
 #  uriPrefix:key:name:firstId(用于判断是否使用函数):secondId(用于判断初始化和change触发名)
-  student_work: 
-    app_time: _datetime
-    pass_time: _datetime
-    stu_id: student:stuId:name
-    work_id: work:workId:name
-  student:
-    stu_id: _dateNo
-    class_id: clazz:classId:name
-    major: |-
-       {"0":"计算机与科学技术","1":"经济学","2":"哲学","3":"教育学"}
-  teacher: 
-    teach_id: _dateNo
-    depart: |-
-       {"0":"土木工程系","1":"心理学系","2":"数学科学学院","3":"物理学院"}
-  course: 
-    teach_id: teacher:teachId:name
-    type: |-
-       {"0": "选修课", "1": "必修课"}
-  clazz_course: 
-    class_id: clazz:classId:name
-    course_id: course:courseId:name
-  work: 
-    course_id: course:courseId:name
-    type: __out
-  announcement: 
-    teach_id: teacher:teachId:name
-    class_id: clazz:classId:name
-    create_time: _datetime
+  hhh_recommend: 
+    left_img: img
+    right_up_img: img
+    right_down_img: img

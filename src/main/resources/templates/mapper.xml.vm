@@ -65,8 +65,8 @@ $cfg.conjInfoMap.get($table.name).get('conjQueryStr')
     			and ${field.name} = #{condition.${field.propertyName},javaType=${field.columnType}}
     		</if>
 			#end
+    		${condition.customCondition}
     	</if>
-    	${condition.customCondition}
    	</where>
    	${condition.orderby}
   </select>
@@ -82,8 +82,8 @@ $cfg.conjInfoMap.get($table.name).get('conjQueryStr')
     			and ${field.name} = #{condition.${field.propertyName},javaType=${field.columnType}}
     		</if>
 			#end
+    		${condition.customCondition}
     	</if>
-    	${condition.customCondition}
    	</where>
   </select>
   
@@ -119,8 +119,8 @@ $cfg.conjInfoMap.get($table.name).get('conjQueryStr')
     			and ${field.name} = #{condition.${field.propertyName},javaType=${field.columnType}}
     		</if>
 			#end
+    		${condition.customCondition}
     	</if>
-    	${condition.customCondition}
    	</where>
    	limit 0,1
   </select>
@@ -136,8 +136,8 @@ $cfg.conjInfoMap.get($table.name).get('conjQueryStr')
     			and ${field.name} = #{condition.${field.propertyName},javaType=${field.columnType}}
     		</if>
 			#end
+    		${condition.customCondition}
     	</if>
-    	${condition.customCondition}
    	</where>
     ${orderby}
     limit #{offset },#{limit }

@@ -1031,6 +1031,7 @@ public class GeneratorCode {
 							.append("}\n")
 							.append("\t\t\t\t</if>");
 						}
+						whereBuilder.append("\n\t\t\t${condition.customCondition}");
 						whereBuilder.append("\n\t\t\t</if>");
 						
 						//用来连接四个查询的字符串（conjQueryList）
@@ -1062,9 +1063,10 @@ public class GeneratorCode {
 						.append(whereBuilder.toString());
 						//条件
 						conjBuilder
-						.append("\n\t\t\t${condition.customCondition}\n")
-						.append("\t\t</where>\n")
-						.append("\t\t${condition.orderby}")
+						.append("\n\t\t</where>\n")
+						.append("\n\t<if test=\"condition!=null\">")
+						.append("\n\t\t${condition.orderby}")
+						.append("\n\t</if>")
 						.append("\n\t</select>");
 						
 						//conjQueryCount
@@ -1094,9 +1096,10 @@ public class GeneratorCode {
 						.append(whereBuilder.toString());
 						//条件
 						conjBuilder
-						.append("\n\t\t\t${condition.customCondition}\n")
-						.append("\t\t</where>\n")
-						.append("\t\t${condition.orderby}")
+						.append("\t\t</where>")
+						.append("\n\t<if test=\"condition!=null\">")
+						.append("\n\t\t${condition.orderby}")
+						.append("\n\t</if>")
 						.append("\n\t</select>");
 						
 						//conjQueryPage
@@ -1128,8 +1131,7 @@ public class GeneratorCode {
 						.append(whereBuilder.toString());
 						//条件
 						conjBuilder
-						.append("\n\t\t\t${condition.customCondition}\n")
-						.append("\t\t</where>\n")
+						.append("\n\t\t</where>\n")
 						.append("\t\t${orderby}")
 						.append("\n\t</select>");
 						
