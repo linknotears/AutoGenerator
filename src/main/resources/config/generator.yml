@@ -32,7 +32,7 @@ login.table: admin
 login.usercolumn: username
 login.pwdcolumn: password
 #需要逆向的表(不写默认是全部表)
-tables: archives_of_batch_data,archives_of_chicken_farmers_chicken_shed_data,archives_of_chicken_farmers_data,batch_manager_data,sales_order_data,village_data,town_data,province_data,county_data,city_data
+tables: cameras_data,archives_of_batch_data,archives_of_chicken_farmers_chicken_shed_data,archives_of_chicken_farmers_data,batch_manager_data,sales_order_data,village_data,town_data,province_data,county_data,city_data
 #是否初始化（生成拷贝文件）只生成baseclass、xml、和各层的文件
 createWebtemplates: !!str true
 createRoot: !!str true
@@ -100,6 +100,11 @@ conj.infor:
         condition: archives_of_chicken_farmers_chicken_shed_data.chicken_farmers = archives_of_chicken_farmers_data.id
         relation: one
         conjtype: inner
+      - 
+        table: cameras_data
+        condition: cameras_data.chicken_shed = archives_of_chicken_farmers_chicken_shed_data.id
+        relation: many
+        conjtype: left
 #一个表可能有多个模板，所以这里面有多少个就要建多少个FileOutput
 webtemplates: 
   - 

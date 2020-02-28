@@ -4,46 +4,39 @@
 	<title></title>
 	<meta name="keywords" content="">
 	<meta name="description" content="">
-	<link rel="shortcut icon" href="favicon.ico">
-	<link href="css/bootstrap.min.css?v=3.3.6"
-		  th:href="@{/css/bootstrap.min.css?v=3.3.6}" rel="stylesheet">
-	<link href="/css/font-awesome.css?v=4.4.0"
-		  th:href="@{/css/font-awesome.css?v=4.4.0}" rel="stylesheet">
-	<link href="/css/plugins/bootstrap-table/bootstrap-table.min.css"
-		  th:href="@{/css/plugins/bootstrap-table/bootstrap-table.min.css}"
-		  rel="stylesheet">
-	<link href="/css/plugins/jsTree/style.min.css" rel="stylesheet">
-	<link href="/css/plugins/jqTreeGrid/jquery.treegrid.css"
-		  rel="stylesheet">
+	<link rel="shortcut icon" th:href="@{/favicon.ico}">
+	<link th:href="@{/css/bootstrap.min.css?v=3.3.6}" rel="stylesheet">
+	<link th:href="@{/css/font-awesome.css?v=4.4.0}" rel="stylesheet">
+	<link th:href="@{/css/plugins/bootstrap-table/bootstrap-table.min.css}" rel="stylesheet">
+	<link th:href="@{/css/plugins/jsTree/style.min.css}" rel="stylesheet">
+	<link th:href="@{/css/plugins/jqTreeGrid/jquery.treegrid.css}" rel="stylesheet">
 	<!--summernote css -->
-	<link href="/css/plugins/summernote/summernote-0.8.8.css"
-		  rel="stylesheet">
-	<link href="/css/plugins/chosen/chosen.css" rel="stylesheet">
-	<link href="/css/style.css?v=4.1.0" th:href="@{/css/style.css?v=4.1.0}"
-		  rel="stylesheet">
+	<link th:href="@{/css/plugins/summernote/summernote-0.8.8.css}" rel="stylesheet">
+	<link th:href="@{/css/plugins/chosen/chosen.css}" rel="stylesheet">
+	<link th:href="@{/css/style.css?v=4.1.0}" rel="stylesheet">
 	<!--bootstrap-inputfile-->
-	<!--<link href="/css/banner/bootstrap-fileinput.css" rel="stylesheet">-->
+	<!--<link th:href="@{css/banner/bootstrap-fileinput.css" rel="stylesheet">-->
 	<!--bootstrap-datetimepicker-->
-	<link href="/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
-	<link rel="stylesheet" href="/js/plugins/layer/laydate/skins/default/laydate.css" />
-	<script src="/common/util/request-tool-1.1.js"></script>
+	<link th:href="@{/css/bootstrap-datetimepicker.min.css}" rel="stylesheet" media="screen">
+	<link rel="stylesheet" th:href="@{/js/plugins/layer/laydate/skins/default/laydate.css}" />
+	<script th:src="@{/common/util/request-tool-1.1.js}"></script>
 </head>
 <div th:fragment="footer"  xmlns:th="http://www.thymeleaf.org">
-	<script src="/js/bootstrap.min.js?v=3.3.6"></script>
-	<script src="/js/plugins/bootstrap-table/bootstrap-table.min.js"></script>
-	<script src="/js/plugins/bootstrap-table/bootstrap-table-mobile.min.js"></script>
+	<script th:src="@{/js/bootstrap.min.js?v=3.3.6}"></script>
+	<script th:src="@{/js/plugins/bootstrap-table/bootstrap-table.min.js}"></script>
+	<script th:src="@{/js/plugins/bootstrap-table/bootstrap-table-mobile.min.js}"></script>
 	<script
-			src="/js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
-	<script src="/js/plugins/validate/jquery.validate.min.js"></script>
-	<script src="/js/plugins/validate/messages_zh.min.js"></script>
-	<script src="/js/plugins/jsTree/jstree.min.js"></script>
-	<script src="/js/plugins/jqTreeGrid/jquery.treegrid.min.js"></script>
-	<script src="/js/plugins/jqTreeGrid/jquery.treegrid.extension.js"></script>
-	<script src="/js/plugins/jqTreeGrid/jquery.treegrid.bootstrap3.js"></script>
-	<script src="/js/plugins/chosen/chosen.jquery.js"></script>
-	<script src="/js/plugins/layer/layer.js"></script>
-	<script src="/js/content.js?v=1.0.0"></script>
+			th:src="@{/js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js}"></script>
+	<script th:src="@{/js/plugins/validate/jquery.validate.min.js}"></script>
+	<script th:src="@{/js/plugins/validate/messages_zh.min.js}"></script>
+	<script th:src="@{/js/plugins/jsTree/jstree.min.js}"></script>
+	<script th:src="@{/js/plugins/jqTreeGrid/jquery.treegrid.min.js}"></script>
+	<script th:src="@{/js/plugins/jqTreeGrid/jquery.treegrid.extension.js}"></script>
+	<script th:src="@{/js/plugins/jqTreeGrid/jquery.treegrid.bootstrap3.js}"></script>
+	<script th:src="@{/js/plugins/chosen/chosen.jquery.js}"></script>
+	<script th:src="@{/js/plugins/layer/layer.js}"></script>
+	<script th:src="@{/js/content.js?v=1.0.0"></script>
 	
 	<!--bootstrap-datetimepicker-->
-	<script type="text/javascript" src="/js/plugins/layer/laydate/laydate.js" ></script>
+	<script type="text/javascript" th:src="@{/js/plugins/layer/laydate/laydate.js}" ></script>
 </div>

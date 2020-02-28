@@ -7,6 +7,7 @@
 	<groupId>${cfg.basePackage}</groupId>
 	<artifactId>${cfg.projectName}</artifactId>
 	<version>1.0</version>
+	
 #if($cfg.createJars!='true')
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -163,4 +164,31 @@
 #end
 		</plugins>
 	</build>
+	
+	
+	
+	<repositories>
+        <repository>
+            <id>maven-ali</id>
+            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+                <checksumPolicy>fail</checksumPolicy>
+            </snapshots>
+        </repository>
+        <repository>
+	      <id>CN</id>    
+	      <name>OSChina Central</name>                                                                                                                           
+	      <url>http://maven.oschina.net/content/groups/public/</url>  
+        </repository>
+        <repository>
+          <id>repo2</id>  
+	  	  <name>Human Readable Name for this Mirror.</name>      
+	  	  <url>http://repo2.maven.org/maven2/</url>      
+    	</repository>
+	</repositories>
 </project>
