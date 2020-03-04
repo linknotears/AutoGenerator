@@ -19,7 +19,7 @@
     <servlet.version>3.1.0</servlet.version>
     <jstl.version>1.2.5</jstl.version>
     <taglibs.version>1.2.5</taglibs.version>
-    <jackson.version>2.4.4</jackson.version>
+    <jackson.version>2.10.3</jackson.version>
     <commons.lang3.version>3.7</commons.lang3.version>
     <generator.version>3.1.0</generator.version>
     <velocity.version>2.1</velocity.version>
