@@ -26,13 +26,13 @@ prefix.ctrl: /
 #html访问 uri前缀
 prefix.view: /view/
 #基础包名  
-basePackage: com.qibainong.map
+basePackage: boot.spring
 #登录表名
-login.table: admin
+login.table: user
 login.usercolumn: username
 login.pwdcolumn: password
 #需要逆向的表(不写默认是全部表)
-tables: cameras_data,archives_of_batch_data,archives_of_chicken_farmers_chicken_shed_data,archives_of_chicken_farmers_data,batch_manager_data,sales_order_data,village_data,town_data,province_data,county_data,city_data
+tables: apply,user
 #是否初始化（生成拷贝文件）只生成baseclass、xml、和各层的文件
 createWebtemplates: !!str true
 createRoot: !!str true
@@ -52,13 +52,13 @@ isOverFile: !!str false
 
 #jdbc配置
 jdbc.driver: com.mysql.cj.jdbc.Driver
-jdbc.url: jdbc:mysql://47.92.127.224:3306/manage_power?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=CONVERT_TO_NULL
+jdbc.url: jdbc:mysql://app.j66c.com:3306/test_db?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=CONVERT_TO_NULL
 jdbc.user: root
-jdbc.pwd: handsome1.
+jdbc.pwd: lang1987
 #5.0的时候会更改配置
 mysql.version: !!str 5.0
 #各层包名配置
-package.suffix.mapper: dao
+package.suffix.mapper: mapper
 package.suffix.entity: entity
 package.suffix.service: service
 package.suffix.serviceImpl: service.impl
@@ -108,14 +108,9 @@ conj.infor:
 #一个表可能有多个模板，所以这里面有多少个就要建多少个FileOutput
 webtemplates: 
   - 
-    tables: [hhh_recommend]
-    template: huihaha/add.html
-    outpath: ${entity}/add.html
-    exclude: all.bz1,all.bz2
-  - 
-    tables: [hhh_recommend]
-    template: huihaha/edit.html
-    outpath: ${entity}/edit.html
+    tables: [user]
+    template: java_v2/login.html
+    outpath: login.html
     exclude: all.bz1,all.bz2
   
 #指定文件类型（表名重复时不识别,加时间下划线自动创建）:{0:女,1:男}、img、sex、file、(date、datetime-加_自动创建时间）、（_uuid、_dateNo、_squNo,包含双下滑先表示不可见不可加，一个下划线可见不可加）
