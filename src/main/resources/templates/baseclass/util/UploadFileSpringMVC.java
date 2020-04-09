@@ -20,9 +20,11 @@ public class UploadFileSpringMVC {
 				String suffix = imagename.substring(imagename.lastIndexOf("."));
 				String filename = verifyCode(8);
 				String webPath = CommonParams.UPLOAD_PATH;//servletContext.getRealPath("/");
-				SimpleDateFormat sf1 = new SimpleDateFormat("yyyyMMdd");
+				SimpleDateFormat sf1 = new SimpleDateFormat("yyyyMM");
 				SimpleDateFormat sf2 = new SimpleDateFormat("HHmmssSS");
-				sqlPath = "/" + outDir + "/" + sf1.format(new Date()) + "/" + sf2.format(new Date()) + filename + suffix;
+				SimpleDateFormat sf3 = new SimpleDateFormat("dd");
+				Date now = new Date();
+				sqlPath = "/" + outDir + "/" + sf1.format(now) + "/" + sf2.format(now) + "_" + filename + "_" + sf3.format(now) + suffix;
 				File newfile = new File(webPath + "/" + sqlPath);
 				//如果父目录不存在就创建
 				File parentFile = newfile.getParentFile();
